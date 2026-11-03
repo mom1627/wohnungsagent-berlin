@@ -15,6 +15,7 @@ from inspect_offer_details import inspect_url
 from rank_evidence import extract
 from wohnungshelden_submit import apply_gewobag
 from application_readiness import evaluate
+from application_ledger import load,should_attempt,record
 
 def main():
     result={"checked_at_utc":datetime.now(timezone.utc).isoformat(),
@@ -37,7 +38,11 @@ def main():
             except Exception as exc:
                 result["errors"].append({"url":item["url"],"error":type(exc).__name__})
         result["basic_matches"]=len(result["matches"])
+        ledger=load()
         for match in result["matches"]:
+            if not should_attempt(match["url"],ledger):
+                result["applications"].append({"url":match["url"],"status":"skipped","reason":"already_attempted"})
+                continue
             # Re-inspect current listing evidence. No generic WBS assumptions.
             current_evidence=inspect_url(match["url"], robots_cache)
             ready, reason=evaluate(match,current_evidence,application_frame_present=False)
@@ -47,6 +52,7 @@ def main():
             if urlsplit(match["url"]).hostname=="www.gewobag.de":
                 outcome=asyncio.run(apply_gewobag(match["url"]))
                 result["applications"].append(outcome)
+                record(match["url"],outcome["status"],ledger)
                 if outcome.get("confirmed"):
                     result["applications_submitted"]+=1
             else:
