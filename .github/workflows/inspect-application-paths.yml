@@ -1,0 +1,21 @@
+name: Inspect Gewobag application paths
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Inspect application links without submitting
+        run: python inspect_application_paths.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gewobag-application-paths
+          path: gewobag_application_paths.json
+          retention-days: 7
