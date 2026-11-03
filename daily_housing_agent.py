@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urlsplit
 from collect_inberlinwohnen import collect
-from inspect_offer_details import inspect_offer
+from inspect_offer_details import inspect_url
 from rank_evidence import extract
 
 def main():
@@ -21,10 +21,10 @@ def main():
         listing_data=collect()
         listings=listing_data["listings"]
         result["discovered"]=len(listings)
-        for item in listings:
+        robots_cache={}\n        for item in listings:
             try:
                 # Only run verified, supported inspection functions; never guess eligibility.
-                evidence=inspect_offer(item["url"])
+                evidence=inspect_url(item["url"], robots_cache)
                 result["inspected"]+=1
                 rank=extract(evidence)
                 if rank["basic_criteria_match"] and not rank["special_wbs_condition_detected"]:
