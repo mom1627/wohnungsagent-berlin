@@ -1,0 +1,27 @@
+name: Rank inBerlinWohnen offers
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '19 7,13,19 * * *'
+permissions:
+  contents: read
+jobs:
+  rank:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python collect_inberlinwohnen.py
+      - run: python inspect_offer_details.py
+      - name: Extract price, room count and district
+        run: python rank_evidence.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ranked-inberlinwohnen-offers
+          path: |
+            inberlinwohnen_ranked.json
+            inberlinwohnen_offer_evidence.json
+          retention-days: 7
