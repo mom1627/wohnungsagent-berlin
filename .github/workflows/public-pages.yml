@@ -1,0 +1,19 @@
+name: Inspect approved public listing pages
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      PUBLIC_LISTING_URLS: ${{ vars.PUBLIC_LISTING_URLS }}
+      PUBLIC_ALLOWED_HOSTS: ${{ vars.PUBLIC_ALLOWED_HOSTS }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Read structured metadata from approved public pages
+        run: python public_pages.py
