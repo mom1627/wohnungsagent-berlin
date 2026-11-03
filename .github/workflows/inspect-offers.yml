@@ -1,0 +1,28 @@
+name: Inspect inBerlinWohnen offer details
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Collect candidate offer links
+        run: python collect_inberlinwohnen.py
+      - name: Inspect provider offer pages (read-only)
+        run: python inspect_offer_details.py
+      - name: Upload detail evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: inberlinwohnen-offer-evidence
+          path: |
+            inberlinwohnen_candidates.json
+            inberlinwohnen_offer_evidence.json
+          if-no-files-found: warn
+          retention-days: 7
