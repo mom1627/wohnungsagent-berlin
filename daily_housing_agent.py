@@ -14,6 +14,7 @@ from collect_inberlinwohnen import collect
 from inspect_offer_details import inspect_url
 from rank_evidence import extract
 from wohnungshelden_submit import apply_gewobag
+from application_readiness import evaluate
 
 def main():
     result={"checked_at_utc":datetime.now(timezone.utc).isoformat(),
@@ -37,9 +38,11 @@ def main():
                 result["errors"].append({"url":item["url"],"error":type(exc).__name__})
         result["basic_matches"]=len(result["matches"])
         for match in result["matches"]:
-            # Eligibility and availability must be explicitly verified, not inferred.
-            if not match.get("wbs_100_verified") or not match.get("application_open_verified"):
-                result["applications"].append({"url":match["url"],"status":"not_submitted","reason":"eligibility_or_availability_unverified"})
+            # Re-inspect current listing evidence. No generic WBS assumptions.
+            current_evidence=inspect_url(match["url"], robots_cache)
+            ready, reason=evaluate(match,current_evidence,application_frame_present=False)
+            if not ready:
+                result["applications"].append({"url":match["url"],"status":"not_submitted","reason":reason})
                 continue
             if urlsplit(match["url"]).hostname=="www.gewobag.de":
                 outcome=asyncio.run(apply_gewobag(match["url"]))
