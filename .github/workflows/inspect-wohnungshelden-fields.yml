@@ -1,0 +1,25 @@
+name: Inspect Wohnungshelden form fields
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install playwright==1.56.0
+      - run: python -m playwright install --with-deps chromium
+      - name: Inspect form fields without entering or sending personal data
+        run: python inspect_wohnungshelden_fields.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: wohnungshelden-field-report
+          path: wohnungshelden_field_report.json
+          if-no-files-found: ignore
+          retention-days: 7
