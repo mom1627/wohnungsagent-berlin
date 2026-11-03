@@ -14,7 +14,14 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - run: python -m pip install playwright==1.56.0
+      - run: python -m playwright install chromium
       - name: Discover and screen inBerlinWohnen offers
+        env:
+          APPLICANT_NAME: ${{ secrets.APPLICANT_NAME }}
+          APPLICANT_EMAIL: ${{ secrets.APPLICANT_EMAIL }}
+          APPLICANT_PHONE: ${{ secrets.APPLICANT_PHONE }}
+          ENABLE_LIVE_APPLICATIONS: '0'
         run: python daily_housing_agent.py
       - uses: actions/upload-artifact@v4
         if: always()
