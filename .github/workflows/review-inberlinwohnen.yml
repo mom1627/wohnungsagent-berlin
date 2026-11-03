@@ -1,0 +1,31 @@
+name: Review inBerlinWohnen candidates
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Collect public offer links
+        run: python collect_inberlinwohnen.py
+      - name: Read provider pages
+        run: python inspect_offer_details.py
+      - name: Build verification queue
+        run: python review_offer_evidence.py
+      - name: Upload evidence and review queue
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: inberlinwohnen-review
+          path: |
+            inberlinwohnen_candidates.json
+            inberlinwohnen_offer_evidence.json
+            inberlinwohnen_review_queue.json
+          if-no-files-found: warn
+          retention-days: 7
