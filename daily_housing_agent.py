@@ -21,7 +21,8 @@ def main():
         listing_data=collect()
         listings=listing_data["listings"]
         result["discovered"]=len(listings)
-        robots_cache={}\n        for item in listings:
+        robots_cache={}
+        for item in listings:
             try:
                 # Only run verified, supported inspection functions; never guess eligibility.
                 evidence=inspect_url(item["url"], robots_cache)
