@@ -1,0 +1,24 @@
+name: Collect inBerlinWohnen offers
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '13 6,10,14,18 * * *'
+permissions:
+  contents: read
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Collect public listing links
+        run: python collect_inberlinwohnen.py
+      - name: Save collected candidate links
+        uses: actions/upload-artifact@v4
+        with:
+          name: inberlinwohnen-candidates
+          path: inberlinwohnen_candidates.json
+          retention-days: 7
