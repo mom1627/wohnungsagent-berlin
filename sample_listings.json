@@ -1,0 +1,13 @@
+[
+  {
+    "url": "https://example.org/expose/demo",
+    "warm_rent_eur": 499,
+    "rooms": 1,
+    "district": "Berlin-Wedding",
+    "wbs_100_eligible": true,
+    "application_open": false,
+    "cooperative_entry_eur": 0,
+    "application_deadline": null,
+    "requirements": "Demo only; not a real listing"
+  }
+]
