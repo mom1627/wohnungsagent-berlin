@@ -10,7 +10,7 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urlsplit
-from collect_inberlinwohnen import collect
+from collect_all_pages import collect
 from inspect_offer_details import inspect_url
 from rank_evidence import extract
 from wohnungshelden_submit import apply_gewobag
@@ -22,7 +22,7 @@ def main():
             "discovered":0,"inspected":0,"basic_matches":0,
             "applications_submitted":0,"submission_enabled":os.getenv("ENABLE_LIVE_APPLICATIONS")=="1","matches":[],"applications":[],"errors":[]}
     try:
-        listing_data=collect()
+        listing_data=collect(max_pages=10)
         listings=listing_data["listings"]
         result["discovered"]=len(listings)
         robots_cache={}
