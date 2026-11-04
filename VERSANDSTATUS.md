@@ -27,3 +27,7 @@ Die zwischenzeitlichen Navigationsfehler wurden behoben: Der Agent übernimmt di
 **Vier vollständig aktive, tatsächlich validierte Anbieter sind noch nicht erreicht.**
 
 Nach dem genannten Lauf erweitert: Erfolgsprüfung der übergeordneten Anbieter-Seite und neuer Bestätigungsfenster auf freigegebenen Domains, bis zu 45 Sekunden Nachbeobachtung, ausschließlich feste Rückmeldesignale als Wahrheitswerte. Das rekonstruiert keine verlorene Bestätigung. Der neueste Actions-Bericht und die dauerhafte Historie bleiben maßgeblich.
+
+## Erweiterung auf Wunsch des Nutzers
+
+Ab dieser Revision gelten 1 oder 2 Zimmer und weiterhin maximal 550 EUR Warmmiete, einschließlich günstigerer Wohnungen. Die WBS-Flächenbegrenzung bleibt bestehen. Vier tatsächlich bestätigte Anfragen pro Berliner Kalendertag sind ein überwacht ausgewiesenes Ziel, keine garantierte Verfügbarkeit. Die HOWOGE-Einkommensprüfung wird für die erste reine Kontaktanfrage nicht mehr vorgezogen; sie bleibt als offene Voraussetzung vor Vertragsabschluss markiert. Die obigen Suchzahlen stammen aus dem genannten früheren Lauf mit den damaligen Zimmerkriterien. Aktuelle Ergebnisse siehe Actions.

@@ -54,7 +54,7 @@ def screen(text, *, provider_verified=False):
     if rent is None: reasons.append("warm_rent_unverified")
     elif rent > 550: reasons.append("warm_rent_above_550")
     if count is None: reasons.append("rooms_unverified")
-    elif count != 1: reasons.append("not_one_room")
+    elif count not in {Decimal(1),Decimal(2)}: reasons.append("rooms_not_one_or_two")
     if area not in TARGETS: reasons.append("target_district_unverified")
     basics = not reasons
     # WBS references in the actual property content only.

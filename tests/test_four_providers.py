@@ -30,7 +30,8 @@ class DispatchPolicyTests(unittest.TestCase):
         self.assertEqual(set(states),{"gewobag","howoge","gesobau","wbm"})
         self.assertFalse(states["gesobau"]["sender_implemented"])
         self.assertFalse(states["wbm"]["automatic_attempts_enabled"])
-        self.assertFalse(states["howoge"]["automatic_attempts_enabled"])
+        self.assertTrue(states["howoge"]["automatic_attempts_enabled"])
+        self.assertEqual(states["howoge"]["manual_requirement"],"income_or_jobcenter_documents_before_rental_contract")
         self.assertFalse(any(s["submission_confirmed"] for s in states.values()))
     def test_howoge_income_condition_is_checked_for_each_actual_rent(self):
         with patch.dict(os.environ,{"APPLICANT_MONTHLY_NET_INCOME":"1500"}):

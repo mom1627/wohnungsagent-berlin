@@ -9,6 +9,7 @@ import json
 import os
 import tempfile
 from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
 from pathlib import Path
 from urllib.error import HTTPError
 from urllib.parse import quote
@@ -85,6 +86,18 @@ class Ledger:
     def contains(self,url):
         return key_for(url) in self.entries or canonical(url) in self.entries
 
+    def confirmed_on(self, day):
+        count = 0
+        for item in self.entries.values():
+            if not isinstance(item,dict) or item.get("status") != "submitted_confirmed" or item.get("confirmation") != "provider_success_visible":
+                continue
+            try:
+                stamp=datetime.fromisoformat(item.get("confirmed_at_utc",item["at_utc"]))
+                if stamp.tzinfo is None: continue
+                if stamp.astimezone(ZoneInfo("Europe/Berlin")).date()==day: count+=1
+            except (ValueError,TypeError,KeyError): continue
+        return count
+
     def validated(self,adapter_version):
         return any(isinstance(x,dict) and x.get("status")=="submitted_confirmed" and
                    x.get("adapter_version")==adapter_version for x in self.entries.values())
@@ -112,6 +125,7 @@ class Ledger:
         if confirmation:
             # Store a fixed confirmation signal, never arbitrary server/form text.
             self.entries[key]["confirmation"] = "provider_success_visible"
+            self.entries[key]["confirmed_at_utc"] = datetime.now(timezone.utc).isoformat()
         try:
             self.save()
         except Exception:

@@ -12,6 +12,7 @@ from pathlib import Path
 from collect_all_pages import collect_async
 from eligibility import screen
 from application_ledger import Ledger
+from housing_profile import today
 from application_profile import load_profile
 from housing_profile import load_housing_profile
 from gewobag_adapter import VERSION, offer_blockers, prepare, submit_prepared
@@ -24,6 +25,7 @@ async def run():
     report = {"checked_at_utc":datetime.now(timezone.utc).isoformat(),
               "submission_requested":os.getenv("ENABLE_LIVE_APPLICATIONS")=="1",
               "submission_enabled":False,"validated_senders":[],
+              "daily_confirmed_application_goal":4,"confirmed_today":0,"daily_goal_met":False,
               "discovered":0,"basic_matches":0,"applications_submitted":0,
               "applications":[],"offers":[],"errors":[]}
     try:
@@ -95,8 +97,12 @@ async def run():
                         "excludes_wbs_entitlement","cooperative_cost_requires_review"}]
                     if mismatch: reasons.append("source_provider_disagree")
                     if item["provider"]=="howoge":
-                        income_reason=howoge_income_blocker(detail)
-                        if income_reason: reasons.append(income_reason)
+                        # HOWOGE distinguishes the initial viewing inquiry (name,
+                        # contact, WBS) from the later contract/document check.
+                        # Official: /immobiliensuche/mietbedingungen.html
+                        # Never attest income sufficiency or Jobcenter approval.
+                        detail["contract_follow_up"] = howoge_income_blocker(detail)
+                        detail["contract_requirements_verified"] = False
                     # A pagination failure is reported as a search error. It
                     # does not invalidate an independently rechecked apartment.
                     if not profile["ready"]: reasons.append("missing_profile_secrets")
@@ -148,6 +154,8 @@ async def run():
                     report["minimum_provider_goal_met"] = len(report["validated_senders"]) >= 4
             finally:
                 await browser.close()
+        report["confirmed_today"] = ledger.confirmed_on(today())
+        report["daily_goal_met"] = report["confirmed_today"] >= report["daily_confirmed_application_goal"]
     except Exception as exc:
         report["errors"].append({"stage":"pipeline","error":type(exc).__name__})
     return report
@@ -158,6 +166,7 @@ def main():
     lines = ["# Wohnungsagent – Laufbericht","",
              f"Gefunden: {report['discovered']} · Basis-Treffer: {report['basic_matches']} · Bestätigt versendet: {report['applications_submitted']}",
              f"Automatische Anfrageversuche freigegeben: {report['submission_enabled']}",
+             f"Heute bestätigt: {report['confirmed_today']} · Tagesziel: {report['daily_confirmed_application_goal']} · Erreicht: {report['daily_goal_met']}",
              f"Anbieter mit tatsächlicher Versandbestätigung: {', '.join(report['validated_senders']) or 'keiner'}",""]
     lines += ["| Anbieter | Versand implementiert | Tatsächlich bestätigt | Manuelle Voraussetzung |",
               "| --- | --- | --- | --- |"]

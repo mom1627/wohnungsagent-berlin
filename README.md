@@ -33,7 +33,7 @@ Details: ADAPTER_STATUS.md.
 
 ## Kriterien
 
-Ein Zimmer, maximal 550 Euro Warmmiete, Reinickendorf/Wedding/Mitte/Pankow.
+Ein oder zwei Zimmer, maximal 550 Euro Warmmiete, Reinickendorf/Wedding/Mitte/Pankow.
 WBS-Kategorie, erlaubte Fläche, Gültigkeit und besondere Bedingungen werden mit
 dem geschützten Profil abgeglichen. Die Zahl der Bewohner wird nicht mit einer
 ungeprüften Zimmerzahl gleichgesetzt. Fehlende Immatrikulation oder eine
@@ -71,3 +71,9 @@ Erfolgsnachrichten.
 ## Merkliste und Suchstörungen
 
 Bereits gefundene Basis-Treffer werden ohne Bewerberdaten in .agent-state/candidate-watchlist.json gespeichert. Beim nächsten Lauf werden sie unabhängig von vorübergehenden Suchstörungen erneut auf der tatsächlichen Anbieterseite geprüft. Eine alte Quellenaufnahme ist niemals ein Versandnachweis oder ein Ersatz für aktuelle Angebotsbedingungen. Preis-/Zimmerabweichungen und unbekannte Voraussetzungen blockieren weiterhin. Ein unvollständiger Suchlauf bleibt im Bericht und im Actions-Ergebnis als Fehler sichtbar, auch wenn eine unabhängig geprüfte Anfrage möglich war.
+
+## Tagesziel und Vertragsprüfung
+
+Ziel sind mindestens vier tatsächlich bestätigte Anfragen pro Berliner Kalendertag. Alle neuen passenden Angebote werden bearbeitet; es werden keine unpassenden Wohnungen oder Doppelanfragen zum Auffüllen versendet. Die dauerhafte Historie zählt nur echte Bestätigungen. Ein nicht erreichtes Tagesziel wird ausdrücklich im Laufbericht ausgewiesen.
+
+HOWOGE: Die erste Besichtigungsanfrage wird von der späteren Einkommens-/Vertragsprüfung getrennt. Das beobachtete erste Formular enthält nur Vorname, Nachname und E-Mail. Die drei vorangestellten Hinweise werden lediglich zur Kenntnis genommen. Fehlendes Einkommen in dreifacher Miethöhe blockiert die Kontaktanfrage nicht automatisch; es bleibt als notwendige Nachprüfung vor einem Mietvertrag sichtbar. Eine Mietübernahmeerklärung oder ausreichendes Einkommen werden niemals behauptet. Quelle: https://www.howoge.de/immobiliensuche/mietbedingungen.html

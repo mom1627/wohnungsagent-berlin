@@ -55,11 +55,10 @@ def provider_statuses(ledger, live_ready):
     return {provider:{"sender_implemented":provider in IMPLEMENTED_SENDERS,
             "submission_confirmed":ledger.validated(version),
             "automatic_attempts_enabled":bool(live_ready and provider in IMPLEMENTED_SENDERS and
-                (provider != "wbm" or os.getenv("APPLICANT_WBM_DATA_CONSENT")=="1") and
-                (provider != "howoge" or monthly_net_income() is not None)),
+                (provider != "wbm" or os.getenv("APPLICANT_WBM_DATA_CONSENT")=="1")),
             "manual_requirement":("immomio_captcha_and_authenticated_session" if provider=="gesobau"
                 else "wbm_data_processing_consent" if provider=="wbm" and os.getenv("APPLICANT_WBM_DATA_CONSENT")!="1"
-                else "howoge_monthly_net_income_required" if provider=="howoge" and monthly_net_income() is None else None)}
+                else "income_or_jobcenter_documents_before_rental_contract" if provider=="howoge" else None)}
             for provider,version in SENDER_VERSIONS.items()}
 
 async def open_howoge_form(page):
