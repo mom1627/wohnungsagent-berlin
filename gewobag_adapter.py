@@ -150,7 +150,9 @@ async def prepare(page,frame,contact,housing):
     final_fields = await fields(frame)
     if any(f["required"] and not known_field(f) for f in final_fields): return False,"new_unknown_required_field"
     invalid = frame.locator("input.ng-invalid:visible,textarea.ng-invalid:visible,ng-select.ng-invalid:visible")
-    if await invalid.count(): return False,"form_validation_incomplete"
+    if await invalid.count():
+        ids = await invalid.evaluate_all("es=>es.map(e=>e.id||e.tagName).join(',')")
+        return False,"form_validation_incomplete_"+ids
     if await visible_challenge(page): return False,"visible_captcha_requires_manual_action"
     return True,"form_ready"
 
