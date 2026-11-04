@@ -88,6 +88,7 @@ async def run():
                     source = screen(item["source_text"])
                     source_record = next(x for x in report["offers"] if x["url"]==item["url"])
                     detail = screen(current.pop("text",""),provider_verified=current["detail_verified"])
+                    detail["provider"] = item["provider"]
                     # Source and current provider must agree; never fall back to stale source values.
                     mismatch = source["district"] != detail["district"] or any(
                         source[k] is None or detail[k] is None or Decimal(source[k]) != Decimal(detail[k])

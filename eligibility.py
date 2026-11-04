@@ -62,7 +62,7 @@ def screen(text, *, provider_verified=False):
     categories = set(re.findall(r"\bWBS(?:[- ]Berechtigung)?\s*[-:]?\s*(100|140|160|180|220)\b",text,re.I))
     generic = bool(re.search(r"\bWBS\b|Wohnberechtigungsschein",text,re.I))
     required_wbs = not no_wbs and bool(re.search(r"\bWBS\s*:\s*erforderlich|(?:vorhandener|vorhandenen)\s+WBS\s+Voraussetzung|\bmit\s+WBS\b|WBS\s+(?:ist\s+)?(?:Voraussetzung|erforderlich)",text,re.I))
-    wbs = "100" if categories == {"100"} else "unknown" if categories else "required_unspecified" if required_wbs else "not_required" if no_wbs else "unknown" if generic else "not_stated"
+    wbs = next(iter(categories)) if len(categories)==1 else "unknown" if categories else "required_unspecified" if required_wbs else "not_required" if no_wbs else "unknown" if generic else "not_stated"
     if wbs not in {"not_required","100"}: reasons.append("wbs_category_unverified")
     if SPECIAL.search(text): reasons.append("special_eligibility_requires_review")
     if re.search(r"(?:Menschen|Personen)\s+ab\s+\d{2}|ab\s*(?:50|55|60|65|67)\s*Jahr",text,re.I):
@@ -80,9 +80,15 @@ def screen(text, *, provider_verified=False):
     availability = re.search(r"(?:Frei ab|Bezugsfrei(?: ab)?|Bezugsfertig ab|Verfügbar ab)\s*:?\s*(ab sofort|sofort|nach Vereinbarung|\d{2}\.\d{2}\.\d{4})",text,re.I)
     if not availability: reasons.append("availability_unverified")
     if not provider_verified: reasons.append("provider_details_not_rechecked")
+    year = re.search(r"\bBaujahr\s*:?\s*((?:18|19|20)\d{2})\b",text,re.I)
+    # Preserve any explicit restriction that is narrower than an ordinary
+    # income ceiling; do not reinterpret one as a general maximum.
+    restricted_wbs = bool(re.search(r"(?:nur|ausschließlich)\s+(?:mit\s+)?(?:gültige\w*\s+)?WBS\s*140|(?:Einkommen|WBS).{0,12}(?:über|mindestens|ab)\s*1(?:00|40)|Erstbezug|Neubau|Fördermodell|Förderweg",text,re.I))
     return {"basic_criteria_match":basics,"total_rent_eur":str(rent) if rent is not None else None,
             "rooms":str(count) if count is not None else None,"district":area,"wbs":wbs,
             "area_sqm":str(square_metres) if square_metres is not None else None,
             "available_from":availability.group(1) if availability else None,
+            "building_year":int(year.group(1)) if year else None,
+            "specific_wbs_binding_requires_review":restricted_wbs,
             "eligible":not reasons,"reasons":reasons,
             "jobcenter_approval":"not_asserted; separate rental-cost approval may be necessary"}

@@ -34,7 +34,17 @@ def offer_blockers(decision, housing):
     reasons = list(decision["reasons"])
     if decision["wbs"] == "required_unspecified" and housing["wbs_type"] == "100":
         reasons = [r for r in reasons if r != "wbs_category_unverified"]
-    requires_wbs = decision["wbs"] in {"100","required_unspecified"}
+    # Berlin Senate, Drucksache 19/23545, pp. 2 and 4: ordinary stock belongs
+    # to the income group up to 140, rather than a minimum income of 140.
+    # Scope this inference to WBM's explicitly old stock, without an exclusive
+    # category, new-build/funding-model notice or lower income bound. The
+    # native inquiry asks only whether a WBS is held, not possession of WBS 140.
+    ordinary_wbm_ceiling = (decision.get("provider")=="wbm" and decision["wbs"]=="140" and
+        housing["wbs_type"]=="100" and isinstance(decision.get("building_year"),int) and
+        decision["building_year"]<=2001 and not decision.get("specific_wbs_binding_requires_review",True))
+    if ordinary_wbm_ceiling:
+        reasons = [r for r in reasons if r != "wbs_category_unverified"]
+    requires_wbs = decision["wbs"] in {"100","required_unspecified"} or ordinary_wbm_ceiling
     if requires_wbs:
         if housing["wbs_type"] != "100": reasons.append("wbs_type_not_validated")
         size = decision.get("area_sqm")
