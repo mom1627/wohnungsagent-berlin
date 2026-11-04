@@ -11,7 +11,14 @@ CARD_JS = """els => els.map(e => ({text:e.textContent.replace(/\\s+/g,' ').trim(
 
 async def collect_async(max_pages=200):
     from playwright.async_api import async_playwright
-    check_robots(FINDER,{})
+    print("Discovery stage: robots_check",flush=True)
+    try:
+        check_robots(FINDER,{})
+    except Exception as exc:
+        return {"source":FINDER,"count":0,"pages_checked":0,"complete":False,
+                "stop_reason":"robots_check_"+type(exc).__name__,"listings":[],
+                "expected_total":None,"unknown_provider_links":[]}
+    print("Discovery stage: robots_verified",flush=True)
     results, seen, signatures = [], set(), set()
     result = {"source":FINDER,"count":0,"pages_checked":0,"complete":False,
               "stop_reason":None,"expected_total":None,"unknown_provider_links":[],"listings":results}
@@ -19,6 +26,7 @@ async def collect_async(max_pages=200):
         browser = await p.chromium.launch(headless=True)
         page = await browser.new_page(locale="de-DE",user_agent=UA)
         try:
+            print("Discovery stage: finder_navigation",flush=True)
             response = await page.goto(FINDER,wait_until="domcontentloaded",timeout=45000)
             if not response or response.status != 200:
                 raise RuntimeError("finder_http_error")
@@ -33,6 +41,7 @@ async def collect_async(max_pages=200):
                     break
                 signatures.add(signature)
                 result["pages_checked"] += 1
+                print("Discovery page:",number,flush=True)
                 body = await page.locator("body").inner_text()
                 total = re.search(r"von\s+([\d.]+)\s+Angeboten",body)
                 if total:
@@ -63,6 +72,9 @@ async def collect_async(max_pages=200):
                 await page.wait_for_timeout(300)
             else:
                 result["stop_reason"] = "page_limit_reached"
+        except Exception as exc:
+            result["complete"] = False
+            result["stop_reason"] = "collection_error_"+type(exc).__name__
         finally:
             await browser.close()
     result["count"] = len(results)
@@ -70,3 +82,4 @@ async def collect_async(max_pages=200):
 
 def collect(max_pages=200):
     return asyncio.run(collect_async(max_pages))
+

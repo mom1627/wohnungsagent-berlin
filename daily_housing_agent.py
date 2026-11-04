@@ -23,6 +23,7 @@ async def run():
         report["discovery"] = {k:v for k,v in discovery.items() if k!="listings"}
         report["discovered"] = discovery["count"]
         report["providers"] = dict(Counter(x["provider"] for x in discovery["listings"]))
+        print("Discovery result:",discovery["count"],discovery["pages_checked"],discovery["stop_reason"],flush=True)
         candidates = []
         for item in discovery["listings"]:
             decision = screen(item["source_text"])
