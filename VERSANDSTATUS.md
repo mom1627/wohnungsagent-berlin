@@ -1,3 +1,17 @@
+# Aktueller Stand nach dem erweiterten Lauf
+
+4. November 2026: [Lauf 41813066484](https://github.com/mom1627/wohnungsagent-berlin/actions/runs/41813066484) erfolgreich; 86 Tests bestanden.
+
+Suche und automatische Anfrageversuche sind dreimal täglich für Gewobag, HOWOGE und WBM freigegeben. Kriterien: 1 oder 2 Zimmer, maximal 550 EUR warm, günstigere Wohnungen eingeschlossen, bisherige Zielbezirke; WBS-Flächenlimit 50 m². HOWOGE-Kontaktanfragen werden nicht mehr durch die spätere Einkommens-/Vertragsprüfung gesperrt. Einkommen oder vorhandene Jobcenter-Mietübernahme werden nicht erfunden.
+
+511 Angebote auf 52 vollständig durchlaufenen Ergebnisseiten, 11 Basis-Treffer. Keine neue Anfrage: zwei Wohnungen bereits reserviert, drei Studierendenangebote, fünf GESOBAU-Angebote mit besonderen Bedingungen bzw. fehlenden aktuellen Daten und ein geschlossener HOWOGE-Kontaktweg. Das günstigste erkannte 2-Zimmer-Angebot in den Zielbezirken lag im Lauf bei 686,30 EUR warm, oberhalb der bestätigten Grenze.
+
+**Heute tatsächlich bestätigt: 0 von angestrebten 4.** Die zwei früheren Gewobag-Versuche bleiben unbestätigt und werden nicht wiederholt. GESOBAU hat noch keinen vollständigen Versandadapter; das sichtbare Immomio-CAPTCHA erfordert manuelle Aktion. Die separat geprüfte GESOBAU-Suche unter 550 EUR zeigte ein Studierenden-/Azubi-WG-Zimmer und zwei Seniorenangebote.
+
+Vier bestätigte Bewerbungen täglich können ohne vier neue passende Angebote nicht garantiert werden. Ein verlässlich bestätigter Versand und vier vollständig aktive Anbieter sind noch nicht nachgewiesen.
+
+## Frühere Läufe und Änderungen
+
 # Versandstatus – 4. November 2026
 
 Vollständiger Actions-Lauf: [41808132504](https://github.com/mom1627/wohnungsagent-berlin/actions/runs/41808132504), erfolgreich. **0 bestätigte Bewerbungen.** Ein grüner Suchlauf ist kein Versandnachweis.
