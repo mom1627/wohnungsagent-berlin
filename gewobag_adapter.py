@@ -102,7 +102,9 @@ async def radio(frame,token,answer):
     control = await one(frame,"input[type='radio'][id*='"+token+"'][id$='-"+answer+"']")
     global LAST_STAGE
     LAST_STAGE = "radio_"+token
-    await control.check(timeout=8000)
+    if not await control.is_checked():
+        await control.press("Space",timeout=8000)
+    if not await control.is_checked(): raise ValueError("radio_choice_not_verified")
 
 async def prepare(page,frame,contact,housing):
     current = await fields(frame)
@@ -142,7 +144,9 @@ async def prepare(page,frame,contact,housing):
     if norm(ack_text) != PRIVACY_ACK: return False,"privacy_acknowledgement_changed"
     global LAST_STAGE
     LAST_STAGE = "privacy_acknowledgement"
-    await acknowledgement.check(timeout=8000)
+    if not await acknowledgement.is_checked():
+        await acknowledgement.press("Space",timeout=8000)
+    if not await acknowledgement.is_checked(): return False,"privacy_acknowledgement_not_checked"
     final_fields = await fields(frame)
     if any(f["required"] and not known_field(f) for f in final_fields): return False,"new_unknown_required_field"
     invalid = frame.locator("input.ng-invalid:visible,textarea.ng-invalid:visible,ng-select.ng-invalid:visible")
@@ -169,7 +173,7 @@ async def submit_prepared(page,frame,url,ledger,*,enabled):
     result["status"] = "submission_unverified"
     result["reason"] = "no_success_confirmation"
     try:
-        await button.click(timeout=10000)
+        await button.press("Enter",timeout=10000)
         # Let the website perform its own ordinary invisible verification.
         # Never call grecaptcha, inject a token, solve a challenge or POST directly.
         for _ in range(30):

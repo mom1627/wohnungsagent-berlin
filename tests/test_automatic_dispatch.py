@@ -82,7 +82,7 @@ class SubmissionTests(unittest.IsolatedAsyncioTestCase):
         frame,button,body,page = Mock(),Mock(),Mock(),Mock()
         button.count = AsyncMock(return_value=1)
         button.is_enabled = AsyncMock(return_value=True)
-        button.click = AsyncMock()
+        button.press = AsyncMock()
         body.inner_text = AsyncMock(side_effect=texts)
         frame.get_by_role.return_value = button
         frame.locator.return_value = body
@@ -95,10 +95,10 @@ class SubmissionTests(unittest.IsolatedAsyncioTestCase):
             ledger.read=Mock()
             ledger.save=Mock()
             page,frame,button=self.setup_request(["Anfrageformular","Ihre Anfrage wurde erfolgreich versendet."])
-            async def click(**kwargs):
+            async def click(*args,**kwargs):
                 self.assertTrue(ledger.contains("https://gewobag.de/test"))
                 self.assertFalse(ledger.validated(VERSION))
-            button.click.side_effect=click
+            button.press.side_effect=click
             with patch("gewobag_adapter.visible_challenge",new=AsyncMock(return_value=False)):
                 result=await submit_prepared(page,frame,"https://gewobag.de/test",ledger,enabled=True)
             self.assertTrue(result["confirmed"])
@@ -110,10 +110,10 @@ class SubmissionTests(unittest.IsolatedAsyncioTestCase):
         ledger.reserve.side_effect=RuntimeError("storage failure")
         with patch("gewobag_adapter.visible_challenge",new=AsyncMock(return_value=False)):
             with self.assertRaises(RuntimeError): await submit_prepared(page,frame,"https://gewobag.de/test",ledger,enabled=True)
-        button.click.assert_not_called()
+        button.press.assert_not_called()
     async def test_click_timeout_is_an_uncertain_submission(self):
         page,frame,button=self.setup_request(["Anfrageformular"])
-        button.click.side_effect=TimeoutError()
+        button.press.side_effect=TimeoutError()
         ledger=Mock(remote=True)
         ledger.reserve.return_value=True
         with patch("gewobag_adapter.visible_challenge",new=AsyncMock(return_value=False)):
@@ -135,7 +135,7 @@ class SubmissionTests(unittest.IsolatedAsyncioTestCase):
             result=await submit_prepared(page,frame,"https://gewobag.de/test",ledger,enabled=True)
         self.assertEqual(result["reason"],"visible_captcha_after_submit_requires_manual_action")
         self.assertFalse(result["confirmed"])
-        button.click.assert_awaited_once()
+        button.press.assert_awaited_once()
     async def test_failed_finish_does_not_create_a_false_validation(self):
         with tempfile.TemporaryDirectory() as d:
             ledger=Ledger(remote=False,path=Path(d)/"ledger.json")
