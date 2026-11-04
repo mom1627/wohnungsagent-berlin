@@ -12,12 +12,14 @@ from collect_all_pages import collect_async
 from eligibility import screen
 from application_ledger import Ledger
 from application_profile import load_profile
-from provider_adapters import inspect_provider, VERIFIED_SENDERS
+from housing_profile import load_housing_profile
+from gewobag_adapter import VERSION, offer_blockers, prepare, submit_prepared
+from provider_adapters import inspect_provider
 
 async def run():
     report = {"checked_at_utc":datetime.now(timezone.utc).isoformat(),
               "submission_requested":os.getenv("ENABLE_LIVE_APPLICATIONS")=="1",
-              "submission_enabled":False,"validated_senders":sorted(VERIFIED_SENDERS),
+              "submission_enabled":False,"validated_senders":[],
               "discovered":0,"basic_matches":0,"applications_submitted":0,
               "applications":[],"offers":[],"errors":[]}
     try:
@@ -38,12 +40,17 @@ async def run():
                 candidates.append(item)
         report["basic_matches"] = len(candidates)
         profile = load_profile()
+        housing = load_housing_profile()
         report["profile_ready"] = profile["ready"]  # Boolean only; never profile data.
+        report["housing_profile_ready"] = housing["ready"]
         ledger = Ledger()
         if ledger.remote and ledger.sha is None:
             ledger.save()
             ledger.read()
         report["durable_ledger_ready"] = ledger.remote
+        live_ready = report["submission_requested"] and profile["ready"] and housing["ready"] and ledger.remote
+        report["validated_senders"] = ["gewobag"] if ledger.validated(VERSION) else []
+        report["submission_enabled"] = bool(live_ready and ledger.validated(VERSION) and not ledger.adapter_uncertain(VERSION))
         from playwright.async_api import async_playwright
         async with async_playwright() as p:
             browser = await p.chromium.launch(headless=True)
@@ -56,6 +63,7 @@ async def run():
                         report["applications"].append({"url":item["url"],"status":"skipped","reason":"already_reserved_or_submitted"})
                         continue
                     current = await inspect_provider(page,item["url"],robots)
+                    frame = current.pop("_frame",None)
                     source = screen(item["source_text"])
                     source_record = next(x for x in report["offers"] if x["url"]==item["url"])
                     detail = screen(current.pop("text",""),provider_verified=current["detail_verified"])
@@ -63,24 +71,48 @@ async def run():
                     mismatch = source["district"] != detail["district"] or any(
                         source[k] is None or detail[k] is None or Decimal(source[k]) != Decimal(detail[k])
                         for k in ("total_rent_eur","rooms"))
-                    reasons = list(detail["reasons"])+[r for r in source["reasons"] if r in {
+                    reasons = offer_blockers(detail,housing)+[r for r in source["reasons"] if r in {
                         "age_restriction_requires_review","student_status_requires_review",
                         "shared_accommodation_requires_review","special_eligibility_requires_review",
                         "excludes_wbs_entitlement","cooperative_cost_requires_review"}]
                     if mismatch: reasons.append("source_provider_disagree")
                     if not discovery["complete"]: reasons.append("discovery_incomplete")
                     if not profile["ready"]: reasons.append("missing_profile_secrets")
-                    reasons.append(current["reason"])
+                    outcome = {"url":item["url"],"status":"not_submitted","confirmed":False}
+                    if frame is None:
+                        reasons.append(current["reason"])
+                    elif not reasons:
+                        if not report["submission_requested"]:
+                            reasons.append("live_submission_disabled")
+                        elif not ledger.remote:
+                            reasons.append("durable_remote_ledger_required")
+                        elif ledger.adapter_uncertain(VERSION):
+                            reasons.append("adapter_has_unresolved_submission")
+                        else:
+                            try:
+                                ready,why = await prepare(page,frame,profile,housing)
+                                if not ready:
+                                    reasons.append(why)
+                                else:
+                                    # This first real, authorized matching inquiry validates
+                                    # the adapter; later runs reuse its durable success proof.
+                                    outcome = await submit_prepared(page,frame,item["url"],ledger,enabled=True)
+                                    if not outcome["confirmed"]: reasons.append(outcome["reason"])
+                            except Exception as exc:
+                                reasons.append("form_processing_error_"+type(exc).__name__)
+                    if outcome["confirmed"]:
+                        report["applications_submitted"] += 1
                     report["applications"].append({
                         "url":item["url"],"provider":item["provider"],"status":"not_submitted",
-                        "reason":current["reason"],"blockers":sorted(set(reasons)),
+                        **outcome,
+                        "reason":outcome.get("reason") or (reasons[0] if reasons else current["reason"]),"blockers":sorted(set(reasons)),
                         "title":source_record["title"],"address":source_record["address"],
                         "source_warm_rent_eur":source["total_rent_eur"],
                         "current_offer":detail,"form_present":current["form_present"],
                         "required_fields":[{"id":f["id"],"label":f["label"],"type":f["type"]}
                                            for f in current.get("fields",[]) if f["required"]]})
-                    # No provider has a verified sender. Do not call an untested
-                    # adapter merely because ENABLE_LIVE_APPLICATIONS was set.
+                    report["validated_senders"] = ["gewobag"] if ledger.validated(VERSION) else []
+                    report["submission_enabled"] = bool(live_ready and ledger.validated(VERSION) and not ledger.adapter_uncertain(VERSION))
             finally:
                 await browser.close()
     except Exception as exc:

@@ -38,6 +38,8 @@ def screen(text, *, provider_verified=False):
             if all(x is not None for x in values) and sum(values) == money(total.group(1)):
                 rent = money(total.group(1))
     count = Decimal(rooms.group(1).replace(",",".")) if rooms else None
+    area_match = re.search(r"(?:Wohnfläche|Fläche in m[²2])\s*:?\s*([\d.]+(?:,\d+)?)\s*(?:m²|Quadratmeter)",text,re.I)
+    square_metres = money(area_match.group(1)) if area_match else None
     area = district.group(1).lower() if district else None
     reasons = []
     if rent is None: reasons.append("warm_rent_unverified")
@@ -50,7 +52,8 @@ def screen(text, *, provider_verified=False):
     no_wbs = bool(re.search(r"(?:WBS|Wohnberechtigungsschein)\s*:?\s*(?:nicht erforderlich|nein|nicht notwendig)|(?:kein|ohne)\s+(?:WBS|Wohnberechtigungsschein)",text,re.I))
     categories = set(re.findall(r"\bWBS(?:[- ]Berechtigung)?\s*[-:]?\s*(100|140|160|180|220)\b",text,re.I))
     generic = bool(re.search(r"\bWBS\b|Wohnberechtigungsschein",text,re.I))
-    wbs = "not_required" if no_wbs and not categories else "100" if categories == {"100"} else "unknown" if generic else "not_stated"
+    required_wbs = bool(re.search(r"\bWBS\s*:\s*erforderlich|(?:vorhandener|vorhandenen)\s+WBS\s+Voraussetzung|\bmit\s+WBS\b|WBS\s+(?:ist\s+)?(?:Voraussetzung|erforderlich)",text,re.I))
+    wbs = "100" if categories == {"100"} else "unknown" if categories else "required_unspecified" if required_wbs else "not_required" if no_wbs else "unknown" if generic else "not_stated"
     if wbs not in {"not_required","100"}: reasons.append("wbs_category_unverified")
     if SPECIAL.search(text): reasons.append("special_eligibility_requires_review")
     if re.search(r"(?:Menschen|Personen)\s+ab\s+\d{2}|ab\s*(?:50|55|60|65|67)\s*Jahr",text,re.I):
@@ -70,6 +73,7 @@ def screen(text, *, provider_verified=False):
     if not provider_verified: reasons.append("provider_details_not_rechecked")
     return {"basic_criteria_match":basics,"total_rent_eur":str(rent) if rent is not None else None,
             "rooms":str(count) if count is not None else None,"district":area,"wbs":wbs,
+            "area_sqm":str(square_metres) if square_metres is not None else None,
             "available_from":availability.group(1) if availability else None,
             "eligible":not reasons,"reasons":reasons,
             "jobcenter_approval":"not_asserted; separate rental-cost approval may be necessary"}

@@ -83,22 +83,38 @@ class Ledger:
     def contains(self,url):
         return key_for(url) in self.entries or canonical(url) in self.entries
 
-    def reserve(self,url):
+    def validated(self,adapter_version):
+        return any(isinstance(x,dict) and x.get("status")=="submitted_confirmed" and
+                   x.get("adapter_version")==adapter_version for x in self.entries.values())
+
+    def adapter_uncertain(self,adapter_version):
+        return any(isinstance(x,dict) and x.get("status") in {"submission_pending","submission_unverified"} and
+                   x.get("adapter_version")==adapter_version for x in self.entries.values())
+
+    def reserve(self,url,adapter_version=None):
         self.read()
         if self.contains(url): return False
         self.entries[key_for(url)] = {"status":"submission_pending","at_utc":datetime.now(timezone.utc).isoformat()}
+        if adapter_version:
+            self.entries[key_for(url)]["adapter_version"] = adapter_version
         self.save()  # Failure must abort before any network submission.
         return True
 
     def finish(self,url,status,confirmation=None):
+        from copy import deepcopy
         key = key_for(url)
         if key not in self.entries: raise ValueError("reservation_required")
         if status not in {"submitted_confirmed","submission_unverified"}: raise ValueError("invalid_submission_status")
+        previous = deepcopy(self.entries[key])
         self.entries[key]["status"] = status
         if confirmation:
             # Store a fixed confirmation signal, never arbitrary server/form text.
             self.entries[key]["confirmation"] = "provider_success_visible"
-        self.save()
+        try:
+            self.save()
+        except Exception:
+            self.entries[key] = previous
+            raise
 
 # Legacy read-only API retained for the older inspection commands.
 def load():

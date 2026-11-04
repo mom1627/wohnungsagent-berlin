@@ -4,6 +4,7 @@ No CAPTCHA solving, unknown consents, account creation, field guesses or PII
 logging. Probes never fill applicant fields or click a submission button.
 """
 import re
+from gewobag_adapter import visible_challenge
 from urllib.parse import urlsplit
 from provider_registry import provider_for
 from public_access import check_robots
@@ -65,12 +66,13 @@ async def inspect_provider(page, url, robots_cache):
             await frame.locator("#firstName").wait_for(state="visible",timeout=20000)
             result["form_present"] = True
             result["fields"] = await frame.locator("input,textarea,select").evaluate_all(FIELD_JS)
-            if await frame.locator(CHALLENGE).count():
-                result["reason"] = "captcha_requires_manual_action"
+            if await visible_challenge(page):
+                result["reason"] = "visible_captcha_requires_manual_action"
             elif await frame.locator("input[type='file']").count():
                 result["reason"] = "document_upload_requires_manual_action"
             else:
-                result["reason"] = "additional_required_answers_or_consents"
+                result["reason"] = "form_profile_mapping_required"
+                result["_frame"] = frame
         elif provider == "howoge":
             link = page.get_by_role("link",name=re.compile("Besichtigung vereinbaren")).first
             if not await link.count():
