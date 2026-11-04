@@ -34,6 +34,7 @@ jobs:
           APPLICANT_PHONE: ${{ secrets.APPLICANT_PHONE }}
           APPLICANT_HOUSING_PROFILE: ${{ secrets.APPLICANT_HOUSING_PROFILE }}
           APPLICANT_WBM_DATA_CONSENT: ${{ secrets.APPLICANT_WBM_DATA_CONSENT }}
+          APPLICANT_MONTHLY_NET_INCOME: ${{ secrets.APPLICANT_MONTHLY_NET_INCOME }}
           GH_STATE_TOKEN: ${{ github.token }}
           ENABLE_LIVE_APPLICATIONS: '1'
         run: python daily_housing_agent.py

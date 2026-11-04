@@ -6,7 +6,7 @@ from unittest.mock import AsyncMock, Mock, patch
 from application_ledger import Ledger
 from eligibility import screen
 from standard_form_adapters import (SENDER_VERSIONS, attempt_blocker, provider_statuses,
-                                    prepare_native, open_howoge_form, HOWOGE_NOTICES)
+                                    prepare_native, open_howoge_form, HOWOGE_NOTICES, howoge_income_blocker)
 
 class DispatchPolicyTests(unittest.TestCase):
     def test_unknown_old_apartment_does_not_block_other_apartment_after_restart(self):
@@ -25,13 +25,20 @@ class DispatchPolicyTests(unittest.TestCase):
     def test_four_reported_providers_do_not_mean_four_validated_senders(self):
         ledger=Mock()
         ledger.validated.return_value=False
-        with patch.dict(os.environ,{"APPLICANT_WBM_DATA_CONSENT":""}):
+        with patch.dict(os.environ,{"APPLICANT_WBM_DATA_CONSENT":"","APPLICANT_MONTHLY_NET_INCOME":""}):
             states=provider_statuses(ledger,True)
         self.assertEqual(set(states),{"gewobag","howoge","gesobau","wbm"})
         self.assertFalse(states["gesobau"]["sender_implemented"])
         self.assertFalse(states["wbm"]["automatic_attempts_enabled"])
-        self.assertTrue(states["howoge"]["automatic_attempts_enabled"])
+        self.assertFalse(states["howoge"]["automatic_attempts_enabled"])
         self.assertFalse(any(s["submission_confirmed"] for s in states.values()))
+    def test_howoge_income_condition_is_checked_for_each_actual_rent(self):
+        with patch.dict(os.environ,{"APPLICANT_MONTHLY_NET_INCOME":"1500"}):
+            self.assertIsNone(howoge_income_blocker({"total_rent_eur":"500"}))
+            self.assertEqual(howoge_income_blocker({"total_rent_eur":"500.01"}),"howoge_three_times_rent_income_not_met")
+        for value in ("","not-a-number","NaN","Infinity"):
+            with patch.dict(os.environ,{"APPLICANT_MONTHLY_NET_INCOME":value}):
+                self.assertEqual(howoge_income_blocker({"total_rent_eur":"500"}),"howoge_three_times_rent_income_unverified")
 
 class NativeFormGuards(unittest.IsolatedAsyncioTestCase):
     async def test_wbm_additional_consent_is_required_before_any_personal_data(self):

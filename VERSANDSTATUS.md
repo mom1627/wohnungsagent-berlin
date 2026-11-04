@@ -1,12 +1,29 @@
-# Versandstatus
+# Versandstatus – 4. November 2026
 
-Stand vor dem ersten Lauf der erweiterten Adapter am 4. November 2026.
+Vollständiger Actions-Lauf: [41808132504](https://github.com/mom1627/wohnungsagent-berlin/actions/runs/41808132504), erfolgreich. **0 bestätigte Bewerbungen.** Ein grüner Suchlauf ist kein Versandnachweis.
 
-- Bestätigte Bewerbungen: **0**.
-- Schwedter Straße 31, Gewobag 1000-00160-0202-0067: früherer Absendeversuch unbestätigt. Die dauerhafte Reservierung bleibt erhalten; keine erneute Anfrage für diese Wohnung.
-- Auf ausdrücklichen Wunsch können jetzt andere geeignete Wohnungen angefragt werden. Ein unbekannter früherer Vorgang deaktiviert den Anbieter nicht mehr dauerhaft. Nach einem neuen unklaren Versuch pausiert er für den aktuellen Lauf.
-- Nächster Kandidat: Ella-Kay-Straße 20, Gewobag 1000-00264-0102-0246, laut öffentlichem Angebot 471,83 EUR warm, 1 Zimmer, 32,60 m², Pankow. Die Frage nach §9-Bescheinigung kann wahrheitsgemäß mit Nein beantwortet werden. Eignung und Verfügbarkeit werden vor einer Anfrage erneut geprüft.
-- HOWOGE und WBM: eigene Formularadapter hinzugefügt; tatsächliche Versandbestätigung steht aus. WBM benötigt zusätzlich die ausdrückliche Zustimmung zur Datenspeicherung.
-- GESOBAU: öffentliche Weiterleitung geprüft, Immomio zeigt ein sichtbares Friendly-Captcha vor Jetzt bewerben. Keine automatische Lösung; vollständiger Versandadapter dadurch nicht fertig.
+| Wohnung | Tatsächliche Versuche | Ergebnis |
+| --- | ---: | --- |
+| Schwedter Straße 31, Gewobag 1000-00160-0202-0067 | 1 früherer Versuch | Unbestätigt, dauerhaft reserviert |
+| Ella-Kay-Straße 20, Gewobag 1000-00264-0102-0246 | 1 neuer Versuch | Normale Formularaktion ausgeführt; keine ausdrückliche Erfolgsbestätigung innerhalb der damaligen Nachbeobachtung erfasst. `submission_unverified`, dauerhaft reserviert |
 
-Maßgeblich für jeden Lauf sind der Actions-Laufbericht und .agent-state/application-ledger.json. Erst eine neue, ausdrückliche Bestätigung auf der Anbieterseite zählt als bestätigte Bewerbung. Vier bestätigte Anbieter sind noch nicht erreicht.
+Im verbundenen Gmail wurde nach dem neuen Versuch keine passende Bestätigung gefunden. Beide Wohnungen werden nicht erneut angefragt. Andere geeignete Angebote können weiter angefragt werden; nach einem neuen unklaren Versuch pausiert nur der betreffende Anbieter für den Rest des Laufs.
+
+## Suche
+
+51 öffentlich erreichte Ergebnisseiten bis zur letzten Seite; 504 Angebotsverknüpfungen, 3 Dubletten, 501 unterschiedliche Angebote aller sieben Anbieter. 10 Basis-Treffer: eine neue unbestätigte Anfrage, eine alte Reservierung übersprungen, acht nicht gesendet (Senioren-/WG-/Studierendenbedingungen, fehlende aktuelle Daten, geschlossener HOWOGE-Kontaktweg, Immomio-CAPTCHA/Anmeldung).
+
+Die zwischenzeitlichen Navigationsfehler wurden behoben: Der Agent übernimmt die öffentliche Adresse aus dem normalen Weiter-Button in eine neue Seite im selben Browserkontext. Bereits gefundene öffentliche Treffer werden zusätzlich dauerhaft als Merkliste gesichert. Eine Merkliste ersetzt niemals die aktuelle Anbieterprüfung.
+
+## Vier gewünschte Anbieter
+
+| Anbieter | Stand |
+| --- | --- |
+| Gewobag | Formularadapter aktiv für andere passende Wohnungen; bisher kein bestätigter Versand |
+| HOWOGE | Eigener Formularadapter implementiert; bestätigtes Haushaltsnettoeinkommen zur Prüfung des Dreifachen der jeweiligen Warmmiete fehlt; letzter Basis-Treffer geschlossen |
+| WBM | Eigener Formularadapter implementiert; ausdrückliche Freigabe zur sechsmonatigen Datenspeicherung für geeignete Angebote fehlt; kein aktueller Basis-Treffer |
+| GESOBAU | Öffentlicher Immomio-Weg geprüft; sichtbares Friendly-Captcha erfordert manuelle Aktion. Vollständiger Versandadapter nicht fertig |
+
+**Vier vollständig aktive, tatsächlich validierte Anbieter sind noch nicht erreicht.**
+
+Nach dem genannten Lauf erweitert: Erfolgsprüfung der übergeordneten Anbieter-Seite und neuer Bestätigungsfenster auf freigegebenen Domains, bis zu 45 Sekunden Nachbeobachtung, ausschließlich feste Rückmeldesignale als Wahrheitswerte. Das rekonstruiert keine verlorene Bestätigung. Der neueste Actions-Bericht und die dauerhafte Historie bleiben maßgeblich.

@@ -85,8 +85,11 @@ class FormGuardTests(unittest.IsolatedAsyncioTestCase):
 class SubmissionTests(unittest.IsolatedAsyncioTestCase):
     def setup_request(self,texts):
         frame,button,body,page = Mock(),Mock(),Mock(),Mock()
+        frame.url = "https://app.wohnungshelden.de/public/listings/test/application"
         frame.is_detached.return_value = False
         page.frames = [frame]
+        page.main_frame = frame
+        page.context.pages = [page]
         button.count = AsyncMock(return_value=1)
         button.is_enabled = AsyncMock(return_value=True)
         button.press = AsyncMock()
@@ -169,6 +172,30 @@ class SubmissionTests(unittest.IsolatedAsyncioTestCase):
             result=await submit_prepared(page,frame,"https://gewobag.de/test",ledger,enabled=True)
         self.assertFalse(result["confirmed"])
         replacement.locator.assert_not_called()
+    async def test_parent_page_confirmation_after_iframe_removal_is_recognized(self):
+        page,frame,button=self.setup_request(["Anfrageformular"])
+        page.url="https://www.gewobag.de/fuer-mietinteressentinnen/mietangebote/test"
+        parent=Mock(url=page.url,is_detached=Mock(return_value=False))
+        parent.locator.return_value.inner_text=AsyncMock(side_effect=["Wohnungsangebot","Vielen Dank für Ihre Anfrage."])
+        page.main_frame=parent
+        async def submitted(*args,**kwargs): frame.is_detached.return_value=True
+        button.press.side_effect=submitted
+        ledger=Mock(remote=True)
+        with patch("gewobag_adapter.visible_challenge",new=AsyncMock(return_value=False)):
+            result=await submit_prepared(page,frame,"https://gewobag.de/test",ledger,enabled=True)
+        self.assertTrue(result["confirmed"])
+        button.press.assert_awaited_once()
+    async def test_existing_parent_success_is_never_counted_as_a_new_request(self):
+        page,frame,button=self.setup_request(["Anfrageformular"])
+        page.url="https://www.gewobag.de/test"
+        parent=Mock()
+        parent.locator.return_value.inner_text=AsyncMock(return_value="Vielen Dank für Ihre Anfrage.")
+        page.main_frame=parent
+        ledger=Mock(remote=True)
+        with patch("gewobag_adapter.visible_challenge",new=AsyncMock(return_value=False)):
+            result=await submit_prepared(page,frame,"https://gewobag.de/test",ledger,enabled=True)
+        self.assertFalse(result["confirmed"])
+        ledger.reserve.assert_not_called()
     async def test_challenge_after_click_does_not_get_solved_or_retried(self):
         page,frame,button=self.setup_request(["Anfrageformular"])
         ledger=Mock(remote=True)

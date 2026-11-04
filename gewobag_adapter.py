@@ -84,15 +84,26 @@ def browser_error_code(exc):
     if "timeout" in message or isinstance(exc, TimeoutError): return "browser_timeout"
     return "browser_error"
 
-async def confirmation_visible(page, original, existing_frames):
+CONFIRMATION_HOSTS = {"app.wohnungshelden.de","www.gewobag.de","gewobag.de",
+                      "www.howoge.de","howoge.de","www.wbm.de","wbm.de"}
+
+async def confirmation_visible(page, original, existing_frames, existing_pages=()):
     candidates = [original]
+    if page.main_frame is not original and urlsplit(page.url).hostname in CONFIRMATION_HOSTS:
+        candidates.append(page.main_frame)
     for candidate in page.frames:
         if candidate is original or candidate in existing_frames: continue
         # Only a newly created frame on the actual application origin can replace it.
         if urlsplit(candidate.url).hostname == "app.wohnungshelden.de":
             candidates.append(candidate)
+    for popup in page.context.pages:
+        if popup is page or popup in existing_pages: continue
+        if urlsplit(popup.url).hostname in CONFIRMATION_HOSTS:
+            candidates.append(popup.main_frame)
     for candidate in candidates:
         if candidate.is_detached(): continue
+        if not isinstance(candidate.url,str) or urlsplit(candidate.url).hostname not in CONFIRMATION_HOSTS:
+            continue
         try:
             body = await candidate.locator("body").inner_text(timeout=1500)
             if SUCCESS.search(body): return True
@@ -100,6 +111,22 @@ async def confirmation_visible(page, original, existing_frames):
             # A form can navigate between enumeration and reading; try next poll.
             continue
     return False
+
+async def feedback_signals(page,frame):
+    """Fixed booleans only; never persist server text or applicant values."""
+    signals={"application_frame_attached":not frame.is_detached()}
+    if frame.is_detached(): return signals
+    try:
+        body=await frame.locator("body").inner_text(timeout=1500)
+        for key,pattern in {
+            "email_verification_required":r"(?:E-Mail|Email).{0,70}bestätigen|bestätigen.{0,70}(?:E-Mail|Email)",
+            "duplicate_notice":r"bereits.{0,40}(?:beworben|angefragt|Anfrage)",
+            "provider_error_visible":r"(?:Fehler|fehlgeschlagen|nicht gesendet|nicht versendet|nicht übermittelt)",
+            "form_still_visible":r"Anfrage versenden|Anfrage absenden|Vorname"}.items():
+            signals[key]=bool(re.search(pattern,body,re.I))
+    except Exception:
+        signals["feedback_unavailable"]=True
+    return signals
 
 FIELD_JS = """es=>es.filter(e=>e.getClientRects().length).map(e=>({
  id:e.id||'',type:e.type||'',tag:e.tagName.toLowerCase(),
@@ -225,12 +252,16 @@ async def submit_prepared(page,frame,url,ledger,*,enabled,adapter_version=VERSIO
         return {**result,"reason":"submit_control_not_ready"}
     initial = await frame.locator("body").inner_text()
     if SUCCESS.search(initial): return {**result,"reason":"preexisting_success_message"}
+    if page.main_frame is not frame and urlsplit(page.url).hostname in CONFIRMATION_HOSTS:
+        parent_initial=await page.main_frame.locator("body").inner_text()
+        if SUCCESS.search(parent_initial): return {**result,"reason":"preexisting_parent_success_message"}
     # Remote reservation is made before the request button can transmit anything.
     if not ledger.reserve(url,adapter_version=adapter_version):
         return {**result,"status":"skipped","reason":"already_reserved_or_submitted"}
     result["status"] = "submission_unverified"
     result["reason"] = "no_success_confirmation"
     existing_frames = list(page.frames)
+    existing_pages = list(page.context.pages)
     try:
         await button.press("Enter",timeout=10000)
     except Exception as exc:
@@ -240,16 +271,18 @@ async def submit_prepared(page,frame,url,ledger,*,enabled,adapter_version=VERSIO
     try:
         # Let the website perform its own ordinary invisible verification.
         # Never call grecaptcha, inject a token, solve a challenge or POST directly.
-        for _ in range(30):
+        for _ in range(90):
             if await visible_challenge(page):
                 result["reason"] = "visible_captcha_after_submit_requires_manual_action"
                 break
-            if await confirmation_visible(page,frame,existing_frames):
+            if await confirmation_visible(page,frame,existing_frames,existing_pages):
                 result.update(status="submitted_confirmed",confirmed=True,reason="provider_success_visible")
                 break
             await page.wait_for_timeout(500)
     except Exception as exc:
         result["reason"] = "confirmation_observer_"+browser_error_code(exc)
+    if not result["confirmed"]:
+        result["provider_feedback"] = await feedback_signals(page,frame)
     # An error here leaves a durable pending reservation, so no retry is possible.
     try:
         ledger.finish(url,result["status"],confirmation=result["confirmed"])

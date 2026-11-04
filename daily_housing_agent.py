@@ -18,7 +18,7 @@ from gewobag_adapter import VERSION, offer_blockers, prepare, submit_prepared
 from provider_adapters import inspect_provider
 from candidate_watchlist import load_watchlist, merge_candidates, save_watchlist
 from standard_form_adapters import (SENDER_VERSIONS, IMPLEMENTED_SENDERS,
-    provider_statuses, prepare_native, submit_native, attempt_blocker)
+    provider_statuses, prepare_native, submit_native, attempt_blocker, howoge_income_blocker)
 
 async def run():
     report = {"checked_at_utc":datetime.now(timezone.utc).isoformat(),
@@ -94,9 +94,13 @@ async def run():
                         "shared_accommodation_requires_review","special_eligibility_requires_review",
                         "excludes_wbs_entitlement","cooperative_cost_requires_review"}]
                     if mismatch: reasons.append("source_provider_disagree")
+                    if item["provider"]=="howoge":
+                        income_reason=howoge_income_blocker(detail)
+                        if income_reason: reasons.append(income_reason)
                     # A pagination failure is reported as a search error. It
                     # does not invalidate an independently rechecked apartment.
                     if not profile["ready"]: reasons.append("missing_profile_secrets")
+                    detail["profile_eligibility_passed"] = not reasons
                     outcome = {"url":item["url"],"status":"not_submitted","confirmed":False}
                     if frame is None:
                         reasons.append(current["reason"])

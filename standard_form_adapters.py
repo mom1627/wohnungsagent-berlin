@@ -5,6 +5,7 @@ attestation. WBM's wider data-processing consent requires separate user approval
 GESOBAU/Immomio remains an explicitly reported CAPTCHA/login handoff.
 """
 import os
+from decimal import Decimal, InvalidOperation
 from gewobag_adapter import fields, norm, one, visible_challenge, submit_prepared
 
 SENDER_VERSIONS = {"gewobag":"gewobag_browser_v2", "howoge":"howoge_browser_v1",
@@ -15,6 +16,20 @@ def attempt_blocker(provider,url,ledger,uncertain_this_run):
     if ledger.contains(url): return "already_reserved_or_submitted"
     if provider in uncertain_this_run: return "provider_uncertain_submission_this_run"
     if provider not in IMPLEMENTED_SENDERS: return "provider_sender_not_implemented"
+    return None
+
+def monthly_net_income():
+    try:
+        value=Decimal(os.getenv("APPLICANT_MONTHLY_NET_INCOME","").replace(",","."))
+        return value if value.is_finite() and 0 <= value <= 100000 else None
+    except InvalidOperation: return None
+
+def howoge_income_blocker(decision):
+    income=monthly_net_income()
+    if income is None: return "howoge_three_times_rent_income_unverified"
+    rent=decision.get("total_rent_eur")
+    if rent is None: return "warm_rent_unverified"
+    if income < Decimal(rent)*3: return "howoge_three_times_rent_income_not_met"
     return None
 
 HOWOGE_NOTICES = (
@@ -40,9 +55,11 @@ def provider_statuses(ledger, live_ready):
     return {provider:{"sender_implemented":provider in IMPLEMENTED_SENDERS,
             "submission_confirmed":ledger.validated(version),
             "automatic_attempts_enabled":bool(live_ready and provider in IMPLEMENTED_SENDERS and
-                (provider != "wbm" or os.getenv("APPLICANT_WBM_DATA_CONSENT")=="1")),
+                (provider != "wbm" or os.getenv("APPLICANT_WBM_DATA_CONSENT")=="1") and
+                (provider != "howoge" or monthly_net_income() is not None)),
             "manual_requirement":("immomio_captcha_and_authenticated_session" if provider=="gesobau"
-                else "wbm_data_processing_consent" if provider=="wbm" and os.getenv("APPLICANT_WBM_DATA_CONSENT")!="1" else None)}
+                else "wbm_data_processing_consent" if provider=="wbm" and os.getenv("APPLICANT_WBM_DATA_CONSENT")!="1"
+                else "howoge_monthly_net_income_required" if provider=="howoge" and monthly_net_income() is None else None)}
             for provider,version in SENDER_VERSIONS.items()}
 
 async def open_howoge_form(page):
