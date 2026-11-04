@@ -85,7 +85,62 @@ def browser_error_code(exc):
     return "browser_error"
 
 CONFIRMATION_HOSTS = {"app.wohnungshelden.de","www.gewobag.de","gewobag.de",
-                      "www.howoge.de","howoge.de","www.wbm.de","wbm.de"}
+                      "www.howoge.de","howoge.de","www.wbm.de","wbm.de",
+                      "stadtundland.de","www.stadtundland.de"}
+
+class SubmissionTransport:
+    """Passive diagnostics only. A POST or HTTP 200 is never success proof.
+
+    No URLs, payloads, response text, headers or tokens are retained. Only POSTs
+    from a trusted application frame to its provider/vendor are counted.
+    """
+    def __init__(self, page):
+        self.page = page
+        self.posts = 0
+        self.statuses = set()
+        self.failed = False
+
+    def accepts(self, request):
+        try:
+            if request.method != "POST" or request.resource_type not in {"xhr","fetch","document"}:
+                return False
+            origin = urlsplit(request.frame.url)
+            destination = urlsplit(request.url)
+            if origin.scheme != "https" or origin.hostname not in CONFIRMATION_HOSTS:
+                return False
+            host = destination.hostname or ""
+            return destination.scheme == "https" and (
+                host == origin.hostname or
+                origin.hostname == "app.wohnungshelden.de" and
+                (host == "wohnungshelden.de" or host.endswith(".wohnungshelden.de")))
+        except Exception:
+            return False
+
+    def request(self, request):
+        if self.accepts(request): self.posts += 1
+
+    def response(self, response):
+        if self.accepts(response.request):
+            status = response.status
+            if isinstance(status, int) and 100 <= status <= 599:
+                self.statuses.add(status)
+
+    def requestfailed(self, request):
+        if self.accepts(request): self.failed = True
+
+    def start(self):
+        for event in ("request","response","requestfailed"):
+            self.page.on(event, getattr(self,event))
+
+    def stop(self):
+        for event in ("request","response","requestfailed"):
+            self.page.remove_listener(event, getattr(self,event))
+
+    def report(self):
+        return {"provider_post_observed":self.posts > 0,
+                "provider_post_count":self.posts,
+                "provider_http_statuses":sorted(self.statuses),
+                "provider_request_failed":self.failed}
 
 async def confirmation_visible(page, original, existing_frames, existing_pages=()):
     candidates = [original]
@@ -262,6 +317,8 @@ async def submit_prepared(page,frame,url,ledger,*,enabled,adapter_version=VERSIO
     result["reason"] = "no_success_confirmation"
     existing_frames = list(page.frames)
     existing_pages = list(page.context.pages)
+    transport = SubmissionTransport(page)
+    transport.start()
     try:
         await button.press("Enter",timeout=10000)
     except Exception as exc:
@@ -281,6 +338,9 @@ async def submit_prepared(page,frame,url,ledger,*,enabled,adapter_version=VERSIO
             await page.wait_for_timeout(500)
     except Exception as exc:
         result["reason"] = "confirmation_observer_"+browser_error_code(exc)
+    finally:
+        transport.stop()
+    result["transport_diagnostics"] = transport.report()
     if not result["confirmed"]:
         result["provider_feedback"] = await feedback_signals(page,frame)
     # An error here leaves a durable pending reservation, so no retry is possible.

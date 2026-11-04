@@ -7,10 +7,12 @@ GESOBAU/Immomio remains an explicitly reported CAPTCHA/login handoff.
 import os
 from decimal import Decimal, InvalidOperation
 from gewobag_adapter import fields, norm, one, visible_challenge, submit_prepared
+from stadtundland_adapter import readiness_blocker as stadtundland_readiness
 
 SENDER_VERSIONS = {"gewobag":"gewobag_browser_v2", "howoge":"howoge_browser_v1",
-                   "wbm":"wbm_browser_v1", "gesobau":"gesobau_immomio_v1"}
-IMPLEMENTED_SENDERS = frozenset({"gewobag","howoge","wbm"})
+                   "wbm":"wbm_browser_v1", "gesobau":"gesobau_immomio_v1",
+                   "stadtundland":"stadtundland_browser_v1"}
+IMPLEMENTED_SENDERS = frozenset({"gewobag","howoge","wbm","stadtundland"})
 
 def attempt_blocker(provider,url,ledger,uncertain_this_run):
     if ledger.contains(url): return "already_reserved_or_submitted"
@@ -55,10 +57,12 @@ def provider_statuses(ledger, live_ready):
     return {provider:{"sender_implemented":provider in IMPLEMENTED_SENDERS,
             "submission_confirmed":ledger.validated(version),
             "automatic_attempts_enabled":bool(live_ready and provider in IMPLEMENTED_SENDERS and
-                (provider != "wbm" or os.getenv("APPLICANT_WBM_DATA_CONSENT")=="1")),
+                (provider != "wbm" or os.getenv("APPLICANT_WBM_DATA_CONSENT")=="1") and
+                (provider != "stadtundland" or stadtundland_readiness() is None)),
             "manual_requirement":("immomio_captcha_and_authenticated_session" if provider=="gesobau"
                 else "wbm_data_processing_consent" if provider=="wbm" and os.getenv("APPLICANT_WBM_DATA_CONSENT")!="1"
-                else "income_or_jobcenter_documents_before_rental_contract" if provider=="howoge" else None)}
+                else "income_or_jobcenter_documents_before_rental_contract" if provider=="howoge"
+                else stadtundland_readiness() if provider=="stadtundland" else None)}
             for provider,version in SENDER_VERSIONS.items()}
 
 async def open_howoge_form(page):

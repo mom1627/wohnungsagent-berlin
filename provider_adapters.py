@@ -123,6 +123,31 @@ async def inspect_provider(page, url, robots_cache):
             result["fields"] = await form.locator("input,textarea,select").evaluate_all(FIELD_JS)
             result["reason"] = "form_profile_mapping_required"
             result["_frame"] = page.main_frame
+        elif provider == "stadtundland":
+            reject = page.get_by_role("button",name="Alle ablehnen",exact=True)
+            if await reject.count()==1 and await reject.is_visible(): await reject.click()
+            iframe = page.locator("iframe#contactForm")
+            if await iframe.count()!=1:
+                result["reason"] = "stadtundland_application_frame_missing_or_ambiguous"
+                return result
+            src = urlsplit(await iframe.get_attribute("src") or "")
+            if src.scheme!="https" or src.hostname!="app.wohnungshelden.de" or not src.path.startswith("/public/listings/"):
+                result["reason"] = "unapproved_application_host"
+                return result
+            handle = await iframe.element_handle()
+            frame = await handle.content_frame()
+            await frame.get_by_label("Vorname",exact=True).wait_for(state="visible",timeout=25000)
+            # Only the provider's embedded application URL is followed.
+            if urlsplit(frame.url).hostname!="app.wohnungshelden.de":
+                result["reason"] = "unexpected_application_redirect"
+                return result
+            result["form_present"] = True
+            result["fields"] = await frame.locator("input,textarea,select").evaluate_all(FIELD_JS)
+            if await visible_challenge(page):
+                result["reason"] = "visible_captcha_requires_manual_action"
+            else:
+                result["reason"] = "form_profile_mapping_required"
+                result["_frame"] = frame
         else:
             links = await main.locator("a[href]").evaluate_all("""es=>es.map(e=>({text:e.innerText,href:e.href}))""")
             applications = [x for x in links if re.search(r"jetzt bewerben|wohnung anfragen|besichtigung",x["text"],re.I)]

@@ -27,7 +27,9 @@ class DispatchPolicyTests(unittest.TestCase):
         ledger.validated.return_value=False
         with patch.dict(os.environ,{"APPLICANT_WBM_DATA_CONSENT":"","APPLICANT_MONTHLY_NET_INCOME":""}):
             states=provider_statuses(ledger,True)
-        self.assertEqual(set(states),{"gewobag","howoge","gesobau","wbm"})
+        self.assertEqual(set(states),{"gewobag","howoge","gesobau","wbm","stadtundland"})
+        self.assertTrue(states["stadtundland"]["sender_implemented"])
+        self.assertFalse(states["stadtundland"]["automatic_attempts_enabled"])
         self.assertFalse(states["gesobau"]["sender_implemented"])
         self.assertFalse(states["wbm"]["automatic_attempts_enabled"])
         self.assertTrue(states["howoge"]["automatic_attempts_enabled"])

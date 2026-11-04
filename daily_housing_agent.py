@@ -18,6 +18,7 @@ from housing_profile import load_housing_profile
 from gewobag_adapter import VERSION, offer_blockers, prepare, submit_prepared
 from provider_adapters import inspect_provider
 from candidate_watchlist import load_watchlist, merge_candidates, save_watchlist
+from stadtundland_adapter import prepare_stadtundland
 from standard_form_adapters import (SENDER_VERSIONS, IMPLEMENTED_SENDERS,
     provider_statuses, prepare_native, submit_native, attempt_blocker, howoge_income_blocker)
 
@@ -121,6 +122,8 @@ async def run():
                             try:
                                 if item["provider"] == "gewobag":
                                     ready,why = await prepare(page,frame,profile,housing)
+                                elif item["provider"] == "stadtundland":
+                                    ready,why = await prepare_stadtundland(page,frame,profile,housing,detail)
                                 else:
                                     ready,why = await prepare_native(item["provider"],page,profile,housing)
                                 if not ready:
@@ -128,8 +131,9 @@ async def run():
                                 else:
                                     # This first real, authorized matching inquiry validates
                                     # the adapter; later runs reuse its durable success proof.
-                                    if item["provider"] == "gewobag":
-                                        outcome = await submit_prepared(page,frame,item["url"],ledger,enabled=True)
+                                    if item["provider"] in {"gewobag","stadtundland"}:
+                                        outcome = await submit_prepared(page,frame,item["url"],ledger,enabled=True,
+                                            adapter_version=SENDER_VERSIONS[item["provider"]])
                                     else:
                                         outcome = await submit_native(item["provider"],page,item["url"],ledger)
                                     if outcome["status"] == "submission_unverified":

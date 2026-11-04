@@ -44,7 +44,7 @@ def screen(text, *, provider_verified=False):
             if all(x is not None for x in values) and sum(values) == money(total.group(1)):
                 rent = money(total.group(1))
     count = Decimal(rooms.group(1).replace(",",".")) if rooms else None
-    area_match = re.search(r"(?:Wohnfläche|Fläche in m[²2]|Größe)\s*:?\s*(?:ca\.\s*)?(\d+(?:[,.]\d+)?)\s*(?:m²|Quadratmeter)",text,re.I)
+    area_match = re.search(r"(?:Wohnfläche(?:\s*/\s*Nutzfläche)?|Fläche in m[²2]|Größe)\s*:?\s*(?:ca\.\s*)?(\d+(?:[,.]\d+)?)\s*(?:m²|Quadratmeter)",text,re.I)
     square_metres = Decimal(area_match.group(1).replace(',','.')) if area_match else None
     area = district.group(1).lower() if district else None
     if area is None:

@@ -1,3 +1,13 @@
+# Weitere Anbieter und Übertragungskontrolle
+
+4. November 2026: STADT UND LAND als vierter nativer Versandadapter implementiert. Das öffentliche Formular wurde ohne Bewerberdaten geprüft. Noch keine bestätigte Bewerbung und kein realer Versandtest für diesen Anbieter. Automatische Versuche bleiben gesperrt, bis der vom Nutzer festgelegte früheste Einzugstermin als `APPLICANT_EARLIEST_MOVE_IN` hinterlegt ist (`ASAP` oder `YYYY-MM-DD`). Das Datum wird nicht geraten. Einkommen wird ausschließlich aus dem geschützten Secret gelesen; die 35-Prozent-Frage wird rechnerisch wahrheitsgemäß beantwortet. Neue bedingte Fragen, zusätzliche Einwilligungen, Dokumente und sichtbare CAPTCHAs stoppen den Versand. Auch Mietpreis, Zimmer, WBS und Bezirk müssen am aktuellen Anbieterangebot eindeutig verifiziert sein.
+
+Die gemeinsamen Versandadapter beobachten nach dem einmaligen normalen Formularbutton nur boolesche Übertragungsmerkmale und HTTP-Statuszahlen. Keine Request-/Response-Texte, URLs, Header, Formulardaten oder Tokens werden gespeichert. Ein POST oder HTTP 200 ist keine Bewerbungsbestätigung. Unklare Versuche bleiben dauerhaft gegen Wiederholung reserviert. Gewobag, HOWOGE und WBM bleiben für neue passende Angebote freigegeben; GESOBAU/Immomio bleibt bei sichtbarem CAPTCHA manuell.
+
+96 lokale Regressionsprüfungen bestanden; vollständiger GitHub-Actions-Lauf folgt auf diesen Commit. Das Tagesziel von vier bestätigten Anfragen ist weiterhin nicht nachgewiesen.
+
+---
+
 # Aktueller Stand nach dem erweiterten Lauf
 
 4. November 2026: [Lauf 41813066484](https://github.com/mom1627/wohnungsagent-berlin/actions/runs/41813066484) erfolgreich; 86 Tests bestanden.
