@@ -137,8 +137,12 @@ async def prepare(page,frame,contact,housing):
     for identity,value in values.items():
         control = frame.locator("[id='"+identity+"']")
         if await control.count() and await control.is_visible(): await control.fill(value)
-    mobile = frame.locator("input[id*='telephone_number']")
-    if await mobile.count() == 1 and await mobile.is_visible(): await mobile.fill(contact["phone"])
+    mobile = frame.locator("input[id*='telephone_number']:visible")
+    if await mobile.count() != 1: return False,"visible_mobile_field_missing_or_ambiguous"
+    await mobile.fill(contact["phone"].strip())
+    await mobile.press("Tab")
+    if (await mobile.input_value()).strip() != contact["phone"].strip():
+        return False,"mobile_value_not_transferred"
     acknowledgement = await one(frame,"input[type='checkbox'][id*='gewobag_datenschutzhinweis_bestaetigt']")
     ack_text = await acknowledgement.evaluate("e=>[...(e.labels||[])].map(l=>l.textContent).join(' ')")
     if norm(ack_text) != PRIVACY_ACK: return False,"privacy_acknowledgement_changed"
