@@ -16,6 +16,7 @@ from application_profile import load_profile
 from housing_profile import load_housing_profile
 from gewobag_adapter import VERSION, offer_blockers, prepare, submit_prepared
 from provider_adapters import inspect_provider
+from candidate_watchlist import load_watchlist, merge_candidates, save_watchlist
 from standard_form_adapters import (SENDER_VERSIONS, IMPLEMENTED_SENDERS,
     provider_statuses, prepare_native, submit_native, attempt_blocker)
 
@@ -32,10 +33,13 @@ async def run():
         report["providers"] = dict(Counter(x["provider"] for x in discovery["listings"]))
         print("Discovery result:",discovery["count"],discovery["pages_checked"],discovery["stop_reason"],flush=True)
         candidates = []
-        for item in discovery["listings"]:
+        all_listings=merge_candidates(discovery["listings"],load_watchlist())
+        report["watchlist_candidates"] = sum(x.get("candidate_origin")=="watchlist" for x in all_listings)
+        for item in all_listings:
             decision = screen(item["source_text"])
             decision.update({k:item[k] for k in ("url","provider","source_page")})
             decision["title"] = item["source_text"].split("Alle Details",1)[0].strip()
+            decision["candidate_origin"] = item.get("candidate_origin","current_discovery")
             address = re.search(r"Adresse:\s*(.*?)\s*Zimmeranzahl:",item["source_text"])
             decision["address"] = address.group(1) if address else None
             report["offers"].append(decision)
@@ -51,6 +55,10 @@ async def run():
             ledger.save()
             ledger.read()
         report["durable_ledger_ready"] = ledger.remote
+        try:
+            save_watchlist(candidates,ledger)
+        except Exception:
+            report["watchlist_error"] = "public_candidate_cache_write_failed"
         live_ready = report["submission_requested"] and profile["ready"] and housing["ready"] and ledger.remote
         report["provider_status"] = provider_statuses(ledger,live_ready)
         report["validated_senders"] = [p for p,v in SENDER_VERSIONS.items() if ledger.validated(v)]
@@ -126,6 +134,7 @@ async def run():
                         **outcome,
                         "reason":outcome.get("reason") or (reasons[0] if reasons else current["reason"]),"blockers":sorted(set(reasons)),
                         "title":source_record["title"],"address":source_record["address"],
+                        "candidate_origin":source_record["candidate_origin"],
                         "source_warm_rent_eur":source["total_rent_eur"],
                         "current_offer":detail,"form_present":current["form_present"],
                         "required_fields":[{"id":f["id"],"label":f["label"],"type":f["type"]}
@@ -153,6 +162,7 @@ def main():
     lines.append("")
     discovery = report.get("discovery",{})
     lines += [f"Ergebnisseiten: {discovery.get('pages_checked',0)} · Vollständig durchlaufen: {discovery.get('complete',False)}",
+              f"Zusätzliche Treffer aus Merkliste (Anbieter neu geprüft): {report.get('watchlist_candidates',0)}",
               f"Bewerber-Secrets verfügbar: {report.get('profile_ready',False)} · Dauerhafte Historie erreichbar: {report.get('durable_ledger_ready',False)}","",
               "| Angebot | Warmmiete laut Quelle | Ergebnis |", "| --- | ---: | --- |"]
     for item in report["applications"]:

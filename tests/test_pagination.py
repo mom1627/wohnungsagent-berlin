@@ -25,11 +25,13 @@ class Node:
     async def press(self, key, **kwargs):
         assert key == "Enter"
         self.page.index += 1
+        self.page.url = "https://www.inberlinwohnen.de/wohnungsfinder?page="+str(self.page.index+1)
 
 class Page:
     url = "https://www.inberlinwohnen.de/wohnungsfinder"
     def __init__(self, repeat=False, fail_at=None): self.index, self.repeat, self.fail_at = 0, repeat, fail_at
     async def goto(self, *args, **kwargs): return types.SimpleNamespace(status=200)
+    async def close(self): pass
     def locator(self, selector): return Node(self, selector)
     def get_by_role(self, *args, **kwargs): return Node(self, "next")
     async def wait_for_function(self, *args, **kwargs):
@@ -41,6 +43,7 @@ class Page:
 
 class Browser:
     def __init__(self, page): self.page = page
+    async def new_context(self, **kwargs): return self
     async def new_page(self, **kwargs): return self.page
     async def close(self): pass
 

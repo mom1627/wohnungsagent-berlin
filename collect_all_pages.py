@@ -2,7 +2,7 @@
 import asyncio
 import re
 import hashlib
-from urllib.parse import urlsplit
+from urllib.parse import urlsplit, parse_qs
 from provider_registry import provider_for, canonical_offer
 from collect_inberlinwohnen import FINDER, UA
 from public_access import check_robots
@@ -26,7 +26,8 @@ async def collect_async(max_pages=200):
               "linked_offer_cards_seen":0,"duplicate_offer_links":0}
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
-        page = await browser.new_page(locale="de-DE",user_agent=UA)
+        context = await browser.new_context(locale="de-DE",user_agent=UA)
+        page = await context.new_page()
         try:
             print("Discovery stage: finder_navigation",flush=True)
             response = await page.goto(FINDER,wait_until="domcontentloaded",timeout=45000)
@@ -102,28 +103,34 @@ async def collect_async(max_pages=200):
                 # layout moves the button; do not require pointer stability.
                 await next_button.press("Enter",timeout=10000)
                 result["last_stage"] = "next_page_wait"
-                navigation = await page.wait_for_function(
+                await page.wait_for_function(
                     """state => { const links=[...document.querySelectorAll('.list__details a[href]')]
                     .filter(a=>a.textContent.trim()==='Alle Details').map(a=>a.href);
                     const current=Number(new URL(location.href).searchParams.get('page')||1);
                     const range=document.body.innerText.match(/Zeige\\s+(\\d+)\\s+bis/);
                     const ready=current===state.page && range && Number(range[1])===(state.page-1)*10+1
                       && links.length>0 && JSON.stringify(links)!==JSON.stringify(state.links);
-                    return ready ? {url:location.href} : false; }""",
+                    return !!ready; }""",
                     arg={"links":list(signature),"page":number+1},timeout=35000)
-                target = await navigation.json_value()
-                if urlsplit(target["url"]).hostname not in {"www.inberlinwohnen.de","inberlinwohnen.de"}:
+                target = page.url
+                if urlsplit(target).hostname not in {"www.inberlinwohnen.de","inberlinwohnen.de"} or parse_qs(urlsplit(target).query).get("page") != [str(number+1)]:
                     raise RuntimeError("finder_unexpected_navigation")
                 # The site can restore page 1 after its transient Livewire update.
                 # Open the exact public URL produced by the normal Next action;
                 # never invent query state or call internal endpoints.
-                response = await page.goto(target["url"],wait_until="domcontentloaded",timeout=45000)
+                fresh_page = await context.new_page()
+                response = await fresh_page.goto(target,wait_until="domcontentloaded",timeout=45000)
                 if not response or response.status != 200: raise RuntimeError("finder_next_page_http_error")
+                await page.close()
+                page = fresh_page
             else:
                 result["stop_reason"] = "page_limit_reached"
         except Exception as exc:
             result["complete"] = False
             result["stop_reason"] = "collection_error_"+type(exc).__name__
+            # This browser has visited only the public finder, never an applicant
+            # form. Strip all URLs (including encrypted query state) from errors.
+            result["public_navigation_error"] = re.sub(r"https?://[^\s\"'<>]+","[source_url]",str(exc).split("Call log:")[0])[:500]
         finally:
             await browser.close()
     result["count"] = len(results)

@@ -67,3 +67,7 @@ prüfen unter anderem WBS-Gültigkeit, Flächenbegrenzung, dynamische Pflichtfel
 sichtbare gegenüber unsichtbaren CAPTCHAs, Reservierung vor dem Button-Klick,
 fehlgeschlagene Statusspeicherung und echte gegenüber bereits vorhandenen
 Erfolgsnachrichten.
+
+## Merkliste und Suchstörungen
+
+Bereits gefundene Basis-Treffer werden ohne Bewerberdaten in .agent-state/candidate-watchlist.json gespeichert. Beim nächsten Lauf werden sie unabhängig von vorübergehenden Suchstörungen erneut auf der tatsächlichen Anbieterseite geprüft. Eine alte Quellenaufnahme ist niemals ein Versandnachweis oder ein Ersatz für aktuelle Angebotsbedingungen. Preis-/Zimmerabweichungen und unbekannte Voraussetzungen blockieren weiterhin. Ein unvollständiger Suchlauf bleibt im Bericht und im Actions-Ergebnis als Fehler sichtbar, auch wenn eine unabhängig geprüfte Anfrage möglich war.

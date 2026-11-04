@@ -32,12 +32,14 @@ class Ledger:
         self.entries = {}
         self.read()
 
-    def api(self, method, payload=None):
+    def api(self, method, payload=None, *, state_path=STATE_PATH):
         repo = os.environ.get("GITHUB_REPOSITORY","")
         token = os.environ.get("GH_STATE_TOKEN","")
         if not token or repo != "mom1627/wohnungsagent-berlin":
             raise RuntimeError("durable_ledger_credentials_missing")
-        url = "https://api.github.com/repos/"+repo+"/contents/"+quote(STATE_PATH,safe="/")
+        if state_path not in {STATE_PATH,".agent-state/candidate-watchlist.json"}:
+            raise ValueError("unapproved_state_path")
+        url = "https://api.github.com/repos/"+repo+"/contents/"+quote(state_path,safe="/")
         data = json.dumps(payload).encode() if payload is not None else None
         request = Request(url,data=data,method=method,headers={
             "Authorization":"Bearer "+token,"Accept":"application/vnd.github+json",
