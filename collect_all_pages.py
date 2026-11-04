@@ -79,7 +79,9 @@ async def collect_async(max_pages=200):
                     result["stop_reason"] = "last_page"
                     break
                 result["last_stage"] = "next_button_click"
-                await next_button.click(timeout=10000)
+                # Native keyboard activation also works while the Livewire
+                # layout moves the button; do not require pointer stability.
+                await next_button.press("Enter",timeout=10000)
                 result["last_stage"] = "next_page_wait"
                 await page.wait_for_function(
                     """old => { const links=[...document.querySelectorAll('.list__details a[href]')]

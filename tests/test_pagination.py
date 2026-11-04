@@ -20,6 +20,9 @@ class Node:
     async def is_enabled(self): return self.page.index < 2
     async def is_visible(self): return False
     async def click(self, **kwargs): self.page.index += 1
+    async def press(self, key, **kwargs):
+        assert key == "Enter"
+        self.page.index += 1
 
 class Page:
     url = "https://www.inberlinwohnen.de/wohnungsfinder"

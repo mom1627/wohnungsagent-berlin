@@ -86,7 +86,8 @@ async def run():
                         "shared_accommodation_requires_review","special_eligibility_requires_review",
                         "excludes_wbs_entitlement","cooperative_cost_requires_review"}]
                     if mismatch: reasons.append("source_provider_disagree")
-                    if not discovery["complete"]: reasons.append("discovery_incomplete")
+                    # A pagination failure is reported as a search error. It
+                    # does not invalidate an independently rechecked apartment.
                     if not profile["ready"]: reasons.append("missing_profile_secrets")
                     outcome = {"url":item["url"],"status":"not_submitted","confirmed":False}
                     if frame is None:
