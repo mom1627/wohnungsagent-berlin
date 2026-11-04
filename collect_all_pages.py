@@ -84,10 +84,13 @@ async def collect_async(max_pages=200):
                 await next_button.press("Enter",timeout=10000)
                 result["last_stage"] = "next_page_wait"
                 await page.wait_for_function(
-                    """old => { const links=[...document.querySelectorAll('.list__details a[href]')]
+                    """state => { const links=[...document.querySelectorAll('.list__details a[href]')]
                     .filter(a=>a.textContent.trim()==='Alle Details').map(a=>a.href);
-                    return links.length>0 && JSON.stringify(links)!==JSON.stringify(old); }""",
-                    arg=list(signature),timeout=25000)
+                    const current=Number(new URL(location.href).searchParams.get('page')||1);
+                    const range=document.body.innerText.match(/Zeige\\s+(\\d+)\\s+bis/);
+                    return current===state.page && range && Number(range[1])===(state.page-1)*10+1
+                      && links.length>0 && JSON.stringify(links)!==JSON.stringify(state.links); }""",
+                    arg={"links":list(signature),"page":number+1},timeout=35000)
                 await page.wait_for_timeout(300)
             else:
                 result["stop_reason"] = "page_limit_reached"
