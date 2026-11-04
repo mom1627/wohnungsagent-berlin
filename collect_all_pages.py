@@ -102,15 +102,23 @@ async def collect_async(max_pages=200):
                 # layout moves the button; do not require pointer stability.
                 await next_button.press("Enter",timeout=10000)
                 result["last_stage"] = "next_page_wait"
-                await page.wait_for_function(
+                navigation = await page.wait_for_function(
                     """state => { const links=[...document.querySelectorAll('.list__details a[href]')]
                     .filter(a=>a.textContent.trim()==='Alle Details').map(a=>a.href);
                     const current=Number(new URL(location.href).searchParams.get('page')||1);
                     const range=document.body.innerText.match(/Zeige\\s+(\\d+)\\s+bis/);
-                    return current===state.page && range && Number(range[1])===(state.page-1)*10+1
-                      && links.length>0 && JSON.stringify(links)!==JSON.stringify(state.links); }""",
+                    const ready=current===state.page && range && Number(range[1])===(state.page-1)*10+1
+                      && links.length>0 && JSON.stringify(links)!==JSON.stringify(state.links);
+                    return ready ? {url:location.href} : false; }""",
                     arg={"links":list(signature),"page":number+1},timeout=35000)
-                await page.wait_for_timeout(300)
+                target = await navigation.json_value()
+                if urlsplit(target["url"]).hostname not in {"www.inberlinwohnen.de","inberlinwohnen.de"}:
+                    raise RuntimeError("finder_unexpected_navigation")
+                # The site can restore page 1 after its transient Livewire update.
+                # Open the exact public URL produced by the normal Next action;
+                # never invent query state or call internal endpoints.
+                response = await page.goto(target["url"],wait_until="domcontentloaded",timeout=45000)
+                if not response or response.status != 200: raise RuntimeError("finder_next_page_http_error")
             else:
                 result["stop_reason"] = "page_limit_reached"
         except Exception as exc:

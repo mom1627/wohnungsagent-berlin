@@ -32,7 +32,11 @@ class Page:
     async def goto(self, *args, **kwargs): return types.SimpleNamespace(status=200)
     def locator(self, selector): return Node(self, selector)
     def get_by_role(self, *args, **kwargs): return Node(self, "next")
-    async def wait_for_function(self, *args, **kwargs): pass
+    async def wait_for_function(self, *args, **kwargs):
+        page=self
+        class Handle:
+            async def json_value(self): return {"url":page.url+"?page="+str(page.index+1)}
+        return Handle()
     async def wait_for_timeout(self, *args): pass
 
 class Browser:
