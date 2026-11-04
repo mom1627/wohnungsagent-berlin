@@ -6,8 +6,9 @@ logging. Probes never fill applicant fields or click a submission button.
 import re
 from gewobag_adapter import visible_challenge
 from urllib.parse import urlsplit
-from provider_registry import provider_for
+from provider_registry import provider_for, canonical_offer
 from public_access import check_robots
+from standard_form_adapters import open_howoge_form
 
 CHALLENGE = "iframe[src*='recaptcha'],iframe[src*='hcaptcha'],[class*='g-recaptcha'],[class*='h-captcha'],textarea[id^='g-recaptcha-response'],script[src*='recaptcha'],[name='cf-turnstile-response']"
 FIELD_JS = """els=>els.filter(e=>e.getClientRects().length).map(e=>({
@@ -29,6 +30,20 @@ async def inspect_provider(page, url, robots_cache):
         return result
     try:
         check_robots(url,robots_cache)
+        wbm_district = None
+        if provider == "wbm":
+            # WBM labels the district on the corresponding list-card image,
+            # while its detail address contains only the Berlin postcode.
+            listing_url = "https://www.wbm.de/wohnungen-berlin/angebote/"
+            check_robots(listing_url,robots_cache)
+            listing_response = await page.goto(listing_url,wait_until="domcontentloaded",timeout=35000)
+            if listing_response and listing_response.status==200:
+                cards = await page.locator("a.immo-button-cta").evaluate_all("""es=>es.map(e=>({
+                    url:e.href,district:e.closest('.immo-col')?.previousElementSibling?.querySelector('.area')?.innerText?.trim()
+                }))""")
+                matches = [c for c in cards if canonical_offer(c["url"])==canonical_offer(url)]
+                if len(matches)==1 and matches[0].get("district") in {"Mitte","Wedding","Reinickendorf","Pankow"}:
+                    wbm_district = matches[0]["district"]
         response = await page.goto(url,wait_until="domcontentloaded",timeout=40000)
         if not response or response.status != 200:
             result["reason"] = "provider_http_error"
@@ -40,6 +55,9 @@ async def inspect_provider(page, url, robots_cache):
         if not await main.count(): main = page.locator("body")
         # Visible detail text, not script/style strings or JSON-LD navigation.
         text = await main.inner_text()
+        if wbm_district:
+            text += "\nBezirk/Ortsteil: "+wbm_district+" / Anbieter-Angebotskarte"
+            result["provider_district_evidence"] = "matching_wbm_list_card"
         result["text"] = text
         result["detail_verified"] = True
         if re.search(r"verify you are human|checking your browser|automated traffic",text,re.I):
@@ -86,13 +104,43 @@ async def inspect_provider(page, url, robots_cache):
                 return result
             check_robots(href,robots_cache)
             await page.goto(href,wait_until="domcontentloaded",timeout=35000)
+            ready,why = await open_howoge_form(page)
+            result["form_present"] = ready
+            result["reason"] = why
+            if ready:
+                form = page.locator("form").filter(has=page.locator("#immo-form-firstname"))
+                result["fields"] = await form.locator("input,select,textarea").evaluate_all(FIELD_JS)
+                result["_frame"] = page.main_frame
+        elif provider == "wbm":
+            reject = page.get_by_role("button",name="Ablehnen",exact=True)
+            if await reject.count()==1 and await reject.is_visible():
+                await reject.click()
+            form = page.locator("form").filter(has=page.locator("#powermail_field_vorname"))
+            if await form.count() != 1:
+                result["reason"] = "wbm_application_form_missing_or_ambiguous"
+                return result
             result["form_present"] = True
-            result["reason"] = "income_credit_notices_and_form_require_manual_review"
+            result["fields"] = await form.locator("input,textarea,select").evaluate_all(FIELD_JS)
+            result["reason"] = "form_profile_mapping_required"
+            result["_frame"] = page.main_frame
         else:
             links = await main.locator("a[href]").evaluate_all("""es=>es.map(e=>({text:e.innerText,href:e.href}))""")
             applications = [x for x in links if re.search(r"jetzt bewerben|wohnung anfragen|besichtigung",x["text"],re.I)]
             if any(urlsplit(x["href"]).hostname == "tenant.immomio.com" for x in applications):
                 result["reason"] = "immomio_account_and_profile_required"
+                if provider == "gesobau":
+                    href = next(x["href"] for x in applications if urlsplit(x["href"]).hostname == "tenant.immomio.com")
+                    parsed = urlsplit(href)
+                    if parsed.scheme != "https" or not re.fullmatch(r"/(?:de/)?apply/[a-f0-9-]{36}",parsed.path):
+                        result["reason"] = "unapproved_application_link"
+                        return result
+                    check_robots(href,robots_cache)
+                    await page.goto(href,wait_until="domcontentloaded",timeout=35000)
+                    # No automated CAPTCHA interaction or credential entry.
+                    await page.get_by_role("button",name="Jetzt bewerben",exact=True).wait_for(state="visible",timeout=15000)
+                    result["form_present"] = True
+                    if await visible_challenge(page):
+                        result["reason"] = "immomio_visible_captcha_requires_manual_action"
             else:
                 result["reason"] = "provider_adapter_not_validated"
     except Exception as exc:

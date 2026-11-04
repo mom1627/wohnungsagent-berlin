@@ -3,6 +3,12 @@ import re
 from decimal import Decimal, InvalidOperation
 
 TARGETS = {"reinickendorf","wedding","mitte","pankow"}
+# Verified administrative assignments, only used with an explicit Berlin address.
+# Sources: berlin.de/ba-pankow/ueber-den-bezirk/ortsteile/ and the corresponding
+# Mitte/Reinickendorf district pages. Never infer location from general prose.
+ADDRESS_DISTRICTS = {"buch":"pankow","weißensee":"pankow","prenzlauer berg":"pankow",
+    "wittenau":"reinickendorf","märkisches viertel":"reinickendorf",
+    "moabit":"mitte","gesundbrunnen":"mitte"}
 SPECIAL = re.compile(r"besonder\w*\s+wohnbedarf|dringlichkeit|rollstuhlfahrer|nur.{0,25}senior|mindestens\s*(?:60|65)|wbs\s*(?:für|mit)\s*(?:2|3|4|zwei|drei|vier)\s*(?:räum|zimmer)|§\s*9",re.I)
 
 def money(value):
@@ -13,10 +19,10 @@ def money(value):
 
 def screen(text, *, provider_verified=False):
     text = " ".join(text.split())
-    amount = re.search(r"(?:Bruttowarmmiete|Warmmiete|Gesamtmiete)\s*:?\s*([\d.]+,\d{2})\s*(?:€|Euro)",text,re.I)
+    amount = re.search(r"(?:Bruttowarmmiete|Warmmiete|Gesamtmiete)\s*:?\s*([\d.]+,\d{2})\s*(?:€|Euro|EUR)",text,re.I)
     # Prefer explicit labels; '1 Zimmer 34,08 m²' must never become 34 rooms.
     rooms = None
-    for pattern in (r"(?:Zimmeranzahl|Anzahl Zimmer)\s*:?\s*(\d+(?:[,.]\d+)?)(?![\d.,])",
+    for pattern in (r"(?:Zimmeranzahl|Anzahl (?:der )?Zimmer)\s*:?\s*(\d+(?:[,.]\d+)?)(?![\d.,])",
                     r"\bZimmer\s*:\s*(\d+(?:[,.]\d+)?)(?![\d.,])",
                     r"\b(\d+(?:[,.]\d+)?)\s*-?\s*Zimmer\b"):
         rooms = re.search(pattern,text,re.I)
@@ -38,9 +44,12 @@ def screen(text, *, provider_verified=False):
             if all(x is not None for x in values) and sum(values) == money(total.group(1)):
                 rent = money(total.group(1))
     count = Decimal(rooms.group(1).replace(",",".")) if rooms else None
-    area_match = re.search(r"(?:Wohnfläche|Fläche in m[²2])\s*:?\s*([\d.]+(?:,\d+)?)\s*(?:m²|Quadratmeter)",text,re.I)
-    square_metres = money(area_match.group(1)) if area_match else None
+    area_match = re.search(r"(?:Wohnfläche|Fläche in m[²2]|Größe)\s*:?\s*(?:ca\.\s*)?(\d+(?:[,.]\d+)?)\s*(?:m²|Quadratmeter)",text,re.I)
+    square_metres = Decimal(area_match.group(1).replace(',','.')) if area_match else None
     area = district.group(1).lower() if district else None
+    if area is None:
+        local = re.search(r"\b\d{5}\s+Berlin\s*,\s*("+"|".join(re.escape(x) for x in ADDRESS_DISTRICTS)+r")\b",text,re.I)
+        if local: area = ADDRESS_DISTRICTS[local.group(1).lower()]
     reasons = []
     if rent is None: reasons.append("warm_rent_unverified")
     elif rent > 550: reasons.append("warm_rent_above_550")
@@ -49,10 +58,10 @@ def screen(text, *, provider_verified=False):
     if area not in TARGETS: reasons.append("target_district_unverified")
     basics = not reasons
     # WBS references in the actual property content only.
-    no_wbs = bool(re.search(r"(?:WBS|Wohnberechtigungsschein)\s*:?\s*(?:nicht erforderlich|nein|nicht notwendig)|(?:kein|ohne)\s+(?:WBS|Wohnberechtigungsschein)",text,re.I))
+    no_wbs = bool(re.search(r"(?:WBS|Wohnberechtigungsschein)\s*:?\s*(?:nicht erforderlich|nein|nicht notwendig)|WBS erforderlich\s*:\s*Nein|(?:kein|ohne)\s+(?:WBS|Wohnberechtigungsschein)",text,re.I))
     categories = set(re.findall(r"\bWBS(?:[- ]Berechtigung)?\s*[-:]?\s*(100|140|160|180|220)\b",text,re.I))
     generic = bool(re.search(r"\bWBS\b|Wohnberechtigungsschein",text,re.I))
-    required_wbs = bool(re.search(r"\bWBS\s*:\s*erforderlich|(?:vorhandener|vorhandenen)\s+WBS\s+Voraussetzung|\bmit\s+WBS\b|WBS\s+(?:ist\s+)?(?:Voraussetzung|erforderlich)",text,re.I))
+    required_wbs = not no_wbs and bool(re.search(r"\bWBS\s*:\s*erforderlich|(?:vorhandener|vorhandenen)\s+WBS\s+Voraussetzung|\bmit\s+WBS\b|WBS\s+(?:ist\s+)?(?:Voraussetzung|erforderlich)",text,re.I))
     wbs = "100" if categories == {"100"} else "unknown" if categories else "required_unspecified" if required_wbs else "not_required" if no_wbs else "unknown" if generic else "not_stated"
     if wbs not in {"not_required","100"}: reasons.append("wbs_category_unverified")
     if SPECIAL.search(text): reasons.append("special_eligibility_requires_review")

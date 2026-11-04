@@ -13,7 +13,7 @@ VERSION = "gewobag_browser_v2"
 LAST_STAGE = "initial"
 PRIVACY_ACK = ("Hiermit bestätigen Sie, dass die von Ihnen gemachten Angaben den Tatsachen entsprechen und dass Sie die "
                "Datenschutzbestimmungen der Gewobag zur Kenntnis genommen haben.")
-SUCCESS = re.compile(r"(?:ihre\s+)?(?:anfrage|bewerbung)\s+(?:(?:wurde|ist)\s+)?(?:erfolgreich\s+)?(?:versendet|gesendet|eingegangen|übermittelt)|(?:anfrage|bewerbung)\s+erfolgreich\s+(?:abgeschickt|abgesendet)",re.I)
+SUCCESS = re.compile(r"(?:ihre\s+)?(?:anfrage|bewerbung)\s+(?:(?:wurde|ist)\s+)?(?:erfolgreich\s+)?(?:versendet|gesendet|eingegangen|übermittelt)|(?:anfrage|bewerbung)\s+erfolgreich\s+(?:abgeschickt|abgesendet)|vielen\s+dank\s+für\s+ihre\s+(?:anfrage|bewerbung)",re.I)
 
 def norm(text): return " ".join(text.split())
 
@@ -70,7 +70,7 @@ async def visible_challenge(page):
             if "/anchor" in parsed.path and "size=invisible" not in parsed.query:
                 checkbox = frame.get_by_role("checkbox")
                 if await checkbox.count() and await checkbox.first.is_visible(): return True
-        if "hcaptcha.com" in host or "challenges.cloudflare.com" == host:
+        if host == "hcaptcha.com" or host.endswith(".hcaptcha.com") or host in {"challenges.cloudflare.com","eu.frcapi.com","global.frcapi.com"}:
             owner = await frame.frame_element()
             if await owner.is_visible(): return True
     return False
@@ -156,8 +156,8 @@ async def prepare(page,frame,contact,housing):
     if await visible_challenge(page): return False,"visible_captcha_requires_manual_action"
     if any(f["required"] and not known_field(f) for f in current): return False,"unknown_required_field"
     if any(f["type"] == "file" for f in current): return False,"document_upload_requires_manual_action"
-    if any("paragraph_9_bescheinigung" in f["id"] for f in current) and not housing["wofg9_certificate"]:
-        return False,"required_wofg9_certificate_not_available"
+    # A required yes/no question is not a requirement to answer yes. Public offer
+    # eligibility is checked separately; never claim possession of a certificate.
     if any("immatrikulationsbescheinigung" in f["id"] for f in current) and not housing["enrolled"]:
         return False,"required_enrollment_certificate_not_available"
     names = contact["name"].strip().split(None,1)
@@ -212,7 +212,7 @@ async def prepare(page,frame,contact,housing):
     if await visible_challenge(page): return False,"visible_captcha_requires_manual_action"
     return True,"form_ready"
 
-async def submit_prepared(page,frame,url,ledger,*,enabled):
+async def submit_prepared(page,frame,url,ledger,*,enabled,adapter_version=VERSION,submit_button=None):
     result = {"url":url,"status":"not_submitted","confirmed":False}
     if not enabled:
         return {**result,"reason":"live_submission_disabled"}
@@ -220,13 +220,13 @@ async def submit_prepared(page,frame,url,ledger,*,enabled):
         return {**result,"reason":"durable_remote_ledger_required"}
     if await visible_challenge(page):
         return {**result,"reason":"visible_captcha_requires_manual_action"}
-    button = frame.get_by_role("button",name="Anfrage versenden",exact=True)
+    button = submit_button if submit_button is not None else frame.get_by_role("button",name="Anfrage versenden",exact=True)
     if await button.count() != 1 or not await button.is_enabled():
         return {**result,"reason":"submit_control_not_ready"}
     initial = await frame.locator("body").inner_text()
     if SUCCESS.search(initial): return {**result,"reason":"preexisting_success_message"}
     # Remote reservation is made before the request button can transmit anything.
-    if not ledger.reserve(url,adapter_version=VERSION):
+    if not ledger.reserve(url,adapter_version=adapter_version):
         return {**result,"status":"skipped","reason":"already_reserved_or_submitted"}
     result["status"] = "submission_unverified"
     result["reason"] = "no_success_confirmation"

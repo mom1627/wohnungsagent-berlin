@@ -1,32 +1,22 @@
-# Automatic dispatch status
+# Bewerbungsadapter
 
-The Gewobag / Wohnungshelden browser adapter is implemented and covered by safety
-regression tests. A real successful submission has not yet been confirmed for
-version gewobag_browser_v2. The production workflow is configured for live
-dispatch, but requires a valid APPLICANT_HOUSING_PROFILE encrypted Actions secret,
-the three existing contact secrets, matching current property conditions and
-an available durable remote ledger.
+Stand: 4. November 2026, Revision mit vier ausdrücklich ausgewiesenen Anbieterwegen.
 
-The first qualifying request is the authorized real validation attempt. Only a
-new, explicit provider success message counts as confirmed. The same durable
-record enables later automatic requests. An unresolved reservation or ambiguous
-submission stops this adapter until reviewed, including across workflow runs.
+| Anbieter | Implementierung | Tatsächlich bestätigt | Offene Voraussetzung |
+| --- | --- | --- | --- |
+| Gewobag | Wohnungshelden-Formular mit geschütztem Profil, nativen Auswahlfeldern und reserviertem Absendeversuch | Noch kein Nachweis | Nächste andere geeignete Wohnung; unbestätigte alte Anfrage bleibt gesperrt |
+| HOWOGE | Eigener Adapter für drei exakt geprüfte Kenntnisnahme-Hinweise und Kontaktformular mit Vorname, Nachname, E-Mail | Noch kein Nachweis | Aktuelles geeignetes Angebot und Erfolgstest |
+| WBM | Eigener Formularadapter; optionale unbekannte Adresse bleibt leer; sichtbares Honeypot-Feld bleibt unberührt | Noch kein Nachweis | Gesonderte Zustimmung zur sechsmonatigen Datenspeicherung für geeignete Wohnungsangebote; aktuelles passendes Angebot |
+| GESOBAU | Eigene Prüfung der öffentlichen Immomio-Weiterleitung und sichtbarer CAPTCHA-Sperren | Kein Versandadapter abgeschlossen | Sichtbares Friendly-Captcha vor Jetzt bewerben; danach Kontozugang/Profil prüfen |
 
-Invisible reCAPTCHA scripts and badges do not alone block the normal form.
-The adapter only uses the website's actual request button and its ordinary
-verification flow. Visible challenges are not solved, and no CAPTCHA token,
-fingerprint, request endpoint or session is manipulated.
+Das Vier-Anbieter-Ziel ist noch nicht erreicht. Der Bericht trennt implementierte, freigegebene und tatsächlich bestätigte Anbieter.
 
-Required field answers are read from the protected profile, not hard-coded
-applicant values. Dynamic WBS fields are inspected after answering WBS possession.
-The observed single-person / up-to-50-square-metre cluster is supported. Unknown
-mandatory fields, changed acknowledgements, unavailable certificates and
-unvalidated room clusters stop the form before submitting.
+Ungeklärte Ergebnisse sperren ausschließlich dieselbe Wohnung dauerhaft. Nach einem neuen ungeklärten Versuch pausiert der jeweilige Anbieter für den Rest des Laufs, andere Anbieter werden weiter geprüft. Es gibt niemals einen automatischen erneuten Versand für reservierte Wohnungen.
 
-The observed Gewobag acknowledgement states accuracy of the supplied information
-and awareness of its privacy notice. Its exact text is checked. No extra terms,
-paid commitments, marketing subscriptions or additional consents are accepted.
+HOWOGE: Es werden ausschließlich die beobachteten Hinweise zur Kenntnis genommen. Keine Angabe zu Einkommenshöhe, ausreichender Bonität, Bürgschaft oder Jobcenter-Zustimmung wird ergänzt. Geänderte Hinweise und zusätzliche Felder stoppen den Adapter.
 
-HOWOGE and other providers remain read-only until their own sending contracts
-have been implemented and validated. Immomio account ownership is profile
-metadata only; no password or authentication session is stored by this code.
+WBM: Die gesonderte Zustimmung wird nicht vorausgesetzt. Erst nach ausdrücklicher Freigabe das Actions-Secret APPLICANT_WBM_DATA_CONSENT auf 1 setzen. Der exakte Zustimmungstext ist in standard_form_adapters.py hinterlegt und wird vor Eingabe persönlicher Daten geprüft. Eine abweichende Erklärung erfordert neue Prüfung.
+
+Gewobag: Eine Pflichtfrage zum Vorhandensein der §9-Bescheinigung ist keine Aufforderung, Ja anzugeben. Bei fehlender Bescheinigung wird die angebotene Option Nein gewählt. Ein im Angebot ausdrücklich genannter §9-Bedarf blockiert weiterhin die Eignung. Fehlende Immatrikulation wird nicht als vorhandener Status ausgegeben.
+
+Keine CAPTCHA-Lösung, keine direkten Absende-Endpunkte, keine Zugangsdaten in Dateien/Logs. Alle Sender verwenden das gemeinsame dauerhafte Reservierungs- und Bestätigungsverfahren. Eine Reservierung oder ein grüner Actions-Lauf gilt nicht als Versandbestätigung.

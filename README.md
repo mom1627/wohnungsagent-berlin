@@ -23,8 +23,13 @@ reCAPTCHA-Einbindung wird nicht mit einer sichtbaren Sicherheitsaufgabe
 verwechselt. Tatsächliche Challenges, unbekannte Pflichtfelder, zusätzliche
 Verpflichtungen oder fehlende Bescheinigungen erfordern manuelle Klärung.
 
-Andere Anbieter haben bislang keinen validierten Versandadapter. Sie werden
-weiterhin durchsucht und geprüft; blockierte Angebote erscheinen im Bericht.
+Gewobag, HOWOGE und WBM besitzen eigene implementierte Formularadapter.
+Implementiert bedeutet noch nicht durch tatsächlichen Versand bestätigt. Für WBM
+ist vor Nutzung eine gesonderte Freigabe der beobachteten Datenspeicherung nötig
+(APPLICANT_WBM_DATA_CONSENT=1 als verschlüsseltes Secret). GESOBAU wird bis zum
+Immomio-Bewerbungsweg geprüft und meldet CAPTCHA/Login als manuelle Voraussetzung.
+Vier vollständig einsatzbereite und bestätigte Anbieter sind damit noch nicht erreicht.
+Details: ADAPTER_STATUS.md.
 
 ## Kriterien
 
@@ -40,7 +45,9 @@ Eine Jobcenter-Zustimmung wird nicht behauptet.
 Die personenbezugsfreie Historie liegt in .agent-state/application-ledger.json
 im privaten Repository. Vor jedem Sendeversuch wird eine Reservierung atomar
 gespeichert. Abgebrochene oder unklare Versuche werden nicht automatisch
-wiederholt. Ein ungeklärter Vorgang sperrt auch den betreffenden Adapter.
+wiederholt. Ein ungeklärter Vorgang sperrt dauerhaft dieses Angebot. Andere Wohnungen können
+weiter angefragt werden. Nach einem neuen unklaren Versuch pausiert nur dieser
+Anbieter für den Rest des aktuellen Laufs; der nächste Lauf darf andere Angebote prüfen.
 Überlappende Produktionsläufe werden verhindert. Die Historie nicht zurücksetzen,
 solange ein Sendevorgang ungeklärt ist.
 

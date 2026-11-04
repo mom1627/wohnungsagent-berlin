@@ -16,6 +16,8 @@ from application_profile import load_profile
 from housing_profile import load_housing_profile
 from gewobag_adapter import VERSION, offer_blockers, prepare, submit_prepared
 from provider_adapters import inspect_provider
+from standard_form_adapters import (SENDER_VERSIONS, IMPLEMENTED_SENDERS,
+    provider_statuses, prepare_native, submit_native, attempt_blocker)
 
 async def run():
     report = {"checked_at_utc":datetime.now(timezone.utc).isoformat(),
@@ -50,8 +52,15 @@ async def run():
             ledger.read()
         report["durable_ledger_ready"] = ledger.remote
         live_ready = report["submission_requested"] and profile["ready"] and housing["ready"] and ledger.remote
-        report["validated_senders"] = ["gewobag"] if ledger.validated(VERSION) else []
-        report["submission_enabled"] = bool(live_ready and ledger.validated(VERSION) and not ledger.adapter_uncertain(VERSION))
+        report["provider_status"] = provider_statuses(ledger,live_ready)
+        report["validated_senders"] = [p for p,v in SENDER_VERSIONS.items() if ledger.validated(v)]
+        report["submission_enabled"] = any(x["automatic_attempts_enabled"] for x in report["provider_status"].values())
+        report["minimum_required_providers"] = 4
+        report["minimum_provider_goal_met"] = len(report["validated_senders"]) >= 4
+        # Unknown outcomes remain reserved for that apartment. They do not
+        # permanently disable requests for other properties. Stop that provider
+        # for the rest of this run after one new uncertain result.
+        uncertain_this_run = set()
         from playwright.async_api import async_playwright
         async with async_playwright() as p:
             browser = await p.chromium.launch(headless=True)
@@ -87,17 +96,25 @@ async def run():
                             reasons.append("live_submission_disabled")
                         elif not ledger.remote:
                             reasons.append("durable_remote_ledger_required")
-                        elif ledger.adapter_uncertain(VERSION):
-                            reasons.append("adapter_has_unresolved_submission")
+                        elif attempt_blocker(item["provider"],item["url"],ledger,uncertain_this_run):
+                            reasons.append(attempt_blocker(item["provider"],item["url"],ledger,uncertain_this_run))
                         else:
                             try:
-                                ready,why = await prepare(page,frame,profile,housing)
+                                if item["provider"] == "gewobag":
+                                    ready,why = await prepare(page,frame,profile,housing)
+                                else:
+                                    ready,why = await prepare_native(item["provider"],page,profile,housing)
                                 if not ready:
                                     reasons.append(why)
                                 else:
                                     # This first real, authorized matching inquiry validates
                                     # the adapter; later runs reuse its durable success proof.
-                                    outcome = await submit_prepared(page,frame,item["url"],ledger,enabled=True)
+                                    if item["provider"] == "gewobag":
+                                        outcome = await submit_prepared(page,frame,item["url"],ledger,enabled=True)
+                                    else:
+                                        outcome = await submit_native(item["provider"],page,item["url"],ledger)
+                                    if outcome["status"] == "submission_unverified":
+                                        uncertain_this_run.add(item["provider"])
                                     if not outcome["confirmed"]: reasons.append(outcome["reason"])
                             except Exception as exc:
                                 reasons.append("form_processing_error_"+type(exc).__name__+"_"+gewobag_adapter.LAST_STAGE)
@@ -112,8 +129,9 @@ async def run():
                         "current_offer":detail,"form_present":current["form_present"],
                         "required_fields":[{"id":f["id"],"label":f["label"],"type":f["type"]}
                                            for f in current.get("fields",[]) if f["required"]]})
-                    report["validated_senders"] = ["gewobag"] if ledger.validated(VERSION) else []
-                    report["submission_enabled"] = bool(live_ready and ledger.validated(VERSION) and not ledger.adapter_uncertain(VERSION))
+                    report["validated_senders"] = [p for p,v in SENDER_VERSIONS.items() if ledger.validated(v)]
+                    report["provider_status"] = provider_statuses(ledger,live_ready)
+                    report["minimum_provider_goal_met"] = len(report["validated_senders"]) >= 4
             finally:
                 await browser.close()
     except Exception as exc:
@@ -125,7 +143,13 @@ def main():
     Path("daily_housing_report.json").write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     lines = ["# Wohnungsagent – Laufbericht","",
              f"Gefunden: {report['discovered']} · Basis-Treffer: {report['basic_matches']} · Bestätigt versendet: {report['applications_submitted']}",
-             f"Automatischer Versand aktiv: {report['submission_enabled']}",""]
+             f"Automatische Anfrageversuche freigegeben: {report['submission_enabled']}",
+             f"Anbieter mit tatsächlicher Versandbestätigung: {', '.join(report['validated_senders']) or 'keiner'}",""]
+    lines += ["| Anbieter | Versand implementiert | Tatsächlich bestätigt | Manuelle Voraussetzung |",
+              "| --- | --- | --- | --- |"]
+    for provider,status in report.get("provider_status",{}).items():
+        lines.append(f"| {provider} | {status['sender_implemented']} | {status['submission_confirmed']} | {status['manual_requirement'] or '—'} |")
+    lines.append("")
     discovery = report.get("discovery",{})
     lines += [f"Ergebnisseiten: {discovery.get('pages_checked',0)} · Vollständig durchlaufen: {discovery.get('complete',False)}",
               f"Bewerber-Secrets verfügbar: {report.get('profile_ready',False)} · Dauerhafte Historie erreichbar: {report.get('durable_ledger_ready',False)}","",

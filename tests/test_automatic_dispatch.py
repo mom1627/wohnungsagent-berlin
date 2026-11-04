@@ -55,9 +55,12 @@ class FormGuardTests(unittest.IsolatedAsyncioTestCase):
         frame.locator.assert_not_called()
     async def test_no_certificate_answer_is_not_false_attestation(self):
         field = {"id":"formly_14_radio_gewobag_paragraph_9_bescheinigung_vorhanden_0-Ja","required":True,"type":"radio"}
-        with patch("gewobag_adapter.fields",new=AsyncMock(return_value=[field])),patch("gewobag_adapter.visible_challenge",new=AsyncMock(return_value=False)):
-            result = await prepare(Mock(),Mock(),{},FIXTURE)
-        self.assertEqual(result,(False,"required_wofg9_certificate_not_available"))
+        with patch("gewobag_adapter.fields",new=AsyncMock(return_value=[field])),patch("gewobag_adapter.visible_challenge",new=AsyncMock(return_value=False)),patch("gewobag_adapter.choose",new=AsyncMock(side_effect=ValueError("mapping_reached"))):
+            with self.assertRaisesRegex(ValueError,"mapping_reached"):
+                await prepare(Mock(),Mock(),{"name":"Example Applicant"},FIXTURE)
+    def test_explicit_certificate_requirement_still_blocks_offer(self):
+        decision=screen(TEXT+" Eine Bescheinigung nach § 9 Abs. 2 ist erforderlich",provider_verified=True)
+        self.assertIn("special_eligibility_requires_review",offer_blockers(decision,{"ready":True,**FIXTURE}))
     async def test_no_enrollment_answer_is_not_false_attestation(self):
         field = {"id":"gewobag_immatrikulationsbescheinigung_vorhanden-Ja","required":True,"type":"radio"}
         with patch("gewobag_adapter.fields",new=AsyncMock(return_value=[field])),patch("gewobag_adapter.visible_challenge",new=AsyncMock(return_value=False)):
