@@ -89,7 +89,7 @@ async def choose(frame,selector,label):
     global LAST_STAGE
     LAST_STAGE = "dropdown_open_"+selector
     control = await one(frame,selector)
-    await control.click(timeout=8000)
+    await control.locator("xpath=ancestor::ng-select").click(timeout=8000)
     option = frame.get_by_role("option",name=label,exact=True)
     if await option.count() != 1: raise ValueError("dropdown_option_missing_or_ambiguous")
     LAST_STAGE = "dropdown_option_"+selector
