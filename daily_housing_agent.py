@@ -101,8 +101,6 @@ async def run():
                                     if not outcome["confirmed"]: reasons.append(outcome["reason"])
                             except Exception as exc:
                                 reasons.append("form_processing_error_"+type(exc).__name__+"_"+gewobag_adapter.LAST_STAGE)
-                                if gewobag_adapter.LAST_STAGE == "dropdown_open_#salutation":
-                                    reasons.append("public_empty_form_diagnostic: "+str(exc)[:2400])
                     if outcome["confirmed"]:
                         report["applications_submitted"] += 1
                     report["applications"].append({
