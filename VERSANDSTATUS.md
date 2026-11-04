@@ -1,3 +1,21 @@
+# Aktuell: erste WBM-Anfrage tatsächlich eingegangen
+
+4. November 2026: **Eine Wohnungsanfrage an WBM ist nachgewiesen eingegangen.** Die vom Nutzer vorgelegte Anbieterantwort stimmt mit der dauerhaft reservierten Anfrage aus dem Agentenlauf überein: Rathausstraße 17, 1 Zimmer, 32,87 m², 420,86 EUR Gesamtmiete. Der Agent reservierte und übermittelte den normalen Formularweg am 4. November um 17:44 UTC. Der Anbieter hat anschließend keine Besichtigung angeboten; als Grund nennt die Antwort hohes Anfrageaufkommen und Auswahl nach zeitlichem Eingang. Dies ist eine bestätigte Anfrage mit negativem Bewerbungsergebnis, keine Wohnungszusage oder Besichtigungseinladung.
+
+Die Historie führt die Anfrage nun als `submitted_confirmed`, Belegart `provider_reply_user_verified`, Ergebnis `not_selected_for_viewing`. Es wird **keine sichtbare Browserbestätigung erfunden**: Der ursprüngliche Lauf konnte sie nicht erkennen. Persönlicher Name, Mailtext und Screenshot wurden nicht ins Repository übernommen. Die zwei älteren Gewobag-Versuche bleiben unbestätigt. Alle drei bereits reservierten Wohnungen bleiben dauerhaft gegen erneute Anfragen geschützt.
+
+**Stand: 1 bestätigte Anfrage, Tagesziel mindestens 4 noch nicht erreicht.** Anbieterantworten mit geprüfter Belegart zählen auch bei Absage als eingegangene Anfrage; reine HTTP-Erfolge, unbekannte Belegarten oder fehlende Belege zählen weiterhin nicht. Drei neue Regressionstests prüfen Zählung, Trennung von Eingang/Besichtigungsergebnis und dauerhaften Dublettenschutz; insgesamt 103 lokale Tests bestanden.
+
+Der vollständige [Actions-Lauf 41879180233](https://github.com/mom1627/wohnungsagent-berlin/actions/runs/41879180233) ist inzwischen mit `success` abgeschlossen; alle 100 damaligen Tests bestanden, 532 Angebote auf 54 Ergebnisseiten wurden vollständig erfasst. Die damalige Zahl null beschreibt die fehlende automatisch erkannte Browserbestätigung vor der nun nachgereichten Anbieterantwort.
+
+Der Produktionsworkflow bleibt mit `ENABLE_LIVE_APPLICATIONS=1` und täglichem Zeitplan `17 6,11,16 * * *` aktiv konfiguriert (derzeit Berlin 07:17, 12:17, 17:17). Gewobag, HOWOGE und WBM können neue passende Angebote selbstständig anfragen. Es gibt kein Tageslimit von einer Anfrage: Alle neuen passenden und regulär bedienbaren Angebote werden versucht; nach einem neuen unklaren Ergebnis pausiert nur dieser Anbieter bis zum nächsten Lauf. Mindestens vier bestätigte Anfragen sind nur erreichbar, wenn entsprechend viele neue passende Angebote mit automatisch bedienbarem Formular verfügbar sind. WBM ist jetzt durch tatsächliche Anbieterantwort für einen realen Versand belegt; dies beweist nicht die übrigen Adapter.
+
+STADT UND LAND ist als vierter Versandweg implementiert, bleibt vor Dateneingabe wegen des noch nicht angegebenen frühesten Einzugstermins gesperrt. GESOBAU/Immomio ist bei sichtbarem CAPTCHA oder fehlender nutzbarer Sitzung weiterhin manuell und hat keinen vollständigen Versandadapter. Das Gesamtziel von mindestens vier validierten Anbietern ist deshalb nicht erfüllt. Keine Schutzmaßnahmen, neuen Erklärungen oder fehlenden persönlichen Angaben werden umgangen oder erfunden.
+
+---
+
+## Historischer Stand vor Vorlage der Anbieterantwort
+
 # Letzte Verifikation – 4. November 2026
 
 Aktueller Versandcode: Commit 862e98b8a9e88f4e68ccb6f0fc9ce223272c286c. **100 lokale Tests bestanden. Der neue vollständige Actions-Lauf [41879180233](https://github.com/mom1627/wohnungsagent-berlin/actions/runs/41879180233/job/126747311167) ist ausgelöst, zeigt bei der letzten Kontrolle aber noch `queued` / `Starting job`; deshalb ist die neue WBM-Anfrage noch nicht ausgeführt oder bestätigt.** Der vorherige Job 126738169210 hat bereits alle Schritte erfolgreich protokolliert und ein vollständiges Artefakt geliefert (96 damalige Tests, 532 Angebote, 54 Seiten, 16 Basis-Treffer, 0 neue Anfrage). Seine äußere Laufstatus-Anzeige blieb widersprüchlich `in_progress`; ein Abbruchversuch wurde von GitHub mit `Cannot cancel a workflow run that is not in progress` zurückgewiesen. Kein belegter allgemeiner Actions-Ausfall; die offizielle Status-API meldete Actions operational. Ein überholter Zwischenlauf wurde zum Abbruch angefordert. Kein erneutes Absenden einer reservierten Wohnung.

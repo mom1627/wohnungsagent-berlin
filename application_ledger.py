@@ -18,6 +18,7 @@ from provider_registry import canonical_offer
 
 LEDGER = Path("application_ledger.json")
 STATE_PATH = ".agent-state/application-ledger.json"
+CONFIRMATION_PROOFS = frozenset({"provider_success_visible", "provider_reply_user_verified"})
 
 def canonical(url):
     return canonical_offer(url)
@@ -89,7 +90,7 @@ class Ledger:
     def confirmed_on(self, day):
         count = 0
         for item in self.entries.values():
-            if not isinstance(item,dict) or item.get("status") != "submitted_confirmed" or item.get("confirmation") != "provider_success_visible":
+            if not isinstance(item,dict) or item.get("status") != "submitted_confirmed" or item.get("confirmation") not in CONFIRMATION_PROOFS:
                 continue
             try:
                 stamp=datetime.fromisoformat(item.get("confirmed_at_utc",item["at_utc"]))
@@ -100,6 +101,7 @@ class Ledger:
 
     def validated(self,adapter_version):
         return any(isinstance(x,dict) and x.get("status")=="submitted_confirmed" and
+                   x.get("confirmation") in CONFIRMATION_PROOFS and
                    x.get("adapter_version")==adapter_version for x in self.entries.values())
 
     def adapter_uncertain(self,adapter_version):
