@@ -21,6 +21,16 @@ FIELD_JS = """els=>els.filter(e=>e.getClientRects().length).map(e=>({
 # confirmation, with its validation recorded in ADAPTER_STATUS.md.
 VERIFIED_SENDERS = frozenset()
 
+def wbm_heading_district(title):
+    """Read the current property's explicit heading, never general page prose.
+
+    WBM redirects ID links to readable slugs; the current list card can already
+    have the slug, so URL equality alone must not discard this district proof.
+    """
+    match = re.fullmatch(r"\d+(?:[.,]\d+)?[- ]Zimmer[- ]Wohnung in (Mitte|Wedding|Pankow|Reinickendorf)",
+                         " ".join(title.split()),re.I)
+    return match.group(1).capitalize() if match else None
+
 async def inspect_provider(page, url, robots_cache):
     provider = provider_for(url)
     result = {"url":url,"provider":provider,"detail_verified":False,"form_present":False,
@@ -55,9 +65,19 @@ async def inspect_provider(page, url, robots_cache):
         if not await main.count(): main = page.locator("body")
         # Visible detail text, not script/style strings or JSON-LD navigation.
         text = await main.inner_text()
+        if provider == "wbm":
+            headings = page.get_by_role("heading",level=1)
+            if await headings.count()==1:
+                heading_district = wbm_heading_district(await headings.inner_text())
+                if wbm_district and heading_district and wbm_district.lower()!=heading_district.lower():
+                    result["reason"] = "wbm_district_evidence_conflict"
+                    return result
+                if heading_district and not wbm_district:
+                    wbm_district = heading_district
+                    result["provider_district_evidence"] = "current_property_heading"
         if wbm_district:
-            text += "\nBezirk/Ortsteil: "+wbm_district+" / Anbieter-Angebotskarte"
-            result["provider_district_evidence"] = "matching_wbm_list_card"
+            text += "\nBezirk/Ortsteil: "+wbm_district+" / aktueller Anbieterbeleg"
+            result.setdefault("provider_district_evidence","matching_wbm_list_card")
         result["text"] = text
         result["detail_verified"] = True
         if re.search(r"verify you are human|checking your browser|automated traffic",text,re.I):

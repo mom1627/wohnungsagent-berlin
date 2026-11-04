@@ -1,10 +1,32 @@
-# Weitere Anbieter und Übertragungskontrolle
+# Aktueller Versandstatus – 4. November 2026
 
-4. November 2026: STADT UND LAND als vierter nativer Versandadapter implementiert. Das öffentliche Formular wurde ohne Bewerberdaten geprüft. Noch keine bestätigte Bewerbung und kein realer Versandtest für diesen Anbieter. Automatische Versuche bleiben gesperrt, bis der vom Nutzer festgelegte früheste Einzugstermin als `APPLICANT_EARLIEST_MOVE_IN` hinterlegt ist (`ASAP` oder `YYYY-MM-DD`). Das Datum wird nicht geraten. Einkommen wird ausschließlich aus dem geschützten Secret gelesen; die 35-Prozent-Frage wird rechnerisch wahrheitsgemäß beantwortet. Neue bedingte Fragen, zusätzliche Einwilligungen, Dokumente und sichtbare CAPTCHAs stoppen den Versand. Auch Mietpreis, Zimmer, WBS und Bezirk müssen am aktuellen Anbieterangebot eindeutig verifiziert sein.
+[GitHub-Actions-Job 126738169210 / Lauf 41876774829](https://github.com/mom1627/wohnungsagent-berlin/actions/runs/41876774829/job/126738169210): alle Job-Schritte erfolgreich, 96 Tests bestanden. 532 unterschiedliche Angebote auf 54 bis zur letzten Seite durchlaufenen Ergebnisseiten; 16 Basis-Treffer einschließlich öffentlicher Merkliste, jeweils vor einer möglichen Anfrage neu geprüft. Keine Pipeline-Fehler. **Keine neue Anfrage und weiterhin 0 tatsächlich bestätigte Bewerbungen; Tagesziel 4 nicht erreicht.** Im verbundenen Gmail-Postfach wurde bei erneuter Suche keine zuordenbare Bestätigung gefunden; es ist nicht nachgewiesen, dass dieses Postfach mit dem Bewerbungs-Secret übereinstimmt.
 
-Die gemeinsamen Versandadapter beobachten nach dem einmaligen normalen Formularbutton nur boolesche Übertragungsmerkmale und HTTP-Statuszahlen. Keine Request-/Response-Texte, URLs, Header, Formulardaten oder Tokens werden gespeichert. Ein POST oder HTTP 200 ist keine Bewerbungsbestätigung. Unklare Versuche bleiben dauerhaft gegen Wiederholung reserviert. Gewobag, HOWOGE und WBM bleiben für neue passende Angebote freigegeben; GESOBAU/Immomio bleibt bei sichtbarem CAPTCHA manuell.
+| Anbieter | Versandcode | Automatische neue Versuche | Tatsächliche Bestätigung |
+| --- | --- | --- | --- |
+| Gewobag | Implementiert | Freigegeben für passende neue Angebote | Keine; zwei frühere unterschiedliche Wohnungen dauerhaft reserviert |
+| HOWOGE | Implementiert | Freigegeben; spätere Vertragsunterlagen werden nicht erfunden | Keine |
+| WBM | Implementiert | Freigegeben bei nachgewiesenen Angebotsbedingungen und bestätigter Datenschutzeinwilligung | Keine |
+| STADT UND LAND | Neu implementiert; öffentliches Formular ohne Bewerberdaten geprüft | Gesperrt: vom Nutzer festzulegender frühester Einzugstermin fehlt | Noch kein realer Versandtest |
+| GESOBAU | Öffentliche Immomio-Prüfung, noch kein vollständiger Sender | Gesperrt bei sichtbarem CAPTCHA / nicht verfügbarem Kontozugang | Keine |
 
-96 lokale Regressionsprüfungen bestanden; vollständiger GitHub-Actions-Lauf folgt auf diesen Commit. Das Tagesziel von vier bestätigten Anfragen ist weiterhin nicht nachgewiesen.
+## Gründe der 16 Treffer im vollständigen Job
+
+- Zwei bereits reservierte Gewobag-Wohnungen: keine Wiederholung trotz fehlender Bestätigung.
+- Vier weitere Gewobag-Angebote: zusätzliche besondere Berechtigung bzw. Studierendenanforderungen; keine Immatrikulationsbescheinigung behauptet.
+- Acht GESOBAU-Angebote: Senioren-/WG-/Studierendenbedingungen, ausgeschlossener WBS-Anspruch oder nicht mehr verifizierbare Anbieterdetails; kein vollständig geprüfter automatischer Immomio-Versandweg.
+- Ein HOWOGE-Angebot: der aktuelle Anbieter-Kontaktweg ist geschlossen.
+- WBM, Rathausstraße 17: 420,86 EUR warm, 1 Zimmer, 32,87 m², sofort. Die aktuelle Anbieterseite verlangt ausdrücklich WBS 140. Die Eignung des vorhandenen WBS 100 für diese konkrete Anzeige ist nicht abschließend verifiziert; keine automatische Freigabe durch angenommene Gleichstellung. Ein Zuordnungsfehler bei der Weiterleitung von Objekt-ID auf lesbaren URL-Pfad wurde anschließend behoben: Der eindeutige aktuelle Angebotstitel nennt Mitte und wird nun als Anbieterbeleg erkannt. Allgemeine Werbung und widersprüchliche Bezirksbelege bleiben ausgeschlossen. 98 lokale Tests bestanden nach dieser Korrektur; vollständiger Nachlauf wird mit dem Commit gestartet. Ein weiteres recherchiertes WBM-Angebot mit ausdrücklich WBS 100/140 war beim aktuellen Öffnen nicht mehr vorhanden (404).
+
+Der Berliner Mietratgeber erläutert Einkommensobergrenzen und verlangt einen gültigen passenden WBS; daraus wird keine erfundene Bescheinigung oder anbieterspezifische Zusage abgeleitet: https://www.berlin.de/sen/wohnen/wissen-fuer-mieter/berliner-mietratgeber/wohnberechtigungsschein/.
+
+## Neu umgesetzt
+
+STADT UND LAND nutzt seinen tatsächlich eingebetteten Wohnungshelden-Formularweg. Einzugstermin ausschließlich aus `APPLICANT_EARLIEST_MOVE_IN` (`ASAP` oder `YYYY-MM-DD` nach Nutzerangabe), Einkommensantwort aus dem geschützten Secret. Keine Standardannahme, Jobcenter-Zusage, neue Einwilligung oder unbekannte bedingte Pflichtangabe. Aktuelle Miet-, Zimmer-, Bezirks- und WBS-Bedingungen werden vor einem Versuch erneut geprüft. Der fehlende Termin beeinflusst die bisherigen drei Anbieter nicht.
+
+Die gemeinsame passive Versanddiagnostik speichert ausschließlich feste Übertragungsmerkmale, POST-Anzahl und HTTP-Statuszahlen, niemals Request-/Response-Texte, URLs, Header, Tokens oder Bewerberdaten. HTTP 200 ist keine Versandbestätigung. Nur eine neue sichtbare Anbieterbestätigung zählt. Schutz vor Doppelbewerbungen bleibt dauerhaft im privaten Repository gespeichert.
+
+Die Produktion bleibt dreimal täglich freigegeben; Kriterien bleiben 1 oder 2 Zimmer, höchstens 550 EUR warm einschließlich günstigerer Angebote, bisherige Zielbezirke und WBS-Flächenlimit. Vier tägliche bestätigte Bewerbungen und vier erfolgreich validierte Anbieter sind weiterhin nicht nachgewiesen. Für tatsächlichen Versand müssen neue passende Angebote und ein vollständig bedienbarer regulärer Formularweg vorliegen.
 
 ---
 
