@@ -1,5 +1,6 @@
 """Discover every public results page, recheck matches and report exact blockers."""
 import asyncio
+import gewobag_adapter
 import json
 import os
 import re
@@ -99,7 +100,7 @@ async def run():
                                     outcome = await submit_prepared(page,frame,item["url"],ledger,enabled=True)
                                     if not outcome["confirmed"]: reasons.append(outcome["reason"])
                             except Exception as exc:
-                                reasons.append("form_processing_error_"+type(exc).__name__)
+                                reasons.append("form_processing_error_"+type(exc).__name__+"_"+gewobag_adapter.LAST_STAGE)
                     if outcome["confirmed"]:
                         report["applications_submitted"] += 1
                     report["applications"].append({

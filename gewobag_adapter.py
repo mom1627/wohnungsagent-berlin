@@ -10,6 +10,7 @@ from urllib.parse import urlsplit
 from housing_profile import today
 
 VERSION = "gewobag_browser_v2"
+LAST_STAGE = "initial"
 PRIVACY_ACK = ("Hiermit bestätigen Sie, dass die von Ihnen gemachten Angaben den Tatsachen entsprechen und dass Sie die "
                "Datenschutzbestimmungen der Gewobag zur Kenntnis genommen haben.")
 SUCCESS = re.compile(r"(?:ihre\s+)?(?:anfrage|bewerbung)\s+(?:(?:wurde|ist)\s+)?(?:erfolgreich\s+)?(?:versendet|gesendet|eingegangen|übermittelt)|(?:anfrage|bewerbung)\s+erfolgreich\s+(?:abgeschickt|abgesendet)",re.I)
@@ -85,17 +86,22 @@ async def one(frame,selector):
     return control
 
 async def choose(frame,selector,label):
+    global LAST_STAGE
+    LAST_STAGE = "dropdown_open_"+selector
     control = await one(frame,selector)
-    await control.click()
+    await control.click(timeout=8000)
     option = frame.get_by_role("option",name=label,exact=True)
     if await option.count() != 1: raise ValueError("dropdown_option_missing_or_ambiguous")
-    await option.click()
+    LAST_STAGE = "dropdown_option_"+selector
+    await option.click(timeout=8000)
     selected = await control.evaluate("e=>e.closest('ng-select')?.querySelector('.ng-value-label')?.textContent?.trim()")
     if selected != label: raise ValueError("dropdown_choice_not_verified")
 
 async def radio(frame,token,answer):
     control = await one(frame,"input[type='radio'][id*='"+token+"'][id$='-"+answer+"']")
-    await control.check()
+    global LAST_STAGE
+    LAST_STAGE = "radio_"+token
+    await control.check(timeout=8000)
 
 async def prepare(page,frame,contact,housing):
     current = await fields(frame)
@@ -133,7 +139,9 @@ async def prepare(page,frame,contact,housing):
     acknowledgement = await one(frame,"input[type='checkbox'][id*='gewobag_datenschutzhinweis_bestaetigt']")
     ack_text = await acknowledgement.evaluate("e=>[...(e.labels||[])].map(l=>l.textContent).join(' ')")
     if norm(ack_text) != PRIVACY_ACK: return False,"privacy_acknowledgement_changed"
-    await acknowledgement.check()
+    global LAST_STAGE
+    LAST_STAGE = "privacy_acknowledgement"
+    await acknowledgement.check(timeout=8000)
     final_fields = await fields(frame)
     if any(f["required"] and not known_field(f) for f in final_fields): return False,"new_unknown_required_field"
     invalid = frame.locator("input.ng-invalid:visible,textarea.ng-invalid:visible,ng-select.ng-invalid:visible")
