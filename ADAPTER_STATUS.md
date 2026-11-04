@@ -7,7 +7,7 @@ Stand: 4. November 2026, mit erweiterten Suchregeln (1 oder 2 Zimmer, bis 550 EU
 | Gewobag | Geschütztes Profil, Wohnungshelden-Formular, dauerhafte Reservierung | Nein; zwei verschiedene Wohnungen einmal versucht und unbestätigt | Status klären; keine Wiederholung dieser Angebote |
 | HOWOGE | Exakt geprüfte Kenntnisnahme-Hinweise, Kontaktformular Vorname/Nachname/E-Mail | Nein | Erste Kontaktanfrage freigegeben; Einkommensnachweise/Jobcenter-Mietübernahme bleiben Voraussetzung der späteren Vertragsprüfung |
 | WBM | Eigenes Formular; optionale unbekannte Adresse leer, Honeypot unberührt | Ja: tatsächliche Anbieterantwort bestätigt Eingang; keine Auswahl zur Besichtigung | Kein erneutes Anfragen derselben Wohnung; weitere neue passende Angebote bleiben freigegeben |
-| STADT UND LAND | Beobachtetes Material-Formular über Wohnungshelden; gemeinsamer dauerhafter Reservierungs- und Bestätigungsweg | Nein; noch kein realer Versandtest | Nutzer muss frühesten Einzugstermin als geschütztes Secret festlegen; aktuelle Bedingungen und Bezirk müssen am Anbieterangebot eindeutig sein |
+| STADT UND LAND | Beobachtetes Material-Formular über Wohnungshelden; gemeinsamer dauerhafter Reservierungs- und Bestätigungsweg | Nein; noch kein realer Versandtest | Einzugs-Secret eingerichtet, Datumssperre aufgehoben; aktuelle Bedingungen, Bezirk und Formular müssen am Anbieterangebot eindeutig passen |
 | GESOBAU | Öffentliche Immomio-Weiterleitung und CAPTCHA-Sperren geprüft | Nein; Versandadapter nicht fertig | Sichtbares Friendly-Captcha, danach Kontozugang/Profil prüfen |
 
 ## Geschützte Angaben eingerichtet
@@ -36,3 +36,7 @@ Die passive Diagnose zählt ausschließlich POSTs aus dem vertrauenswürdigen Fo
 ## Erste reale Anbieterantwort
 
 Am 4. November 2026 wurde die Anfrage aus dem erfolgreichen Lauf 41879180233 anhand der vom Nutzer vorgelegten Antwort von WBM zugeordnet. Die Antwort ist eine Absage wegen Anfrageaufkommen/zeitlichem Eingang und bestätigt damit den Empfang. Als Beleg gilt `provider_reply_user_verified`, ausdrücklich keine nachträglich behauptete Browser-Erfolgsanzeige. Der Screenshot und persönliche Mailinhalt bleiben außerhalb des Repositorys. Die Historie sperrt das Angebot weiter; spätere neue passende Wohnungen bleiben möglich.
+
+## Geschützte Einzugsangabe verfügbar
+
+Der Nutzer hat den frühesten Einzug und die Berücksichtigung der tatsächlichen Verfügbarkeit ausdrücklich festgelegt. Das dafür vorgesehene Repository-Secret wurde eingerichtet; sein Wert wird nicht ins Repository oder in Logs übernommen. Die Datumssperre von STADT UND LAND entfällt. Dies ist eine Konfigurationsfreigabe für normale passende Anfrageversuche und kein behaupteter erfolgreicher Versandtest dieses Anbieters.

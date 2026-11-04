@@ -1,3 +1,17 @@
+# Einzugsangabe eingerichtet – Datumssperre aufgehoben
+
+4. November 2026: Nach ausdrücklicher Nutzerangabe wurde `APPLICANT_EARLIEST_MOVE_IN` als verschlüsseltes Repository-Secret eingerichtet. GitHub hat das Hinzufügen bestätigt. Der Workflow referenziert dieses Secret bereits. Der vorhandene Code verwendet den geschützten frühesten Einzugstermin und berücksichtigt ein späteres ausdrücklich angegebenes Verfügbarkeitsdatum der jeweiligen Wohnung. Es werden keine konkreten Bewerberdaten in Repository-Dateien oder Logs gespeichert.
+
+Die datumsbezogene Sperre von STADT UND LAND ist damit aufgehoben. Die Bereitschaftsprüfung wurde lokal überprüft: Eine gültige geschützte Einzugsangabe und ein gültiges geschütztes Einkommen schalten den Sender für reguläre neue Versuche frei. Es wurde kein zusätzlicher fester Kalendertag in den Code geschrieben. Mietpreis, Bezirk, Zimmer, WBS, unveränderte Formularbedingungen, CAPTCHA-/Login-Prüfung und dauerhafte Reservierung gelten weiter.
+
+**Vier Versandwege sind implementiert und konfiguriert: Gewobag, HOWOGE, WBM und STADT UND LAND. Tatsächlich nachgewiesener Eingang bleibt bisher eine WBM-Anfrage mit anschließender Absage. Eine echte STADT-UND-LAND-Versandbestätigung liegt noch nicht vor; vier erfolgreich validierte Anbieter oder vier tägliche Bestätigungen sind deshalb weiterhin nicht nachgewiesen.** GESOBAU bleibt bei sichtbarem Immomio-CAPTCHA bzw. fehlendem nutzbaren Kontozugang manuell.
+
+Die täglichen Suchläufe und der automatische Versand bleiben aktiv konfiguriert. Ein bereits laufender vollständiger Actions-Lauf wird nicht doppelt gestartet; die neue Secret-Angabe steht allen danach gestarteten Jobs zur Verfügung.
+
+---
+
+## Historischer Stand vor Einrichtung der Einzugsangabe
+
 # Aktuell: erste WBM-Anfrage tatsächlich eingegangen
 
 4. November 2026: **Eine Wohnungsanfrage an WBM ist nachgewiesen eingegangen.** Die vom Nutzer vorgelegte Anbieterantwort stimmt mit der dauerhaft reservierten Anfrage aus dem Agentenlauf überein: Rathausstraße 17, 1 Zimmer, 32,87 m², 420,86 EUR Gesamtmiete. Der Agent reservierte und übermittelte den normalen Formularweg am 4. November um 17:44 UTC. Der Anbieter hat anschließend keine Besichtigung angeboten; als Grund nennt die Antwort hohes Anfrageaufkommen und Auswahl nach zeitlichem Eingang. Dies ist eine bestätigte Anfrage mit negativem Bewerbungsergebnis, keine Wohnungszusage oder Besichtigungseinladung.
