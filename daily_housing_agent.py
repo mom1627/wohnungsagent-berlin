@@ -5,6 +5,7 @@ import os
 import sys
 from collections import Counter
 from datetime import datetime, timezone
+from decimal import Decimal
 from pathlib import Path
 from collect_all_pages import collect_async
 from eligibility import screen
@@ -54,7 +55,9 @@ async def run():
                     source = screen(item["source_text"])
                     detail = screen(current.pop("text",""),provider_verified=current["detail_verified"])
                     # Source and current provider must agree; never fall back to stale source values.
-                    mismatch = any(source.get(k) != detail.get(k) for k in ("total_rent_eur","rooms","district"))
+                    mismatch = source["district"] != detail["district"] or any(
+                        source[k] is None or detail[k] is None or Decimal(source[k]) != Decimal(detail[k])
+                        for k in ("total_rent_eur","rooms"))
                     reasons = list(detail["reasons"])
                     if mismatch: reasons.append("source_provider_disagree")
                     if not discovery["complete"]: reasons.append("discovery_incomplete")

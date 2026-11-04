@@ -9,6 +9,7 @@ class Node:
     def __init__(self, page, kind): self.page, self.kind = page, kind
     @property
     def first(self): return self
+    def filter(self, **kwargs): return self
     async def wait_for(self, **kwargs): pass
     async def evaluate_all(self, script):
         if self.page.index == self.page.fail_at: raise TimeoutError()
@@ -17,7 +18,8 @@ class Node:
     async def inner_text(self): return "Zeige 1 bis 10 von 30 Angeboten"
     async def count(self): return int(self.page.index < 2)
     async def is_enabled(self): return self.page.index < 2
-    async def click(self): self.page.index += 1
+    async def is_visible(self): return False
+    async def click(self, **kwargs): self.page.index += 1
 
 class Page:
     url = "https://www.inberlinwohnen.de/wohnungsfinder"

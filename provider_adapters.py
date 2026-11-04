@@ -12,7 +12,7 @@ CHALLENGE = "iframe[src*='recaptcha'],iframe[src*='hcaptcha'],[class*='g-recaptc
 FIELD_JS = """els=>els.filter(e=>e.getClientRects().length).map(e=>({
  tag:e.tagName.toLowerCase(),type:e.type||'',id:e.id||'',name:e.name||'',
  label:[...(e.labels||[])].map(x=>x.innerText).join(' ').replace(/\\s+/g,' ').trim(),
- required:!!e.required||e.getAttribute('aria-required')==='true'
+ required:!!e.required||e.getAttribute('aria-required')==='true'||[...(e.labels||[])].some(x=>x.innerText.includes('*'))
 }))"""
 # No production adapter has a confirmed end-to-end submission as of this revision.
 # Adding a host here requires an actual matching property submission and visible
@@ -62,7 +62,7 @@ async def inspect_provider(page, url, robots_cache):
                 return result
             frame = await iframe.element_handle()
             frame = await frame.content_frame()
-            await frame.locator("input").first.wait_for(state="attached",timeout=20000)
+            await frame.locator("#firstName").wait_for(state="visible",timeout=20000)
             result["form_present"] = True
             result["fields"] = await frame.locator("input,textarea,select").evaluate_all(FIELD_JS)
             if await frame.locator(CHALLENGE).count():

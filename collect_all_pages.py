@@ -30,10 +30,21 @@ async def collect_async(max_pages=200):
             response = await page.goto(FINDER,wait_until="domcontentloaded",timeout=45000)
             if not response or response.status != 200:
                 raise RuntimeError("finder_http_error")
+            # The consent dialog appears after page load and intercepts Next.
+            # Save the default essential-only selection, never accept all.
+            result["last_stage"] = "essential_cookie_choice"
+            cookies = page.locator("#accept-selected-cookies")
+            try:
+                await cookies.wait_for(state="visible",timeout=6000)
+            except Exception:
+                pass
+            if await cookies.count() and await cookies.is_visible():
+                await cookies.click(timeout=10000)
             for number in range(1,max_pages+1):
                 if urlsplit(page.url).hostname not in {"www.inberlinwohnen.de","inberlinwohnen.de"}:
                     raise RuntimeError("finder_unexpected_redirect")
-                await page.locator(".list__details").first.wait_for(state="attached",timeout=20000)
+                result["last_stage"] = "offer_cards"
+                await page.locator(".list__details a[href]").filter(has_text="Alle Details").first.wait_for(state="attached",timeout=20000)
                 cards = await page.locator(".list__details").evaluate_all(CARD_JS)
                 signature = tuple(link for card in cards for link in card["links"])
                 if signature in signatures:
@@ -64,10 +75,13 @@ async def collect_async(max_pages=200):
                     result["complete"] = True
                     result["stop_reason"] = "last_page"
                     break
-                await next_button.click()
+                result["last_stage"] = "next_button_click"
+                await next_button.click(timeout=10000)
+                result["last_stage"] = "next_page_wait"
                 await page.wait_for_function(
-                    """old => JSON.stringify([...document.querySelectorAll('.list__details a[href]')]
-                    .filter(a=>a.textContent.trim()==='Alle Details').map(a=>a.href)) !== JSON.stringify(old)""",
+                    """old => { const links=[...document.querySelectorAll('.list__details a[href]')]
+                    .filter(a=>a.textContent.trim()==='Alle Details').map(a=>a.href);
+                    return links.length>0 && JSON.stringify(links)!==JSON.stringify(old); }""",
                     arg=list(signature),timeout=25000)
                 await page.wait_for_timeout(300)
             else:
