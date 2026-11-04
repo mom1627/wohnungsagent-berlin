@@ -15,6 +15,8 @@ class Node:
         if self.page.index == self.page.fail_at: raise TimeoutError()
         number = 0 if self.page.repeat else self.page.index
         return [{"text":"source text", "links":[f"https://www.gewobag.de/offer/{number}"]}]
+    async def evaluate(self, script):
+        return {"page":self.page.index+1,"range":str(self.page.index*10+1),"cards":await self.evaluate_all(script)}
     async def inner_text(self): return "Zeige 1 bis 10 von 30 Angeboten"
     async def count(self): return int(self.page.index < 2)
     async def is_enabled(self): return self.page.index < 2

@@ -1,6 +1,7 @@
 """Follow real public pagination, including Livewire-rendered offer cards."""
 import asyncio
 import re
+import hashlib
 from urllib.parse import urlsplit
 from provider_registry import provider_for, canonical_offer
 from collect_inberlinwohnen import FINDER, UA
@@ -46,8 +47,26 @@ async def collect_async(max_pages=200):
                     raise RuntimeError("finder_unexpected_redirect")
                 result["last_stage"] = "offer_cards"
                 await page.locator(".list__details a[href]").filter(has_text="Alle Details").first.wait_for(state="attached",timeout=20000)
-                cards = await page.locator(".list__details").evaluate_all(CARD_JS)
+                # Couple page identity and cards in one observation. Livewire
+                # replaces pagination and card markup in separate phases.
+                snapshot = await page.locator("body").evaluate("""body=>({
+                    page:Number(new URL(location.href).searchParams.get('page')||1),
+                    range:body.innerText.match(/Zeige\\s+(\\d+)\\s+bis/)?.[1]||null,
+                    cards:[...body.querySelectorAll('.list__details')].map(e=>({
+                      text:e.textContent.replace(/\\s+/g,' ').trim(),
+                      links:[...e.querySelectorAll('a[href]')].filter(a=>a.textContent.trim()==='Alle Details').map(a=>a.href)
+                    }))
+                })""")
+                cards = snapshot["cards"]
                 signature = tuple(link for card in cards for link in card["links"])
+                diagnostic = {"expected_page":number,"observed_page":snapshot["page"],
+                    "range_start":snapshot["range"],"card_count":len(cards),
+                    "signature":hashlib.sha256(repr(signature).encode()).hexdigest()[:12]}
+                result.setdefault("page_diagnostics",[]).append(diagnostic)
+                print("Discovery observation:",diagnostic,flush=True)
+                if snapshot["page"] != number or snapshot["range"] != str((number-1)*10+1):
+                    result["stop_reason"] = "page_identity_mismatch"
+                    break
                 if signature in signatures:
                     result["stop_reason"] = "repeated_page"
                     break
