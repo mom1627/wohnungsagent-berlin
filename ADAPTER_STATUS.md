@@ -5,14 +5,14 @@ Stand: 4. November 2026, nach Lauf 41808132504. Vier Anbieter werden ausdrückli
 | Anbieter | Implementierung | Tatsächlich bestätigt | Offene Voraussetzung |
 | --- | --- | --- | --- |
 | Gewobag | Geschütztes Profil, Wohnungshelden-Formular, dauerhafte Reservierung | Nein; zwei verschiedene Wohnungen einmal versucht und unbestätigt | Status klären; keine Wiederholung dieser Angebote |
-| HOWOGE | Exakt geprüfte Kenntnisnahme-Hinweise, Kontaktformular Vorname/Nachname/E-Mail | Nein | Bestätigtes Haushaltsnettoeinkommen; Grenze von dreifacher tatsächlicher Warmmiete pro Angebot prüfen |
-| WBM | Eigenes Formular; optionale unbekannte Adresse leer, Honeypot unberührt | Nein | Freigabe zusätzlicher Datenspeicherung und passendes Angebot |
+| HOWOGE | Exakt geprüfte Kenntnisnahme-Hinweise, Kontaktformular Vorname/Nachname/E-Mail | Nein | Einkommensbetrag im Secret vorhanden; dreifache tatsächliche Warmmiete muss pro Angebot erfüllt sein |
+| WBM | Eigenes Formular; optionale unbekannte Adresse leer, Honeypot unberührt | Nein | Freigabe im Secret vorhanden; passendes Angebot und echte Versandbestätigung stehen aus |
 | GESOBAU | Öffentliche Immomio-Weiterleitung und CAPTCHA-Sperren geprüft | Nein; Versandadapter nicht fertig | Sichtbares Friendly-Captcha, danach Kontozugang/Profil prüfen |
 
-## Noch fehlende geschützte Angaben
+## Geschützte Angaben eingerichtet
 
-- `APPLICANT_MONTHLY_NET_INCOME`: bestätigtes verfügbares monatliches Haushaltsnettoeinkommen, Dezimalbetrag ohne Währungszeichen. Fehlende/ungültige Werte und unterschrittene Grenze blockieren HOWOGE. Eine Ausnahme wegen Jobcenter-Bezug wird nicht erfunden.
-- `APPLICANT_WBM_DATA_CONSENT`: nur nach ausdrücklicher Freigabe auf `1` setzen. Der geprüfte Einwilligungstext umfasst elektronische Verarbeitung für geeignete Wohnungsangebote, Widerrufsmöglichkeit und Löschung nach sechs Monaten. Geänderter Text blockiert vor Eingabe persönlicher Daten.
+- `APPLICANT_MONTHLY_NET_INCOME` ist eingerichtet. Es enthält das bestätigte verfügbares monatliches Haushaltsnettoeinkommen, Dezimalbetrag ohne Währungszeichen. Fehlende/ungültige Werte und unterschrittene Grenze blockieren HOWOGE. Eine Ausnahme wegen Jobcenter-Bezug wird nicht erfunden.
+- `APPLICANT_WBM_DATA_CONSENT` ist nach ausdrücklicher Nutzerfreigabe eingerichtet. Der geprüfte Einwilligungstext umfasst elektronische Verarbeitung für geeignete Wohnungsangebote, Widerrufsmöglichkeit und Löschung nach sechs Monaten. Geänderter Text blockiert vor Eingabe persönlicher Daten.
 
 Alle Bewerberangaben bleiben ausschließlich in Actions-Secrets und im flüchtigen Formularspeicher. Keine Werte in Dateien oder Logs.
 

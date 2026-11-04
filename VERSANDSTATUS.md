@@ -20,8 +20,8 @@ Die zwischenzeitlichen Navigationsfehler wurden behoben: Der Agent übernimmt di
 | Anbieter | Stand |
 | --- | --- |
 | Gewobag | Formularadapter aktiv für andere passende Wohnungen; bisher kein bestätigter Versand |
-| HOWOGE | Eigener Formularadapter implementiert; bestätigtes Haushaltsnettoeinkommen zur Prüfung des Dreifachen der jeweiligen Warmmiete fehlt; letzter Basis-Treffer geschlossen |
-| WBM | Eigener Formularadapter implementiert; ausdrückliche Freigabe zur sechsmonatigen Datenspeicherung für geeignete Angebote fehlt; kein aktueller Basis-Treffer |
+| HOWOGE | Eigener Formularadapter implementiert; bestätigtes Haushaltsnettoeinkommen ist geschützt hinterlegt; das Dreifache der jeweiligen Warmmiete wird weiterhin geprüft; letzter Basis-Treffer geschlossen |
+| WBM | Eigener Formularadapter implementiert; ausdrückliche Freigabe zur sechsmonatigen Datenspeicherung für geeignete Angebote ist geschützt hinterlegt; kein aktueller Basis-Treffer |
 | GESOBAU | Öffentlicher Immomio-Weg geprüft; sichtbares Friendly-Captcha erfordert manuelle Aktion. Vollständiger Versandadapter nicht fertig |
 
 **Vier vollständig aktive, tatsächlich validierte Anbieter sind noch nicht erreicht.**
