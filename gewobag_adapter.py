@@ -76,6 +76,20 @@ FIELD_JS = """es=>es.filter(e=>e.getClientRects().length).map(e=>({
  required:!!e.required||e.getAttribute('aria-required')==='true'||[...(e.labels||[])].some(l=>l.classList.contains('ant-form-item-required'))||!!e.closest('formly-field')?.querySelector('label.ant-form-item-required')
 }))"""
 
+
+def phone_formats(raw):
+    value = raw.strip().strip("'\"")
+    value = re.sub(r"[\s()/.\-\u200b\u200e\u200f]", "", value)
+    if not re.fullmatch(r"(?:\+|00)?[0-9]{7,15}",value):
+        return []
+    if value.startswith("00"): value = "+"+value[2:]
+    if value.startswith("+490"): value = "+49"+value[4:]
+    options = [value]
+    if value.startswith("+49"): options.append("0"+value[3:])
+    elif re.fullmatch(r"01[567][0-9]{7,11}",value): options.append("+49"+value[1:])
+    return list(dict.fromkeys(options))
+
+
 async def fields(frame):
     return await frame.locator("input,textarea,select").evaluate_all(FIELD_JS)
 
@@ -139,10 +153,17 @@ async def prepare(page,frame,contact,housing):
         if await control.count() and await control.is_visible(): await control.fill(value)
     mobile = frame.locator("input[id*='telephone_number']:visible")
     if await mobile.count() != 1: return False,"visible_mobile_field_missing_or_ambiguous"
-    await mobile.fill(contact["phone"].strip())
-    await mobile.press("Tab")
-    if (await mobile.input_value()).strip() != contact["phone"].strip():
-        return False,"mobile_value_not_transferred"
+    formats = phone_formats(contact["phone"])
+    if not formats: return False,"phone_secret_has_no_valid_number_format"
+    mobile_valid = False
+    for formatted in formats:
+        await mobile.fill(formatted)
+        await mobile.press("Tab")
+        if (await mobile.input_value()).strip() != formatted: return False,"mobile_value_not_transferred"
+        if "ng-invalid" not in (await mobile.get_attribute("class") or ""):
+            mobile_valid = True
+            break
+    if not mobile_valid: return False,"mobile_format_rejected_by_provider"
     acknowledgement = await one(frame,"input[type='checkbox'][id*='gewobag_datenschutzhinweis_bestaetigt']")
     ack_text = await acknowledgement.evaluate("e=>[...(e.labels||[])].map(l=>l.textContent).join(' ')")
     if norm(ack_text) != PRIVACY_ACK: return False,"privacy_acknowledgement_changed"
