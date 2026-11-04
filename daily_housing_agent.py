@@ -2,6 +2,7 @@
 import asyncio
 import json
 import os
+import re
 import sys
 from collections import Counter
 from datetime import datetime, timezone
@@ -29,6 +30,9 @@ async def run():
         for item in discovery["listings"]:
             decision = screen(item["source_text"])
             decision.update({k:item[k] for k in ("url","provider","source_page")})
+            decision["title"] = item["source_text"].split("Alle Details",1)[0].strip()
+            address = re.search(r"Adresse:\s*(.*?)\s*Zimmeranzahl:",item["source_text"])
+            decision["address"] = address.group(1) if address else None
             report["offers"].append(decision)
             if decision["basic_criteria_match"]:
                 candidates.append(item)
@@ -53,12 +57,16 @@ async def run():
                         continue
                     current = await inspect_provider(page,item["url"],robots)
                     source = screen(item["source_text"])
+                    source_record = next(x for x in report["offers"] if x["url"]==item["url"])
                     detail = screen(current.pop("text",""),provider_verified=current["detail_verified"])
                     # Source and current provider must agree; never fall back to stale source values.
                     mismatch = source["district"] != detail["district"] or any(
                         source[k] is None or detail[k] is None or Decimal(source[k]) != Decimal(detail[k])
                         for k in ("total_rent_eur","rooms"))
-                    reasons = list(detail["reasons"])
+                    reasons = list(detail["reasons"])+[r for r in source["reasons"] if r in {
+                        "age_restriction_requires_review","student_status_requires_review",
+                        "shared_accommodation_requires_review","special_eligibility_requires_review",
+                        "excludes_wbs_entitlement","cooperative_cost_requires_review"}]
                     if mismatch: reasons.append("source_provider_disagree")
                     if not discovery["complete"]: reasons.append("discovery_incomplete")
                     if not profile["ready"]: reasons.append("missing_profile_secrets")
@@ -66,6 +74,8 @@ async def run():
                     report["applications"].append({
                         "url":item["url"],"provider":item["provider"],"status":"not_submitted",
                         "reason":current["reason"],"blockers":sorted(set(reasons)),
+                        "title":source_record["title"],"address":source_record["address"],
+                        "source_warm_rent_eur":source["total_rent_eur"],
                         "current_offer":detail,"form_present":current["form_present"],
                         "required_fields":[{"id":f["id"],"label":f["label"],"type":f["type"]}
                                            for f in current.get("fields",[]) if f["required"]]})
@@ -83,8 +93,14 @@ def main():
     lines = ["# Wohnungsagent – Laufbericht","",
              f"Gefunden: {report['discovered']} · Basis-Treffer: {report['basic_matches']} · Bestätigt versendet: {report['applications_submitted']}",
              f"Automatischer Versand aktiv: {report['submission_enabled']}",""]
+    discovery = report.get("discovery",{})
+    lines += [f"Ergebnisseiten: {discovery.get('pages_checked',0)} · Vollständig durchlaufen: {discovery.get('complete',False)}",
+              f"Bewerber-Secrets verfügbar: {report.get('profile_ready',False)} · Dauerhafte Historie erreichbar: {report.get('durable_ledger_ready',False)}","",
+              "| Angebot | Warmmiete laut Quelle | Ergebnis |", "| --- | ---: | --- |"]
     for item in report["applications"]:
-        lines.append("- "+item["url"]+" — "+item["status"]+": "+item["reason"])
+        label = (item.get("address") or item.get("title") or item["url"]).replace("|","/")
+        reasons = ", ".join(item.get("blockers",[item["reason"]]))
+        lines.append("| ["+label+"]("+item["url"]+") | "+str(item.get("source_warm_rent_eur","—"))+" € | "+item["status"]+": "+reasons+" |")
     if report["errors"]: lines.append("\nPipeline-Fehler: "+str(len(report["errors"])))
     Path("daily_housing_report.md").write_text("\n".join(lines)+"\n",encoding="utf-8")
     summary = os.getenv("GITHUB_STEP_SUMMARY")

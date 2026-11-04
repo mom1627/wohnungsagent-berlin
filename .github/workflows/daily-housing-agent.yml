@@ -44,3 +44,4 @@ jobs:
             daily_housing_report.md
           if-no-files-found: error
           retention-days: 14
+

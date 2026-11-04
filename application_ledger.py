@@ -116,3 +116,4 @@ def record(url,status,ledger):
     obj.finish(url,status)
     ledger.update(obj.entries)
     return True
+

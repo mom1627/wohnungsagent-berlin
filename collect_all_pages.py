@@ -21,7 +21,8 @@ async def collect_async(max_pages=200):
     print("Discovery stage: robots_verified",flush=True)
     results, seen, signatures = [], set(), set()
     result = {"source":FINDER,"count":0,"pages_checked":0,"complete":False,
-              "stop_reason":None,"expected_total":None,"unknown_provider_links":[],"listings":results}
+              "stop_reason":None,"expected_total":None,"unknown_provider_links":[],"listings":results,
+              "linked_offer_cards_seen":0,"duplicate_offer_links":0}
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
         page = await browser.new_page(locale="de-DE",user_agent=UA)
@@ -59,6 +60,7 @@ async def collect_async(max_pages=200):
                     result["expected_total"] = int(total.group(1).replace(".",""))
                 for card in cards:
                     for link in card["links"]:
+                        result["linked_offer_cards_seen"] += 1
                         provider = provider_for(link)
                         if not provider:
                             if link not in result["unknown_provider_links"]:
@@ -66,6 +68,7 @@ async def collect_async(max_pages=200):
                             continue
                         key = canonical_offer(link)
                         if key in seen:
+                            result["duplicate_offer_links"] += 1
                             continue
                         seen.add(key)
                         results.append({"url":link,"provider":provider,"source":FINDER,

@@ -8,11 +8,11 @@ from urllib.parse import urlsplit
 from provider_registry import provider_for
 from public_access import check_robots
 
-CHALLENGE = "iframe[src*='recaptcha'],iframe[src*='hcaptcha'],[class*='g-recaptcha'],[class*='h-captcha'],[name='cf-turnstile-response']"
+CHALLENGE = "iframe[src*='recaptcha'],iframe[src*='hcaptcha'],[class*='g-recaptcha'],[class*='h-captcha'],textarea[id^='g-recaptcha-response'],script[src*='recaptcha'],[name='cf-turnstile-response']"
 FIELD_JS = """els=>els.filter(e=>e.getClientRects().length).map(e=>({
  tag:e.tagName.toLowerCase(),type:e.type||'',id:e.id||'',name:e.name||'',
  label:[...(e.labels||[])].map(x=>x.innerText).join(' ').replace(/\\s+/g,' ').trim(),
- required:!!e.required||e.getAttribute('aria-required')==='true'||[...(e.labels||[])].some(x=>x.innerText.includes('*'))
+ required:!!e.required||e.getAttribute('aria-required')==='true'||[...(e.labels||[])].some(x=>x.classList.contains('ant-form-item-required')||getComputedStyle(x,'::after').content.includes('*'))||!!e.closest('formly-field')?.querySelector('label.ant-form-item-required')
 }))"""
 # No production adapter has a confirmed end-to-end submission as of this revision.
 # Adding a host here requires an actual matching property submission and visible
@@ -87,7 +87,12 @@ async def inspect_provider(page, url, robots_cache):
             result["form_present"] = True
             result["reason"] = "income_credit_notices_and_form_require_manual_review"
         else:
-            result["reason"] = "provider_adapter_not_validated"
+            links = await main.locator("a[href]").evaluate_all("""es=>es.map(e=>({text:e.innerText,href:e.href}))""")
+            applications = [x for x in links if re.search(r"jetzt bewerben|wohnung anfragen|besichtigung",x["text"],re.I)]
+            if any(urlsplit(x["href"]).hostname == "tenant.immomio.com" for x in applications):
+                result["reason"] = "immomio_account_and_profile_required"
+            else:
+                result["reason"] = "provider_adapter_not_validated"
     except Exception as exc:
         # No exception messages, request bodies, screenshots or HTML containing PII.
         result["reason"] = "inspection_error_"+type(exc).__name__

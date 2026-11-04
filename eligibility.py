@@ -14,11 +14,29 @@ def money(value):
 def screen(text, *, provider_verified=False):
     text = " ".join(text.split())
     amount = re.search(r"(?:Bruttowarmmiete|Warmmiete|Gesamtmiete)\s*:?\s*([\d.]+,\d{2})\s*(?:€|Euro)",text,re.I)
-    rooms = re.search(r"(?:Zimmeranzahl|Anzahl Zimmer|Zimmer)\s*:?\s*(\d+(?:[,.]\d+)?)(?![\d.,])",text,re.I)
+    # Prefer explicit labels; '1 Zimmer 34,08 m²' must never become 34 rooms.
+    rooms = None
+    for pattern in (r"(?:Zimmeranzahl|Anzahl Zimmer)\s*:?\s*(\d+(?:[,.]\d+)?)(?![\d.,])",
+                    r"\bZimmer\s*:\s*(\d+(?:[,.]\d+)?)(?![\d.,])",
+                    r"\b(\d+(?:[,.]\d+)?)\s*-?\s*Zimmer\b"):
+        rooms = re.search(pattern,text,re.I)
+        if rooms: break
     district = re.search(r"Bezirk/Ortsteil\s*:?\s*(Reinickendorf|Wedding|Mitte|Pankow)\s*(?:/|$)",text,re.I)
     if not district:
         district = re.search(r"(?:Adresse|Anschrift)\s*:?\s*[^:]{0,170}\b\d{5}\s*,?\s*(?:Berlin\s*,?\s*)?(Reinickendorf|Wedding|Mitte|Pankow)\b",text,re.I)
+    if not district:
+        district = re.search(r"\b\d{5}\s+(?:Berlin\s*,?\s*)?(Reinickendorf|Wedding|Mitte|Pankow)\b",text,re.I)
     rent = money(amount.group(1)) if amount else None
+    if rent is None:
+        # GESOBAU: accept 'Miete inkl. NK' only when all three explicit cost
+        # components, including heating, add up to that exact total.
+        total = re.search(r"Miete inkl\.\s*NK\s*:\s*([\d.]+,\d{2})\s*€",text,re.I)
+        parts = [re.search(label+r"\s*:\s*([\d.]+,\d{2})\s*€",text,re.I)
+                 for label in ("Kaltmiete","Betriebskosten","Heizkosten")]
+        if total and all(parts):
+            values = [money(x.group(1)) for x in parts]
+            if all(x is not None for x in values) and sum(values) == money(total.group(1)):
+                rent = money(total.group(1))
     count = Decimal(rooms.group(1).replace(",",".")) if rooms else None
     area = district.group(1).lower() if district else None
     reasons = []
@@ -30,11 +48,19 @@ def screen(text, *, provider_verified=False):
     basics = not reasons
     # WBS references in the actual property content only.
     no_wbs = bool(re.search(r"(?:WBS|Wohnberechtigungsschein)\s*:?\s*(?:nicht erforderlich|nein|nicht notwendig)|(?:kein|ohne)\s+(?:WBS|Wohnberechtigungsschein)",text,re.I))
-    categories = set(re.findall(r"\bWBS\s*[-:]?\s*(100|140|160|180|220)\b",text,re.I))
+    categories = set(re.findall(r"\bWBS(?:[- ]Berechtigung)?\s*[-:]?\s*(100|140|160|180|220)\b",text,re.I))
     generic = bool(re.search(r"\bWBS\b|Wohnberechtigungsschein",text,re.I))
     wbs = "not_required" if no_wbs and not categories else "100" if categories == {"100"} else "unknown" if generic else "not_stated"
     if wbs not in {"not_required","100"}: reasons.append("wbs_category_unverified")
     if SPECIAL.search(text): reasons.append("special_eligibility_requires_review")
+    if re.search(r"(?:Menschen|Personen)\s+ab\s+\d{2}|ab\s*(?:50|55|60|65|67)\s*Jahr",text,re.I):
+        reasons.append("age_restriction_requires_review")
+    if re.search(r"Studentenapartment|Wohnplatz für Studis|nur.{0,30}Studierende|Immatrikulations",text,re.I):
+        reasons.append("student_status_requires_review")
+    if re.search(r"\bWG\b|\d+er-WG|Wohngemeinschaft",text,re.I):
+        reasons.append("shared_accommodation_requires_review")
+    if re.search(r"ohne\s+WBS[- ]Anspruch|kein(?:en)?\s+WBS[- ]Anspruch",text,re.I):
+        reasons.append("excludes_wbs_entitlement")
     if re.search(r"Genossenschaftsanteil|Mitgliedsbeitrag|Pflichtanteil|Eintrittsgeld",text,re.I):
         reasons.append("cooperative_cost_requires_review")
     if re.search(r"nicht mehr verfügbar|bereits vermietet|Angebot.{0,20}beendet|keine.{0,15}Anfragen",text,re.I):

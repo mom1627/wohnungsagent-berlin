@@ -30,6 +30,17 @@ class EligibilityTests(unittest.TestCase):
         self.assertFalse(screen(OFFER+" Angebot beendet",provider_verified=True)["eligible"])
     def test_cooperative_cost(self):
         self.assertFalse(screen(OFFER+" Genossenschaftsanteil 1500 Euro",provider_verified=True)["eligible"])
+    def test_area_after_room_count_is_not_rooms(self):
+        value = screen("1 Zimmer 34,08 m² Anzahl Zimmer: 1,00")
+        self.assertEqual(value["rooms"],"1.00")
+    def test_heating_must_be_part_of_total(self):
+        text = "1 Zimmer 34,08 m² Kaltmiete: 408,96 € Betriebskosten: 85,19 € Heizkosten: 33,36 € Miete inkl. NK: 527,51 €"
+        self.assertEqual(screen(text)["total_rent_eur"],"527.51")
+        self.assertIsNone(screen(text.replace("527,51","494,15"))["total_rent_eur"])
+    def test_age_and_student_restrictions(self):
+        self.assertIn("age_restriction_requires_review",screen(OFFER+" Für Menschen ab 50 Jahren")["reasons"])
+        self.assertIn("student_status_requires_review",screen(OFFER+" Studentenapartment")["reasons"])
+        self.assertIn("shared_accommodation_requires_review",screen(OFFER+" Zimmer in 2er-WG")["reasons"])
 
 class LedgerTests(unittest.TestCase):
     def test_crash_after_reservation_is_never_retried(self):
@@ -44,6 +55,10 @@ class LedgerTests(unittest.TestCase):
             self.assertNotIn("http",path.read_text())
     def test_identity_queries_are_preserved(self):
         self.assertNotEqual(canonical_offer("https://wbm.de/offer?id=1"),canonical_offer("https://wbm.de/offer?id=2"))
+    def test_gesobau_uuid_changes_keep_the_same_unit(self):
+        old = "https://www.gesobau.de/?immo_ref=10-00920-00001-1605-a05d1369-f056-49f8-9ac2-e899d7cd00b4"
+        new = "https://www.gesobau.de/mieten/wohnungssuche/detailseite/wilhelmsruher-damm-10-00920-00001-1605-eeb16c89-3a16-471a-ae51-f8e9017883b3/"
+        self.assertEqual(canonical_offer(old),canonical_offer(new))
     def test_ledger_corruption_blocks(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory)/"state.json"

@@ -1,5 +1,6 @@
 """Explicit provider hosts. Only actual public offer-card links are followed."""
 from urllib.parse import urlsplit, urlunsplit, parse_qsl, urlencode
+import re
 
 PROVIDERS = {"gewobag.de":"gewobag", "howoge.de":"howoge", "gesobau.de":"gesobau",
              "degewo.de":"degewo", "wbm.de":"wbm", "stadtundland.de":"stadtundland", "berlinovo.de":"berlinovo"}
@@ -17,6 +18,11 @@ def canonical_offer(url):
     path = u.path.rstrip("/")
     if host == "howoge.de":
         path = path.replace("/wohnungen-gewerbe/", "/immobiliensuche/")
+    if host == "gesobau.de":
+        ref = dict(parse_qsl(u.query)).get("immo_ref",path)
+        identity = re.search(r"(?<!\d)(\d{2}-\d{5}-\d{5}-\d{4})(?:-[a-f0-9-]{36})?(?:/|$)",ref,re.I)
+        if identity:
+            return "https://gesobau.de/offer/"+identity.group(1)
     query = urlencode(sorted((k,v) for k,v in parse_qsl(u.query, keep_blank_values=True)
                             if not k.lower().startswith("utm_") and k.lower() not in {"t","fbclid","gclid"}))
     return urlunsplit(("https",host,path,query,""))
