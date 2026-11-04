@@ -65,12 +65,14 @@ class FormGuardTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(result,(False,"required_enrollment_certificate_not_available"))
     async def test_invisible_badge_is_not_a_challenge(self):
         frame = Mock(url="https://www.google.com/recaptcha/api2/anchor?size=invisible")
+        frame.is_detached.return_value = False
         owner = Mock()
         owner.is_visible = AsyncMock(return_value=True)
         frame.frame_element = AsyncMock(return_value=owner)
         self.assertFalse(await visible_challenge(Mock(frames=[frame])))
     async def test_visible_challenge_frame_is_blocked(self):
         frame = Mock(url="https://www.google.com/recaptcha/api2/bframe?k=public-key")
+        frame.is_detached.return_value = False
         owner = Mock()
         owner.is_visible = AsyncMock(return_value=True)
         owner.bounding_box = AsyncMock(return_value={"height":400,"width":400})
@@ -80,6 +82,8 @@ class FormGuardTests(unittest.IsolatedAsyncioTestCase):
 class SubmissionTests(unittest.IsolatedAsyncioTestCase):
     def setup_request(self,texts):
         frame,button,body,page = Mock(),Mock(),Mock(),Mock()
+        frame.is_detached.return_value = False
+        page.frames = [frame]
         button.count = AsyncMock(return_value=1)
         button.is_enabled = AsyncMock(return_value=True)
         button.press = AsyncMock()
@@ -127,6 +131,41 @@ class SubmissionTests(unittest.IsolatedAsyncioTestCase):
             result=await submit_prepared(page,frame,"https://gewobag.de/test",ledger,enabled=True)
         self.assertFalse(result["confirmed"])
         ledger.reserve.assert_not_called()
+    async def test_navigation_error_can_still_have_visible_success(self):
+        page,frame,button=self.setup_request(["Anfrageformular","Ihre Anfrage wurde erfolgreich versendet."])
+        button.press.side_effect=RuntimeError("Execution context was destroyed")
+        ledger=Mock(remote=True)
+        with patch("gewobag_adapter.visible_challenge",new=AsyncMock(return_value=False)):
+            result=await submit_prepared(page,frame,"https://gewobag.de/test",ledger,enabled=True)
+        self.assertTrue(result["confirmed"])
+        button.press.assert_awaited_once()
+    async def test_replacement_application_frame_is_observed_without_resubmitting(self):
+        page,frame,button=self.setup_request(["Anfrageformular"])
+        replacement=Mock(url="https://app.wohnungshelden.de/public/confirmation")
+        replacement.is_detached.return_value=False
+        replacement.locator.return_value.inner_text=AsyncMock(return_value="Ihre Anfrage wurde erfolgreich versendet.")
+        async def navigate(*args,**kwargs):
+            frame.is_detached.return_value=True
+            page.frames=[replacement]
+            raise RuntimeError("Frame was detached")
+        button.press.side_effect=navigate
+        ledger=Mock(remote=True)
+        with patch("gewobag_adapter.visible_challenge",new=AsyncMock(return_value=False)):
+            result=await submit_prepared(page,frame,"https://gewobag.de/test",ledger,enabled=True)
+        self.assertTrue(result["confirmed"])
+        button.press.assert_awaited_once()
+    async def test_untrusted_replacement_cannot_confirm_submission(self):
+        page,frame,button=self.setup_request(["Anfrageformular"])
+        replacement=Mock(url="https://example.org/confirmation")
+        async def navigate(*args,**kwargs):
+            frame.is_detached.return_value=True
+            page.frames=[replacement]
+        button.press.side_effect=navigate
+        ledger=Mock(remote=True)
+        with patch("gewobag_adapter.visible_challenge",new=AsyncMock(return_value=False)):
+            result=await submit_prepared(page,frame,"https://gewobag.de/test",ledger,enabled=True)
+        self.assertFalse(result["confirmed"])
+        replacement.locator.assert_not_called()
     async def test_challenge_after_click_does_not_get_solved_or_retried(self):
         page,frame,button=self.setup_request(["Anfrageformular"])
         ledger=Mock(remote=True)

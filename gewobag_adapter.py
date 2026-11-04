@@ -54,10 +54,15 @@ def offer_blockers(decision, housing):
 async def visible_challenge(page):
     """An invisible badge/script is not itself a human-verification task."""
     for frame in page.frames:
+        if frame.is_detached(): continue
         parsed = urlsplit(frame.url)
         host = parsed.hostname or ""
         if host in {"www.google.com","www.recaptcha.net","www.google.com.au","google.com","recaptcha.net"} and "/recaptcha/" in parsed.path:
-            owner = await frame.frame_element()
+            try:
+                owner = await frame.frame_element()
+            except Exception:
+                if frame.is_detached(): continue
+                raise
             if not await owner.is_visible(): continue
             if "/bframe" in parsed.path:
                 box = await owner.bounding_box()
@@ -68,6 +73,32 @@ async def visible_challenge(page):
         if "hcaptcha.com" in host or "challenges.cloudflare.com" == host:
             owner = await frame.frame_element()
             if await owner.is_visible(): return True
+    return False
+
+def browser_error_code(exc):
+    # Never persist raw exception messages: they can contain form values or tokens.
+    message = str(exc).lower()
+    if "detach" in message: return "frame_detached"
+    if "execution context" in message: return "navigation_context_changed"
+    if "closed" in message: return "browser_target_closed"
+    if "timeout" in message or isinstance(exc, TimeoutError): return "browser_timeout"
+    return "browser_error"
+
+async def confirmation_visible(page, original, existing_frames):
+    candidates = [original]
+    for candidate in page.frames:
+        if candidate is original or candidate in existing_frames: continue
+        # Only a newly created frame on the actual application origin can replace it.
+        if urlsplit(candidate.url).hostname == "app.wohnungshelden.de":
+            candidates.append(candidate)
+    for candidate in candidates:
+        if candidate.is_detached(): continue
+        try:
+            body = await candidate.locator("body").inner_text(timeout=1500)
+            if SUCCESS.search(body): return True
+        except Exception:
+            # A form can navigate between enumeration and reading; try next poll.
+            continue
     return False
 
 FIELD_JS = """es=>es.filter(e=>e.getClientRects().length).map(e=>({
@@ -199,21 +230,26 @@ async def submit_prepared(page,frame,url,ledger,*,enabled):
         return {**result,"status":"skipped","reason":"already_reserved_or_submitted"}
     result["status"] = "submission_unverified"
     result["reason"] = "no_success_confirmation"
+    existing_frames = list(page.frames)
     try:
         await button.press("Enter",timeout=10000)
+    except Exception as exc:
+        # The action may already have transmitted before a frame/navigation error.
+        # Observe only: never press the button again.
+        result["reason"] = "submit_action_"+browser_error_code(exc)
+    try:
         # Let the website perform its own ordinary invisible verification.
         # Never call grecaptcha, inject a token, solve a challenge or POST directly.
         for _ in range(30):
             if await visible_challenge(page):
                 result["reason"] = "visible_captcha_after_submit_requires_manual_action"
                 break
-            body = await frame.locator("body").inner_text()
-            if SUCCESS.search(body):
+            if await confirmation_visible(page,frame,existing_frames):
                 result.update(status="submitted_confirmed",confirmed=True,reason="provider_success_visible")
                 break
             await page.wait_for_timeout(500)
     except Exception as exc:
-        result["reason"] = "submission_error_"+type(exc).__name__
+        result["reason"] = "confirmation_observer_"+browser_error_code(exc)
     # An error here leaves a durable pending reservation, so no retry is possible.
     try:
         ledger.finish(url,result["status"],confirmation=result["confirmed"])
