@@ -1,6 +1,8 @@
 """Strict, explainable screening using explicit property labels, never navigation."""
 import re
+from datetime import date
 from decimal import Decimal, InvalidOperation
+from housing_profile import today
 
 from berlin_location import property_location
 
@@ -14,7 +16,7 @@ def money(value):
 
 def screen(text, *, provider_verified=False):
     text = " ".join(text.split())
-    amount = re.search(r"(?:Bruttowarmmiete|Warmmiete|Gesamtmiete)\s*:?\s*([\d.]+,\d{2})\s*(?:€|Euro|EUR)",text,re.I)
+    amount = re.search(r"\b(?:Bruttowarmmiete|Warmmiete|Gesamtmiete)\s*:?\s*([\d.]+(?:,\d{2})?)\s*(?:€|Euro|EUR)",text,re.I)
     # Prefer explicit labels; '1 Zimmer 34,08 m²' must never become 34 rooms.
     rooms = None
     for pattern in (r"(?:Zimmeranzahl|Anzahl (?:der )?Zimmer)\s*:?\s*(\d+(?:[,.]\d+)?)(?![\d.,])",
@@ -23,6 +25,10 @@ def screen(text, *, provider_verified=False):
         rooms = re.search(pattern,text,re.I)
         if rooms: break
     rent = money(amount.group(1)) if amount else None
+    if rent is None:
+        reversed_amount = re.search(r"([\d.]+,\d{2})\s*(?:€|Euro|EUR)\s*Warmmiete\b",text,re.I)
+        if reversed_amount:
+            rent = money(reversed_amount[1])
     if rent is None:
         # GESOBAU: accept 'Miete inkl. NK' only when all three explicit cost
         # components, including heating, add up to that exact total.
@@ -65,8 +71,18 @@ def screen(text, *, provider_verified=False):
         reasons.append("cooperative_cost_requires_review")
     if re.search(r"nicht mehr verfügbar|bereits vermietet|Angebot.{0,20}beendet|keine.{0,15}Anfragen",text,re.I):
         reasons.append("offer_closed")
-    availability = re.search(r"(?:Frei ab|Bezugsfrei(?: ab)?|Bezugsfertig ab|Verfügbar ab|Verfügbarkeit|Bezugsdatum)\s*:?\s*(ab sofort|sofort|nächstmöglich|nach Vereinbarung|\d{2}\.\d{2}\.\d{4})",text,re.I)
+    availability = re.search(r"(?:Frei ab|Bezugsfrei(?: ab)?|Bezugsfertig ab|Verfügbar ab|Verfügbarkeit|Bezugsdatum|Bezug)\s*:?\s*(ab sofort|sofort|nächstmöglich|nach Vereinbarung|\d{2}\.\d{2}\.\d{4})",text,re.I)
     if not availability: reasons.append("availability_unverified")
+    deadline = re.search(r"(?:Bewerbungsfrist(?: bis)?|Bewerbungen bis)\s*:?\s*(\d{2})\.(\d{2})\.(\d{4})",text,re.I)
+    if deadline:
+        try:
+            day, month, year = map(int, deadline.groups())
+            if date(year, month, day) < today():
+                reasons.append("offer_closed")
+        except ValueError:
+            reasons.append("application_deadline_unverified")
+    if re.search(r"Renovierungsarbeiten.{0,150}erforderlich|Arbeiten selbst auszuführen|Mieter werben Mieter|nur für Bestandsmieter",text,re.I):
+        reasons.append("special_eligibility_requires_review")
     if re.search(r"(?:mindestens|nur für)\s*(?:zwei|drei|vier|[2-9])\s*Personen|(?:Haushalt(?:sgröße)?|Personenzahl)\s*:?\s*(?:mind\.\s*)?(?:zwei|drei|vier|[2-9])\b",text,re.I):
         reasons.append("household_size_restriction")
     if re.search(r"Heizkosten.{0,40}(?:nicht enthalten|separat)|(?:ohne|zuzüglich)\s+(?:der\s+)?Heizkosten",text,re.I):

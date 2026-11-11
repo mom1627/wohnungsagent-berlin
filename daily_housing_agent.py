@@ -11,9 +11,9 @@ from datetime import datetime, timezone
 from decimal import Decimal
 from pathlib import Path
 from collect_all_pages import collect_async
-from direct_sources import collect_direct
+from direct_sources import collect_direct, collect_stadtundland
 from provider_registry import canonical_offer, provider_for
-from eligibility import screen
+from eligibility import money, screen
 from application_ledger import Ledger
 from housing_profile import today
 from application_profile import load_profile
@@ -47,7 +47,11 @@ def discovery_candidate(item, decision):
         return False
     # Public cards can omit the city label or warm-price semantics. An unknown
     # value may trigger a detail check, but never qualifies an application.
-    return decision["rooms"] is not None and Decimal(decision["rooms"]) in (1, 2) and (
+    if decision["rooms"] is None or Decimal(decision["rooms"]) not in (1, 2):
+        return False
+    minimum = re.search(r"Gesamtmiete\s+ab\s+([\d.]+,\d{2})\s*€", item["source_text"], re.I)
+    floor = money(minimum[1]) if minimum else None
+    return (floor is None or floor <= 550) and (
         decision["total_rent_eur"] is None or Decimal(decision["total_rent_eur"]) <= 550)
 
 
@@ -75,8 +79,9 @@ async def run():
     report["new_verified_matches"] = 0
     report["verified_matches"] = 0
     try:
-        discovery, direct = await asyncio.gather(finder_discovery(), collect_direct())
-        sources = {"inberlinwohnen": discovery, **direct}
+        discovery, direct, stadt = await asyncio.gather(
+            finder_discovery(), collect_direct(), collect_stadtundland())
+        sources = {"inberlinwohnen": discovery, **direct, "stadtundland": stadt}
         report["sources"] = {name: {k: v for k, v in result.items() if k != "listings"}
                              for name, result in sources.items()}
         report["discovery"] = report["sources"]["inberlinwohnen"]
@@ -112,7 +117,11 @@ async def run():
             report["errors"].append({"stage":"application_ledger","error":type(exc).__name__})
             ledger = Ledger(remote=False)
         report["durable_ledger_ready"] = ledger.remote
-        history = OfferHistory(ledger)
+        try:
+            history = OfferHistory(ledger)
+        except Exception as exc:
+            report["errors"].append({"stage":"verified_offer_history","error":type(exc).__name__})
+            history = OfferHistory(Ledger(remote=False))
         closed = set()
         live_ready = report["submission_requested"] and profile["ready"] and housing["ready"] and ledger.remote
         report["provider_status"] = provider_statuses(ledger,live_ready)
@@ -274,7 +283,13 @@ def main():
     summary = os.getenv("GITHUB_STEP_SUMMARY")
     if summary:
         with open(summary,"a",encoding="utf-8") as f: f.write("\n".join(lines)+"\n")
-    print(json.dumps({k:report[k] for k in ("discovered","basic_matches","applications_submitted","submission_enabled")}))
+    print(json.dumps({"event":"run_summary", **{k:report.get(k) for k in (
+        "source_count","sources_complete","discovered","basic_matches","new_verified_matches",
+        "applications_submitted","submission_enabled","profile_ready","housing_profile_ready",
+        "housing_profile_status","durable_ledger_ready","confirmed_today","errors")},
+        "application_statuses":dict(Counter(x["status"] for x in report["applications"])),
+        "blocked_reasons":dict(Counter(x["reason"] for x in report["applications"] if not x.get("confirmed")))}),
+        flush=True)
     return 1 if report["errors"] or report.get("sources_complete") != report.get("source_count") else 0
 
 if __name__ == "__main__":

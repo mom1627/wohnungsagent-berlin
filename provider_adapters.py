@@ -5,7 +5,7 @@ logging. Probes never fill applicant fields or click a submission button.
 """
 import re
 from gewobag_adapter import visible_challenge
-from urllib.parse import urlsplit
+from urllib.parse import urlsplit, urlunsplit, unquote
 from provider_registry import provider_for, canonical_offer
 from public_access import check_robots
 from berlin_location import district_name
@@ -40,6 +40,10 @@ async def inspect_provider(page, url, robots_cache):
         result["reason"] = "unapproved_provider"
         return result
     try:
+        if provider == "berlinovo":
+            parsed = urlsplit(url)
+            if re.fullmatch(r"/wohnung-id/[\d-]+/?", parsed.path):
+                url = urlunsplit(parsed._replace(path="/de" + parsed.path))
         check_robots(url,robots_cache)
         wbm_district = None
         if provider == "wbm":
@@ -88,7 +92,47 @@ async def inspect_provider(page, url, robots_cache):
             result["reason"] = "manual_security_check"
             return result
         result["detail_verified"] = True
-        if provider == "gewobag":
+        if provider == "degewo":
+            form = main.locator("form[id^='form_apartment_inquiry']")
+            if await form.count() == 1:
+                result["application_open"] = True
+                result["form_present"] = True
+                challenge = form.locator(".frc-captcha,.frc-widget,[name='frc-captcha-solution']")
+                result["reason"] = ("degewo_friendly_captcha_requires_manual_action" if await challenge.count()
+                                    else "degewo_form_requires_manual_review")
+            else:
+                result["reason"] = "application_link_missing_or_closed"
+        elif provider == "berlinovo":
+            link = main.get_by_role("link",name="Vermietungsanfrage",exact=True)
+            if await link.count() != 1:
+                result["reason"] = "application_link_missing_or_closed"
+                return result
+            href = await link.get_attribute("href")
+            parsed = urlsplit(href or "")
+            if (parsed.scheme != "https" or parsed.netloc != "app.wohnungshelden.de" or
+                    not re.fullmatch(r"/public/listings/\d+/\d+/\d+/application/?", unquote(parsed.path))):
+                result["reason"] = "unapproved_application_link"
+                return result
+            check_robots(href,robots_cache)
+            response = await page.goto(href,wait_until="domcontentloaded",timeout=25000)
+            if not response or response.status in (404,410):
+                result["reason"] = "provider_offer_closed"
+                return result
+            if response.status != 200 or urlsplit(page.url).netloc != parsed.netloc:
+                result["reason"] = "application_link_unverified"
+                return result
+            state = page.get_by_text(re.compile(r"gewünschte Objekt konnte nicht gefunden werden|nicht mehr verfügbar", re.I)).or_(
+                page.get_by_text("Vorname", exact=True))
+            await state.first.wait_for(state="visible",timeout=12000)
+            if re.search(r"gewünschte Objekt konnte nicht gefunden werden|nicht mehr verfügbar",
+                         await page.locator("body").inner_text(),re.I):
+                result["reason"] = "provider_offer_closed"
+                return result
+            result["application_open"] = True
+            result["form_present"] = True
+            result["reason"] = ("visible_captcha_requires_manual_action" if await visible_challenge(page)
+                                else "berlinovo_form_requires_manual_review")
+        elif provider == "gewobag":
             # Dismiss only the ordinary cookie choice, then reveal the request tab.
             save = page.get_by_role("button",name="Speichern wie ausgewählt",exact=True)
             if await save.count() and await save.is_visible():

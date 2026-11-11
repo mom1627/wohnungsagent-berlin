@@ -1,7 +1,7 @@
 # Wohnungsagent Berlin
 
 Der Agent durchsucht inBerlinWohnen sowie die Originalseiten von degewo,
-GESOBAU, WBM und berlinovo dreimal täglich. Er prüft mögliche Treffer erneut
+GESOBAU, WBM, berlinovo, Gewobag und STADT UND LAND viermal täglich. Er prüft mögliche Treffer erneut
 beim Anbieter und meldet die Ergebnisse und Ausfälle pro Quelle.
 
 ## Automatische Anfragen
@@ -54,7 +54,7 @@ solange ein Sendevorgang ungeklärt ist.
 
 ## Zeitplan und Berichte
 
-06:17, 11:17 und 16:17 UTC, aktuell im Winter 07:17, 12:17 und 17:17 Uhr Berlin.
+06:17, 09:57, 11:17 und 16:17 UTC. Im Winter sind das 07:17, 10:57, 12:17 und 17:17 Uhr Berlin.
 GitHub kann Startzeiten verzögern. Laufberichte stehen als Actions-Zusammenfassung
 und JSON-/Markdown-Artefakt bereit; Artefakte bleiben 14 Tage verfügbar.
 Die Bewerbungshistorie und die erstmals beim Anbieter bestätigten Angebote

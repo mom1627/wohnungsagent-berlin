@@ -20,7 +20,7 @@ class BerlinwideDiscoveryTests(unittest.TestCase):
                     self.assertTrue(result["basic_criteria_match"])
 
     def test_original_must_establish_missing_source_values(self):
-        card = {"candidate_origin": "direct_provider"}
+        card = {"candidate_origin": "direct_provider", "source_text": "2 Zimmer"}
         candidate = screen("2 Zimmer")
         self.assertTrue(discovery_candidate(card, candidate))
         original = screen("2 Zimmer 12555 Berlin Warmmiete: 545,00 €", provider_verified=True)
@@ -34,7 +34,7 @@ class BerlinwideDiscoveryTests(unittest.TestCase):
         self.assertIn("heating_not_included", result["reasons"])
 
     def test_degewo_public_card_only(self):
-        source = SOURCES[0]
+        source = next(source for source in SOURCES if source.provider == "degewo")
         url = "https://www.degewo.de/immosuche/details/test"
         card = card_record(source, {"url": url, "text": "549,00 € Warmmiete 1 Zimmer"}, 1)
         self.assertEqual(screen(card["source_text"])["total_rent_eur"], "549.00")

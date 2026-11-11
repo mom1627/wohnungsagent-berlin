@@ -18,6 +18,8 @@ def canonical_offer(url):
     path = u.path.rstrip("/")
     if host == "howoge.de":
         path = path.replace("/wohnungen-gewerbe/", "/immobiliensuche/")
+    if host == "berlinovo.de" and path.startswith("/de/wohnung-id/"):
+        path = path.removeprefix("/de")
     if host == "gesobau.de":
         ref = dict(parse_qsl(u.query)).get("immo_ref",path)
         identity = re.search(r"(?<!\d)(\d{2}-\d{5}-\d{5}-\d{4})(?:-[a-f0-9-]{36})?(?:/|$)",ref,re.I)

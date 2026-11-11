@@ -4,12 +4,13 @@ import json
 import re
 from dataclasses import dataclass
 from urllib.error import HTTPError, URLError
-from urllib.parse import urljoin, urlsplit
+from urllib.parse import urldefrag, urljoin, urlsplit, urlunsplit
 from urllib.request import HTTPRedirectHandler, Request, build_opener
 
 from lxml import html
 
 from collect_inberlinwohnen import UA
+from browser_runtime import launch_chromium
 from provider_registry import canonical_offer, provider_for
 from public_access import check_robots
 
@@ -24,9 +25,16 @@ class Source:
     next_link: str
     empty: str
     price_before_label: bool = False
+    search_path: str | None = None
 
 
 SOURCES = (
+    Source("gewobag", "https://www.gewobag.de/fuer-mietinteressentinnen/suche/wohnung/?gesamtmiete_von&gesamtmiete_bis&gesamtflaeche_von&gesamtflaeche_bis&zimmer_von&zimmer_bis&sort-by",
+           "//article[contains(@class,'gw-offer')]", ".//a[contains(@class,'read-more-link')]",
+           r"/fuer-mietinteressentinnen/mietangebote/\d{4}-\d{5}-\d{4}-\d{4}/?",
+           "//a[contains(@class,'next') and contains(@class,'page-numbers')]",
+           r"\b0 Suchergebnisse\b|keine Mietangebote",
+           search_path=r"/fuer-mietinteressentinnen/suche/wohnung(?:/page/\d+)?/?"),
     Source("degewo", "https://www.degewo.de/immosuche",
            "//*[contains(@class,'c-teaser--apartment')]",
            ".//a[contains(@href,'/immosuche/details/')]", r"/immosuche/details/[^/]+/?",
@@ -43,7 +51,7 @@ SOURCES = (
            "//a[@rel='next']", r"\b0 Mietwohnungen\b|derzeit keine (?:freien |verfügbaren )?(?:Mietwohnungen|Wohnungen|Wohnungsangebote)", True),
     Source("berlinovo", "https://www.berlinovo.de/de/wohnungen/suche",
            "//article[contains(@class,'node--type-apartment')]",
-           ".//a[starts-with(@href,'/wohnung-id/')]", r"/wohnung-id/[\d-]+/?",
+           ".//a[starts-with(@href,'/wohnung-id/')]", r"/(?:de/)?wohnung-id/[\d-]+/?",
            "//a[@rel='next']", r"\b0 Ergebnisse gefunden\b|keine Ergebnisse"),
 )
 
@@ -52,7 +60,7 @@ def public_url(source, url, *, detail=False):
         parsed = urlsplit(url)
         if provider_for(url) != source.provider:
             return False
-        pattern = source.offer_path if detail else re.escape(urlsplit(source.url).path.rstrip("/")) + "/?"
+        pattern = source.offer_path if detail else source.search_path or re.escape(urlsplit(source.url).path.rstrip("/")) + "/?"
         return bool(re.fullmatch(pattern, parsed.path))
     except (ValueError, TypeError, AttributeError):
         return False
@@ -63,6 +71,11 @@ def card_record(source, card, page_number):
     text = " ".join((card.get("text") or "").split())
     if not url or not text or not public_url(source, url, detail=True):
         return None
+    if source.provider == "berlinovo":
+        parsed = urlsplit(url)
+        # The unprefixed public link redirects to HTTP. Use its verified HTTPS detail path.
+        path = parsed.path if parsed.path.startswith("/de/") else "/de" + parsed.path
+        url = urlunsplit(parsed._replace(path=path))
     # These two observed layouts display their explicit warm-rent label after the value.
     if source.price_before_label:
         text = re.sub(r"([\d.]+,\d{2}\s*€)\s*Warmmiete\b", r"Warmmiete \1", text, flags=re.I)
@@ -154,7 +167,7 @@ async def collect_source(source, *, max_pages=30):
                     report["listings"].append(record)
             seen.update(new_keys)
             report["pages_checked"] += 1
-            links = list(dict.fromkeys(urljoin(document.base_url, a.get("href"))
+            links = list(dict.fromkeys(urldefrag(urljoin(document.base_url, a.get("href")))[0]
                                        for a in document.xpath(source.next_link) if a.get("href")))
             if len(links) > 1:
                 raise SourceFailure("ambiguous_next_page")
@@ -185,3 +198,72 @@ async def collect_direct():
         print(json.dumps({"event": "source_result", "provider": source.provider,
                           **{k: v for k, v in result.items() if k != "listings"}}), flush=True)
     return dict(zip((source.provider for source in SOURCES), results))
+
+STADT = Source("stadtundland", "https://stadtundland.de/wohnungssuche",
+               "main article[class*='Teaser_immoTeaser__']", "a[href*='/wohnungssuche/']",
+               r"/wohnungssuche/\d+%2[Ff]\d+%2[Ff]\d+/?", "", r"\b0 Suchergebnisse\b")
+BROWSER_CARDS = """(cards, selector) => cards.map(card => ({
+    url: card.querySelector(selector)?.href,
+    text: card.innerText,
+    title: card.querySelector('h2,h3')?.innerText
+}))"""
+
+
+async def collect_stadtundland():
+    """Use the public page and its visible load-more control."""
+    from playwright.async_api import async_playwright
+    report = {"source": STADT.url, "complete": False, "stop_reason": "page_limit",
+              "pages_checked": 0, "count": 0, "listings": []}
+    seen = set()
+    try:
+        await asyncio.to_thread(check_robots, STADT.url, {})
+        async with asyncio.timeout(150), async_playwright() as p:
+            browser = await launch_chromium(p)
+            try:
+                page = await browser.new_page(locale="de-DE", user_agent=UA)
+                page.set_default_timeout(10000)
+                response = await page.goto(STADT.url, wait_until="domcontentloaded", timeout=24000)
+                if not response or response.status != 200 or not public_url(STADT, page.url):
+                    raise SourceFailure(f"search_http_{response.status if response else None}")
+                reject = page.get_by_role("button", name="Alle ablehnen", exact=True)
+                if await reject.count() == 1 and await reject.is_visible():
+                    await reject.click()
+                results = page.get_by_role("heading", name=re.compile(r"\d+ Suchergebnisse"))
+                await results.first.wait_for(state="visible", timeout=20000)
+                advertised = int(re.search(r"\d+", await results.first.inner_text())[0])
+                report["expected_total"] = advertised
+                cards = page.locator(STADT.cards)
+                more = page.get_by_role("button", name="Mehr Ergebnisse laden", exact=True)
+                for number in range(1, 25):
+                    raw = await cards.evaluate_all(BROWSER_CARDS, STADT.link)
+                    before = len(seen)
+                    for card in raw:
+                        record = card_record(STADT, card, number)
+                        if not record:
+                            continue
+                        key = canonical_offer(record["url"])
+                        if key not in seen:
+                            seen.add(key)
+                            report["listings"].append(record)
+                    if len(seen) == before and (advertised or number > 1):
+                        raise SourceFailure("load_more_repeated_results")
+                    report["pages_checked"] += 1
+                    if not await more.count() or not await more.is_visible():
+                        report["complete"] = len(seen) == advertised
+                        report["stop_reason"] = "last_page" if report["complete"] else "published_count_mismatch"
+                        break
+                    await more.click()
+                    await page.wait_for_function(
+                        "state => document.querySelectorAll(state.selector).length > state.before",
+                        arg={"selector": STADT.cards, "before": len(raw)}, timeout=15000)
+                    await asyncio.sleep(0.5)
+            finally:
+                await browser.close()
+    except (SourceFailure, PermissionError) as exc:
+        report["stop_reason"] = str(exc)
+    except Exception as exc:
+        report["stop_reason"] = type(exc).__name__
+    report["count"] = len(report["listings"])
+    print(json.dumps({"event":"source_result", "provider":STADT.provider,
+                      **{k:v for k,v in report.items() if k != "listings"}}), flush=True)
+    return report
