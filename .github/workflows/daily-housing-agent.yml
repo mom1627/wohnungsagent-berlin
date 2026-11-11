@@ -27,7 +27,17 @@ jobs:
       - run: python -m pip install playwright==1.56.0 lxml==6.1.1 Protego==0.7.0
       - name: Unit and safety regression tests
         run: python -m unittest discover -s tests -v
-      - run: python -m playwright install --with-deps chromium
+      - name: Install and verify Chromium
+        timeout-minutes: 4
+        run: |
+          python -m playwright install chromium
+          python - <<'PY'
+          from playwright.sync_api import sync_playwright
+
+          with sync_playwright() as playwright:
+              browser = playwright.chromium.launch()
+              browser.close()
+          PY
       - name: Discover all pages and inspect matching offers
         env:
           APPLICANT_NAME: ${{ secrets.APPLICANT_NAME }}
