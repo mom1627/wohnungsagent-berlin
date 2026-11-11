@@ -2,6 +2,7 @@
 import asyncio
 from browser_runtime import launch_chromium
 import gewobag_adapter
+import stadtundland_adapter
 import json
 import os
 import re
@@ -227,7 +228,9 @@ async def run():
                                         uncertain_this_run.add(item["provider"])
                                     if not outcome["confirmed"]: reasons.append(outcome["reason"])
                             except Exception as exc:
-                                reasons.append("form_processing_error_"+type(exc).__name__+"_"+gewobag_adapter.LAST_STAGE)
+                                stage = (stadtundland_adapter.LAST_STAGE if item["provider"] == "stadtundland"
+                                         else gewobag_adapter.LAST_STAGE)
+                                reasons.append("form_processing_error_"+type(exc).__name__+"_"+stage)
                     if outcome["confirmed"]:
                         report["applications_submitted"] += 1
                         outcome["confirmed_at_utc"] = datetime.now(timezone.utc).isoformat()

@@ -3,7 +3,7 @@ import unittest
 from datetime import date
 from unittest.mock import Mock, AsyncMock, patch
 from stadtundland_adapter import (requested_date,income_answer,readiness_blocker,
-    prepare_stadtundland,known_control,INCOME_LABEL,PRIVACY)
+    prepare_stadtundland,known_control,INCOME_LABEL,PRIVACY,WBS_LABEL)
 from eligibility import screen
 
 class ProtectedInputs(unittest.TestCase):
@@ -51,7 +51,9 @@ class BeforeTransmission(unittest.IsolatedAsyncioTestCase):
 
     async def test_new_question_after_income_answer_stops_before_contact_data(self):
         page,frame=Mock(),Mock()
-        radio=frame.get_by_role.return_value
+        radio=Mock()
+        missing_group=Mock(count=AsyncMock(return_value=0))
+        frame.get_by_role.side_effect=lambda *args, name, **kwargs: radio if name == INCOME_LABEL else missing_group
         radio.count=AsyncMock(return_value=1)
         radio.get_by_role.return_value.check=AsyncMock()
         known={"id":"mat-input-1","type":"text","tag":"input","label":"Vorname"}
@@ -64,3 +66,20 @@ class BeforeTransmission(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(reason,"stadtundland_new_conditional_question_requires_review")
         frame.get_by_label.assert_not_called()
         radio.get_by_role.return_value.check.assert_awaited_once()
+
+
+    async def test_missing_certificate_data_stops_before_applicant_fields(self):
+        page,frame=Mock(),Mock()
+        radio=frame.get_by_role.return_value
+        radio.count=AsyncMock(return_value=1)
+        known={"id":"formly_21_radio_$$_wbs_available_$$_0_0-input","type":"radio",
+               "tag":"input","label":"Ja","group":WBS_LABEL}
+        with patch.dict(os.environ,{"APPLICANT_EARLIEST_MOVE_IN":"ASAP","APPLICANT_MONTHLY_NET_INCOME":"1000"},clear=True), \
+             patch("stadtundland_adapter.visible_challenge",new=AsyncMock(return_value=False)), \
+             patch("stadtundland_adapter.inspect_controls",new=AsyncMock(return_value=[known])):
+            ready,reason=await prepare_stadtundland(page,frame,{},{"household_size":1,
+                "apply_for_self":True,"wbs_type":"100"},{"total_rent_eur":"500"})
+        self.assertFalse(ready)
+        self.assertEqual(reason,"stadtundland_wbs_required_issue_date_and_authorized_rooms")
+        frame.get_by_label.assert_not_called()
+        radio.get_by_role.assert_not_called()

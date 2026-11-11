@@ -1,4 +1,6 @@
 import unittest
+from unittest.mock import patch
+from datetime import date
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
@@ -9,7 +11,7 @@ from direct_sources import SOURCES, card_record, public_url
 from eligibility import screen
 from protego import Protego
 from public_access import check_robots
-from stadtundland_adapter import WBS_LABEL, known_control
+from stadtundland_adapter import WBS_LABEL, known_control, wbs_certificate_values
 
 
 class BerlinwideDiscoveryTests(unittest.TestCase):
@@ -57,6 +59,18 @@ class BerlinwideDiscoveryTests(unittest.TestCase):
                  "id": "formly_21_radio_$$_wbs_available_$$_0_0-input"}
         self.assertTrue(known_control(field))
         self.assertFalse(known_control({**field, "group": "Haben Sie einen WBS 160?"}))
+
+    def test_stadtundland_requires_printed_certificate_values(self):
+        housing = {"wbs_valid_until": "2027-01-01"}
+        with patch.dict("os.environ", {}, clear=True):
+            self.assertEqual(wbs_certificate_values(housing),
+                             (None, "stadtundland_wbs_required_issue_date_and_authorized_rooms"))
+        with patch.dict("os.environ", {"APPLICANT_WBS_ISSUED_ON": "2026-01-01",
+                                       "APPLICANT_WBS_AUTHORIZED_ROOMS": "2"}), \
+             patch("stadtundland_adapter.today", return_value=date(2026, 11, 11)):
+            values, blocker = wbs_certificate_values(housing)
+            self.assertIsNone(blocker)
+            self.assertEqual(tuple(values.values()), ("01.01.2026", "01.01.2027", "2"))
 
     def test_age_and_move_in_wording_observed_at_stadtundland(self):
         match = screen("Seniorenwohnung, ab 63 Jahren. Einzug ab sofort möglich. Warmmiete 403,8 €")

@@ -12,10 +12,16 @@ from housing_profile import today
 from gewobag_adapter import norm, visible_challenge
 
 VERSION = "stadtundland_browser_v1"
+LAST_STAGE = "initial"
 INCOME_LABEL = "Beträgt die monatliche Warmmiete höchstens 35 % Ihres monatlichen Netto-Haushaltseinkommens?"
 WBS_LABEL = "Haben Sie einen Wohnberechtigungsschein (WBS) 140 oder 100?"
 REFERRAL_LABEL = "Wie sind Sie auf uns aufmerksam geworden?"
 DATE_LABEL = "Ab wann können Sie die Wohnung anmieten?"
+WBS_FIELDS = {
+    "stadt_und_land_ausstelldatum_wbs": ("text", "ausgestellt am"),
+    "stadt_und_land_gueltigkeit_wbs": ("text", "gültig bis"),
+    "$$_wbs_max_number_rooms_$$": ("number", "Wie ist die Anzahl an Räumen Ihres WBS?"),
+}
 PRIVACY = ("Ihre Angaben werden verschlüsselt übertragen und wir garantieren die Einhaltung der Datenschutzbestimmungen. "
            "Unsere aktuelle Datenschutzerklärung können Sie über den folgenden Link einsehen: "
            "https://www.stadtundland.de/Datenschutz.php.")
@@ -58,6 +64,30 @@ def income_answer(rent):
     except (InvalidOperation, TypeError):
         return None
 
+def wbs_certificate_values(housing):
+    """Use certificate values provided in protected configuration."""
+    issue_text = os.getenv("APPLICANT_WBS_ISSUED_ON", "").strip()
+    rooms_text = os.getenv("APPLICANT_WBS_AUTHORIZED_ROOMS", "").strip().replace(",", ".")
+    missing = []
+    if not issue_text:
+        missing.append("issue_date")
+    if not rooms_text:
+        missing.append("authorized_rooms")
+    if missing:
+        return None, "stadtundland_wbs_required_" + "_and_".join(missing)
+    try:
+        issue = date.fromisoformat(issue_text)
+        expiry = date.fromisoformat(housing["wbs_valid_until"])
+        rooms = Decimal(rooms_text)
+        if not re.fullmatch(r"\d{1,2}(?:\.5)?", rooms_text) or not 1 <= rooms <= 10:
+            raise ValueError()
+        if not issue <= today() <= expiry:
+            raise ValueError()
+    except (KeyError, ValueError, InvalidOperation):
+        return None, "stadtundland_wbs_certificate_values_invalid"
+    return dict(zip(WBS_FIELDS, (issue.strftime("%d.%m.%Y"), expiry.strftime("%d.%m.%Y"), rooms_text))), None
+
+
 def known_control(field):
     label = norm(field["label"]).removesuffix(" *")
     tag, kind, identity = field["tag"],field["type"],field["id"]
@@ -74,7 +104,7 @@ def known_control(field):
         return label in {"Ja","Nein"} and token is not None and token in identity
     if kind == "checkbox":
         return "stadt_und_land_bestaetigung_datenschutzhinweis" in identity and label == PRIVACY
-    mapping = {"stadt_und_land_anzahl_einziehende_personen":("number","Anzahl der einziehenden Personen"),
+    mapping = {**WBS_FIELDS, "stadt_und_land_anzahl_einziehende_personen":("number","Anzahl der einziehenden Personen"),
                "stadt_und_land_anzahl_kinder":("number","Davon Kinder"),
                "stadt_und_land_ab_wann_kann_wohnung_angemietet_werden":("text",DATE_LABEL)}
     return any(token in identity and (kind,label) == expected for token,expected in mapping.items())
@@ -93,6 +123,8 @@ async def select_material(frame,label,value):
         raise ValueError("material_selection_not_verified")
 
 async def prepare_stadtundland(page,frame,contact,housing,decision,*,referral="Inberlinwohnen.de"):
+    global LAST_STAGE
+    LAST_STAGE = "preflight"
     # Check protected missing inputs before any profile values enter a form.
     blocker = readiness_blocker()
     if blocker: return False,blocker
@@ -104,6 +136,21 @@ async def prepare_stadtundland(page,frame,contact,housing,decision,*,referral="I
         return False,"stadtundland_unknown_form_field_or_notice"
     if housing.get("household_size") != 1 or not housing.get("apply_for_self"):
         return False,"stadtundland_household_mapping_unverified"
+    wbs = frame.get_by_role("radiogroup",name=WBS_LABEL,exact=True)
+    wbs_count = await wbs.count()
+    wbs_values = {}
+    if wbs_count:
+        if wbs_count != 1 or housing.get("wbs_type") != "100":
+            return False,"stadtundland_wbs_confirmation_unverified"
+        wbs_values, blocker = wbs_certificate_values(housing)
+        if blocker:
+            return False,blocker
+        LAST_STAGE = "wbs_choice"
+        await wbs.get_by_role("radio",name="Ja",exact=True).check(timeout=8000)
+        if any(not known_control(f) for f in await inspect_controls(frame)):
+            return False,"stadtundland_new_conditional_question_requires_review"
+
+    LAST_STAGE = "income_choice"
     answer = income_answer(decision.get("total_rent_eur"))
     if answer is None: return False,"stadtundland_income_answer_unverified"
     group = frame.get_by_role("radiogroup",name=INCOME_LABEL,exact=True)
@@ -113,13 +160,7 @@ async def prepare_stadtundland(page,frame,contact,housing,decision,*,referral="I
     current = await inspect_controls(frame)
     if any(not known_control(f) for f in current):
         return False,"stadtundland_new_conditional_question_requires_review"
-    wbs = frame.get_by_role("radiogroup",name=WBS_LABEL,exact=True)
-    if await wbs.count():
-        if await wbs.count() != 1 or housing.get("wbs_type") != "100":
-            return False,"stadtundland_wbs_confirmation_unverified"
-        await wbs.get_by_role("radio",name="Ja",exact=True).check(timeout=8000)
-        if any(not known_control(f) for f in await inspect_controls(frame)):
-            return False,"stadtundland_new_conditional_question_requires_review"
+    LAST_STAGE = "select_fields"
     names = contact["name"].strip().split(None,1)
     if len(names) != 2: return False,"structured_applicant_name_required"
     await select_material(frame,"Anrede",housing["salutation"])
@@ -130,16 +171,19 @@ async def prepare_stadtundland(page,frame,contact,housing,decision,*,referral="I
         move_in = max(move_in, date.fromisoformat("-".join(reversed(available.split(".")))))
     values = {"Vorname":names[0],"Nachname":names[1],"E-Mail-Adresse":contact["email"],
               "Telefonnummer":contact["phone"],"Anmerkungen":contact["note"]}
+    LAST_STAGE = "contact_fields"
     for label,value in values.items():
         control = frame.get_by_label(label,exact=True)
         if await control.count() != 1: return False,"stadtundland_control_missing_or_ambiguous"
         await control.fill(value,timeout=8000)
-    for token,value in {"stadt_und_land_anzahl_einziehende_personen":"1",
+    LAST_STAGE = "housing_fields"
+    for token,value in {**wbs_values, "stadt_und_land_anzahl_einziehende_personen":"1",
                         "stadt_und_land_anzahl_kinder":"0",
                         "stadt_und_land_ab_wann_kann_wohnung_angemietet_werden":move_in.strftime("%d.%m.%Y")}.items():
         control = frame.locator("input[id*='"+token+"']")
         if await control.count()!=1: return False,"stadtundland_control_missing_or_ambiguous"
         await control.fill(value,timeout=8000)
+    LAST_STAGE = "privacy_acknowledgment"
     await frame.get_by_role("checkbox",name=PRIVACY,exact=True).check(timeout=8000)
     current = await inspect_controls(frame)
     if any(not known_control(f) for f in current): return False,"stadtundland_new_conditional_question_requires_review"

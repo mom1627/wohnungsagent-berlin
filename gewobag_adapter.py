@@ -49,7 +49,7 @@ def offer_blockers(decision, housing):
         if housing["wbs_type"] != "100": reasons.append("wbs_type_not_validated")
         size = decision.get("area_sqm")
         if size is None: reasons.append("wbs_offer_area_unverified")
-        elif Decimal(size) > Decimal(str(housing["wbs_max_area_sqm"])):
+        elif Decimal(size) > min(Decimal(50), Decimal(str(housing["wbs_max_area_sqm"]))):
             reasons.append("offer_exceeds_wbs_area")
         if date.fromisoformat(housing["wbs_valid_until"]) < today(): reasons.append("wbs_expired")
         available = decision.get("available_from","")

@@ -39,3 +39,14 @@ must be supplied from the user's confirmed answer; no default is invented.
 Missing values disable this provider before applicant data is filled. Its
 35-percent question receives the truthful mathematical answer, never an assumed
 Jobcenter payment guarantee. New conditional requirements stop submission.
+
+For STADT UND LAND listings whose form asks for WBS certificate details, set
+two additional protected repository secrets from the actual certificate:
+
+- `APPLICANT_WBS_ISSUED_ON` contains the printed date of issue in YYYY-MM-DD form.
+- `APPLICANT_WBS_AUTHORIZED_ROOMS` contains the authorized room count printed on the certificate.
+
+The expiry date still comes from the existing protected housing profile. If the
+form asks for these details and they are missing, the agent records the manual
+requirement before filling applicant contact details. It does not derive a date
+or room count from the expiry date, household size, or floor area.
