@@ -1,27 +1,40 @@
-# Source strategy — Berlin housing agent
+# Suchquellen und Bewerbungswege in Berlin
 
-## Priority order
-1. **inberlinwohnen.de** — primary discovery hub for Berlin's state-owned housing providers.
-2. **Direct provider websites** — degewo, GESOBAU, Gewobag, HOWOGE, STADT UND LAND, WBM, berlinovo.
-3. **Immomio** — application workflow where officially offered by a provider (GESOBAU documents this flow).
-4. **Additional sources** — ImmoScout24, immowelt, Kleinanzeigen, and affordable cooperatives.
+Der Produktionslauf durchsucht inBerlinWohnen und sechs Anbieter unabhängig
+voneinander. Ein Ausfall bleibt mit Grund und Seitenzahl sichtbar. Mögliche
+Treffer werden anhand des aktuellen Originalangebots und des Bewerbungswegs
+geprüft.
 
-Sources are discovery targets, **not implemented or authorized scrapers**. Before building a site adapter, verify technical accessibility, terms, robots rules, rate limits, and allowed application methods. Prefer official feeds and supported alerts. Do not bypass login restrictions, CAPTCHAs, or anti-bot measures.
+| Quelle | Suche | Bewerbungsweg |
+| --- | --- | --- |
+| inBerlinWohnen | Öffentliche Angebotskarten und sichtbare Seitennavigation | Weiterleitung zum Anbieter |
+| Gewobag | Offizielle öffentliche Ergebnisliste mit Seitenlinks | Vorhandener Browseradapter für Wohnungshelden |
+| STADT UND LAND | Öffentliche Angebotsliste und „Mehr Ergebnisse laden“ | Vorhandener Browseradapter, mit geschütztem Einkommen und Einzugstermin |
+| GESOBAU | Öffentliche Angebotsliste mit Seitenlinks | Immomio über Anbieterlink, manuelle Anmeldung und ggf. Sicherheitsprüfung |
+| degewo | Öffentliche Angebotsliste mit Seitenlinks | Anbieterformular mit Friendly Captcha, manuelle Bearbeitung |
+| WBM | Öffentliche Angebotsliste | Vorhandener Formularadapter mit zusätzlicher hinterlegter Einwilligung |
+| berlinovo | Öffentliche Angebotsliste mit Seitenlinks und HTTPS-Exposé | Öffentlich verlinkter Wohnungshelden-Weg wird auf Verfügbarkeit geprüft |
+| HOWOGE | Angebotskarten über inBerlinWohnen | Vorhandener Kontaktadapter. Die direkte HOWOGE-Ergebnisliste lädt über einen in robots.txt ausgeschlossenen JSON-Endpunkt. |
 
-## Matching policy
-- One applicant; WBS 100; 1 room.
-- Berlin-Reinickendorf, Wedding, Mitte, Pankow.
-- Warm rent at most EUR 550; exclude offers with unknown total warm rent.
-- Exclude closed listings, incompatible WBS tiers, age-limited offers not confirmed eligible, member-only cooperative offers, and high upfront shares.
-- Jobcenter has approved moving, **not necessarily the rent of a specific new apartment**. Flag each offer for separate cost approval as applicable.
-- Deduplicate across portals by address + unit details when verified, not just URL.
+## Weitere geprüfte Quellen
 
-## Application pipeline (not yet enabled)
-1. Verify an active application route and applicant eligibility.
-2. Prepare only truthful, user-approved application data.
-3. Submit only on sites where permitted and after separately enabling that adapter.
-4. Record portal receipt / confirmation; avoid duplicate submissions.
-5. Stop on uncertain eligibility, CAPTCHA/MFA, unexpected documents, payment requests, or consent forms.
+| Quelle | Ergebnis |
+| --- | --- |
+| Immomio | Die Nutzungsbedingungen erfordern eine ausdrückliche Freigabe für automatisierten Zugriff und Versand in angemeldeten Bereichen. Anbieterlinks bleiben für die manuelle Bewerbung sichtbar. [Nutzungsbedingungen](https://www.immomio.com/nutzungsbedingungen/) |
+| Kleinanzeigen | Automatisiertes Sammeln erfordert eine schriftliche Einwilligung des Betreibers. [Nutzungsbedingungen](https://themen.kleinanzeigen.de/nutzungsbedingungen/) |
+| ImmoScout24 | Die dokumentierte Such-API ist für Content-Partner. [Such-API](https://api.immobilienscout24.de/api-docs/search/introduction/) |
+| immowelt | Die dokumentierte API setzt einen aktiven Anbietervertrag voraus und liefert eigene Inserate. [API-Bedingungen](https://www.immowelt.de/meineimmowelt/apinutzungsbedingungen.aspx) |
+| Waitly | Die Plattform arbeitet mit Interessen- und Wartelisten. Für diesen Agenten wurde kein freigegebener Such- oder Bewerbungszugang verifiziert. [Waitly](https://waitly.eu/de) |
+| EverReal | Für diesen Agenten wurde kein öffentlicher Berlin-Feed verifiziert. Einzelne Bewerbungswege sind erst am konkreten Inserat prüfbar. [EverReal](https://de.everreal.co/) |
+| Märkische Scholle und Märkische Baugenossenschaft | Beide Angebotsseiten meldeten bei der Prüfung keine Angebote. Ein etwaiger späterer Beitritt setzt überprüfbare Eintrittskosten voraus. [Märkische Scholle](https://maerkische-scholle.de/wohnungsangebote.html) · [Märkische Baugenossenschaft](https://mb-eg.de/wohnungssuche) |
 
-## Current state
-Prototype source modules are not yet connected to these websites. No cloud deployment of live browsing, no authenticated portal session, no automatic applications, no notifications. GitHub Actions is only a candidate for periodic checks and may be delayed.
+Die Suche umfasst alle zwölf Bezirke. Sie priorisiert Einzimmerwohnungen und
+berücksichtigt Zweizimmerwohnungen. Die Warmmiete muss am Originalangebot mit
+höchstens 550 Euro belegt sein. WBS, Wohnfläche, Haushaltsgröße und
+Sonderbedingungen müssen zum geschützten Profil passen.
+
+Die Bewerbungshistorie reserviert ein Angebot vor dem Versand und speichert
+URL-Aliase, soweit sie über die öffentliche Weiterleitung verifiziert wurden.
+Der Lauf zählt ausschließlich ausdrückliche Bestätigungen. Ungeklärte Versuche
+bleiben gesperrt. Eine manuelle Prüfung ist bei CAPTCHA, fehlenden Angaben,
+nicht validierten Formularen oder notwendigen Einwilligungen im Bericht sichtbar.
