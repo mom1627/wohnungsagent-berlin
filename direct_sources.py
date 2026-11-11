@@ -113,7 +113,7 @@ async def public_page(source, url, robots):
 
 
 def node_text(element):
-    return " ".join(" ".join(element.xpath(".//text()[not(ancestor::script or ancestor::style)]")).split())
+    return " ".join(" ".join(element.xpath(".//text()[not(ancestor::script or ancestor::style or ancestor::*[@hidden])]")).split())
 
 
 def read_cards(source, document):
