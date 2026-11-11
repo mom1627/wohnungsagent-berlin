@@ -119,20 +119,14 @@ async def select_material(frame,label,value):
         await control.press("Enter", timeout=8000)
     panel = frame.get_by_role("listbox", name=label, exact=True)
     await panel.wait_for(state="visible", timeout=8000)
-    options = panel.get_by_role("option")
-    labels = [norm(text) for text in await options.all_text_contents()]
-    if labels.count(value) != 1:
+    option = panel.get_by_role("option", name=value, exact=True)
+    if await option.count() != 1:
         raise ValueError("material_option_missing_or_ambiguous")
-    position = labels.index(value)
-    target_id = await options.nth(position).get_attribute("id")
-    await control.press("Home", timeout=8000)
-    for _ in range(position):
-        await control.press("ArrowDown", timeout=8000)
-    if not target_id or await control.get_attribute("aria-activedescendant") != target_id:
-        raise ValueError("material_active_option_not_verified")
-    await control.press("Enter", timeout=8000)
-    if norm(await control.inner_text()) != value:
+    await option.click(timeout=8000)
+    selected = control.locator(".mat-mdc-select-value-text")
+    if norm(await selected.inner_text(timeout=8000)) != value:
         raise ValueError("material_selection_not_verified")
+
 
 async def prepare_stadtundland(page,frame,contact,housing,decision,*,referral="Inberlinwohnen.de"):
     global LAST_STAGE

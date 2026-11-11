@@ -36,8 +36,9 @@ async def finder_discovery():
                 "stop_reason":"finder_browser_"+type(exc).__name__}
 
 
-def ranked_candidates(listings):
+def ranked_candidates(listings, verified_urls=()):
     return sorted(listings, key=lambda item: (
+        canonical_offer(item["url"]) not in verified_urls,
         Decimal(screen(item["source_text"])["rooms"] or "99"),
         Decimal(screen(item["source_text"])["total_rent_eur"] or "999999")))
 
@@ -143,7 +144,7 @@ async def run():
             page.set_default_timeout(10000)
             robots = {}
             try:
-                for item in ranked_candidates(candidates):
+                for item in ranked_candidates(candidates, history.entries):
                     if ledger.contains(item["url"]):
                         report["applications"].append({"url":item["url"],"status":"skipped","reason":"already_reserved_or_submitted"})
                         continue

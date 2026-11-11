@@ -41,38 +41,36 @@ class ProtectedInputs(unittest.TestCase):
         self.assertEqual(decision["area_sqm"],"40.00")
 
 class MaterialSelection(unittest.IsolatedAsyncioTestCase):
-    async def test_keyboard_selects_only_the_verified_active_option(self):
-        frame, control, panel, options = Mock(), Mock(), Mock(), Mock()
+    def selection_controls(self, option_count, selected_text):
+        frame, control, panel, option = Mock(), Mock(), Mock(), Mock()
         frame.get_by_role.side_effect = [control, panel]
         control.count = AsyncMock(return_value=1)
-        control.get_attribute = AsyncMock(side_effect=["false", "mat-option-2"])
+        control.get_attribute = AsyncMock(return_value="false")
         control.press = AsyncMock()
-        control.inner_text = AsyncMock(return_value="Herr")
+        control.locator.return_value.inner_text = AsyncMock(return_value=selected_text)
         panel.wait_for = AsyncMock()
-        panel.get_by_role.return_value = options
-        options.all_text_contents = AsyncMock(return_value=["Keine", "Herr", "Frau"])
-        options.nth.return_value.get_attribute = AsyncMock(return_value="mat-option-2")
+        panel.get_by_role.return_value = option
+        option.count = AsyncMock(return_value=option_count)
+        option.click = AsyncMock()
+        return frame, control, panel, option
+
+    async def test_uses_the_exact_option_and_reads_the_value_without_the_menu_text(self):
+        frame, control, panel, option = self.selection_controls(1, "Herr")
 
         await select_material(frame, "Anrede", "Herr")
 
-        self.assertEqual([call.args[0] for call in control.press.await_args_list],
-                         ["Enter", "Home", "ArrowDown", "Enter"])
+        control.press.assert_awaited_once_with("Enter", timeout=8000)
+        panel.get_by_role.assert_called_once_with("option", name="Herr", exact=True)
+        option.click.assert_awaited_once_with(timeout=8000)
+        control.locator.assert_called_once_with(".mat-mdc-select-value-text")
 
-    async def test_mismatched_active_option_is_never_selected(self):
-        frame, control, panel, options = Mock(), Mock(), Mock(), Mock()
-        frame.get_by_role.side_effect = [control, panel]
-        control.count = AsyncMock(return_value=1)
-        control.get_attribute = AsyncMock(side_effect=["true", "wrong-option"])
-        control.press = AsyncMock()
-        panel.wait_for = AsyncMock()
-        panel.get_by_role.return_value = options
-        options.all_text_contents = AsyncMock(return_value=["Homepage"])
-        options.nth.return_value.get_attribute = AsyncMock(return_value="expected-option")
+    async def test_ambiguous_option_is_never_selected(self):
+        frame, _, _, option = self.selection_controls(2, "Herr")
 
-        with self.assertRaisesRegex(ValueError, "material_active_option_not_verified"):
-            await select_material(frame, "Quelle", "Homepage")
+        with self.assertRaisesRegex(ValueError, "material_option_missing_or_ambiguous"):
+            await select_material(frame, "Anrede", "Herr")
 
-        control.press.assert_awaited_once_with("Home", timeout=8000)
+        option.click.assert_not_awaited()
 
 
 class BeforeTransmission(unittest.IsolatedAsyncioTestCase):
