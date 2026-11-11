@@ -29,6 +29,13 @@ class ProviderReplyReceipt(unittest.TestCase):
             self.assertTrue(restarted.contains("https://www.wbm.de/example"))
             self.assertFalse(restarted.reserve("https://www.wbm.de/example",adapter_version="wbm_browser_v1"))
 
+    def test_authenticated_email_receipt_counts_as_confirmation(self):
+        with tempfile.TemporaryDirectory() as d:
+            ledger = self.ledger(d, "provider_receipt_email_verified")
+            self.assertEqual(ledger.confirmed_on(date(2026, 11, 4)), 1)
+            self.assertTrue(ledger.validated("wbm_browser_v1"))
+            self.assertTrue(ledger.contains("https://www.wbm.de/example"))
+
     def test_status_without_known_receipt_proof_cannot_validate_or_inflate_goal(self):
         with tempfile.TemporaryDirectory() as d:
             ledger=self.ledger(d,"http_200_only")

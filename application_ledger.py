@@ -18,7 +18,9 @@ from provider_registry import canonical_offer
 
 LEDGER = Path("application_ledger.json")
 STATE_PATH = ".agent-state/application-ledger.json"
-CONFIRMATION_PROOFS = frozenset({"provider_success_visible", "provider_reply_user_verified"})
+CONFIRMATION_PROOFS = frozenset({
+    "provider_success_visible", "provider_reply_user_verified", "provider_receipt_email_verified",
+})
 
 def canonical(url):
     return canonical_offer(url)

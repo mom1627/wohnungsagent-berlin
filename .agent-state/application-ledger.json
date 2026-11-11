@@ -7,7 +7,11 @@
   "570b50a66bcbe7f17c469c976af39ce3398dbb5ea5646093945264a1661dad7c": {
     "adapter_version": "stadtundland_browser_v1",
     "at_utc": "2026-11-11T17:33:56.205828+00:00",
-    "status": "submission_unverified"
+    "confirmation": "provider_receipt_email_verified",
+    "confirmed_at_utc": "2026-11-11T17:33:58+00:00",
+    "evidence_source": "authenticated_provider_email",
+    "status": "submitted_confirmed",
+    "email_confirmed_at_utc": "2026-11-11T17:33:58+00:00"
   },
   "d616abc09438115d70e7949801123f88cdbef6dbc796b974e9815448334a2366": {
     "adapter_version": "gewobag_browser_v2",
