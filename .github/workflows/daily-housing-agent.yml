@@ -8,8 +8,10 @@ on:
       - 'tests/**'
       - '.github/workflows/daily-housing-agent.yml'
   schedule:
-    - cron: '17 6,11,16 * * *'
-    - cron: '57 9 * * *'
+    - cron: '17 7,12,17,21 * * *'
+      timezone: Europe/Berlin
+    - cron: '57 10 * * *'
+      timezone: Europe/Berlin
 permissions:
   contents: write
 concurrency:

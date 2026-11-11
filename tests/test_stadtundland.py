@@ -3,7 +3,7 @@ import unittest
 from datetime import date
 from unittest.mock import Mock, AsyncMock, patch
 from stadtundland_adapter import (requested_date,income_answer,readiness_blocker,
-    prepare_stadtundland,known_control,INCOME_LABEL,PRIVACY,WBS_LABEL)
+    prepare_stadtundland,select_material,known_control,INCOME_LABEL,PRIVACY,WBS_LABEL)
 from eligibility import screen
 
 class ProtectedInputs(unittest.TestCase):
@@ -39,6 +39,41 @@ class ProtectedInputs(unittest.TestCase):
     def test_combined_area_label_does_not_use_utility_area(self):
         decision=screen("Wohnfläche / Nutzfläche 40,00 m² / 80 m²")
         self.assertEqual(decision["area_sqm"],"40.00")
+
+class MaterialSelection(unittest.IsolatedAsyncioTestCase):
+    async def test_keyboard_selects_only_the_verified_active_option(self):
+        frame, control, panel, options = Mock(), Mock(), Mock(), Mock()
+        frame.get_by_role.side_effect = [control, panel]
+        control.count = AsyncMock(return_value=1)
+        control.get_attribute = AsyncMock(side_effect=["false", "mat-option-2"])
+        control.press = AsyncMock()
+        control.inner_text = AsyncMock(return_value="Herr")
+        panel.wait_for = AsyncMock()
+        panel.get_by_role.return_value = options
+        options.all_text_contents = AsyncMock(return_value=["Keine", "Herr", "Frau"])
+        options.nth.return_value.get_attribute = AsyncMock(return_value="mat-option-2")
+
+        await select_material(frame, "Anrede", "Herr")
+
+        self.assertEqual([call.args[0] for call in control.press.await_args_list],
+                         ["Enter", "Home", "ArrowDown", "Enter"])
+
+    async def test_mismatched_active_option_is_never_selected(self):
+        frame, control, panel, options = Mock(), Mock(), Mock(), Mock()
+        frame.get_by_role.side_effect = [control, panel]
+        control.count = AsyncMock(return_value=1)
+        control.get_attribute = AsyncMock(side_effect=["true", "wrong-option"])
+        control.press = AsyncMock()
+        panel.wait_for = AsyncMock()
+        panel.get_by_role.return_value = options
+        options.all_text_contents = AsyncMock(return_value=["Homepage"])
+        options.nth.return_value.get_attribute = AsyncMock(return_value="expected-option")
+
+        with self.assertRaisesRegex(ValueError, "material_active_option_not_verified"):
+            await select_material(frame, "Quelle", "Homepage")
+
+        control.press.assert_awaited_once_with("Home", timeout=8000)
+
 
 class BeforeTransmission(unittest.IsolatedAsyncioTestCase):
     async def test_missing_date_stops_before_any_form_access(self):

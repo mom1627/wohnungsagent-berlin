@@ -115,10 +115,22 @@ async def inspect_controls(frame):
 async def select_material(frame,label,value):
     control = frame.get_by_role("combobox",name=label,exact=True)
     if await control.count() != 1: raise ValueError("material_select_missing_or_ambiguous")
-    await control.click(timeout=8000)
-    option = frame.get_by_role("option",name=value,exact=True)
-    if await option.count() != 1: raise ValueError("material_option_missing_or_ambiguous")
-    await option.click(timeout=8000)
+    if await control.get_attribute("aria-expanded") != "true":
+        await control.press("Enter", timeout=8000)
+    panel = frame.get_by_role("listbox", name=label, exact=True)
+    await panel.wait_for(state="visible", timeout=8000)
+    options = panel.get_by_role("option")
+    labels = [norm(text) for text in await options.all_text_contents()]
+    if labels.count(value) != 1:
+        raise ValueError("material_option_missing_or_ambiguous")
+    position = labels.index(value)
+    target_id = await options.nth(position).get_attribute("id")
+    await control.press("Home", timeout=8000)
+    for _ in range(position):
+        await control.press("ArrowDown", timeout=8000)
+    if not target_id or await control.get_attribute("aria-activedescendant") != target_id:
+        raise ValueError("material_active_option_not_verified")
+    await control.press("Enter", timeout=8000)
     if norm(await control.inner_text()) != value:
         raise ValueError("material_selection_not_verified")
 
@@ -160,10 +172,11 @@ async def prepare_stadtundland(page,frame,contact,housing,decision,*,referral="I
     current = await inspect_controls(frame)
     if any(not known_control(f) for f in current):
         return False,"stadtundland_new_conditional_question_requires_review"
-    LAST_STAGE = "select_fields"
     names = contact["name"].strip().split(None,1)
     if len(names) != 2: return False,"structured_applicant_name_required"
+    LAST_STAGE = "select_salutation"
     await select_material(frame,"Anrede",housing["salutation"])
+    LAST_STAGE = "select_referral"
     await select_material(frame,REFERRAL_LABEL,referral)
     move_in = requested_date()
     available = decision.get("available_from") or ""
