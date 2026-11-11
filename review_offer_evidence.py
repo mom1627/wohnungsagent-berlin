@@ -6,8 +6,10 @@ a candidate from mere keyword matches.
 import json
 from pathlib import Path
 
-TARGET = {"max_warm_rent_eur": 550, "rooms": 1, "wbs": "WBS 100",
-          "districts": ["Reinickendorf", "Wedding", "Mitte", "Pankow"]}
+from berlin_location import DISTRICTS
+
+TARGET = {"max_warm_rent_eur": 550, "rooms": [1, 2], "wbs": "WBS 100",
+          "districts": list(DISTRICTS)}
 
 def review(items):
     output = []

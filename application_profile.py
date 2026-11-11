@@ -5,7 +5,6 @@ Never store real applicant contact details in the repository or job logs.
 import os
 
 NOTE = ("Guten Tag, ich interessiere mich sehr für die angebotene Wohnung. "
-        "Ich werde demnächst mein Studium beginnen und suche dringend eine passende Wohnung. "
         "Über eine Rückmeldung und die Möglichkeit einer Besichtigung würde ich mich sehr freuen.")
 
 def load_profile():

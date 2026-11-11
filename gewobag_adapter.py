@@ -55,9 +55,13 @@ def offer_blockers(decision, housing):
         available = decision.get("available_from","")
         if re.fullmatch(r"\d{2}\.\d{2}\.\d{4}",available or ""):
             d,m,y = available.split(".")
-            if date(int(y),int(m),int(d)) > date.fromisoformat(housing["wbs_valid_until"]):
-                reasons.append("wbs_expires_before_availability")
+            try:
+                if date(int(y),int(m),int(d)) > date.fromisoformat(housing["wbs_valid_until"]):
+                    reasons.append("wbs_expires_before_availability")
+            except ValueError:
+                reasons.append("availability_unverified")
     # The implemented form contract covers the applicant acting for themself.
+    if housing.get("household_size", 1) != 1: reasons.append("household_size_profile_mismatch")
     if not housing["apply_for_self"]: reasons.append("third_party_application_not_supported")
     return sorted(set(reasons))
 

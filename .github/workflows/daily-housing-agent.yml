@@ -16,7 +16,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   housing:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
@@ -25,7 +25,7 @@ jobs:
           python-version: '3.11'
       - name: Unit and safety regression tests
         run: python -m unittest discover -s tests -v
-      - run: python -m pip install playwright==1.56.0
+      - run: python -m pip install playwright==1.56.0 lxml==6.1.1
       - run: python -m playwright install --with-deps chromium
       - name: Discover all pages and inspect matching offers
         env:
@@ -46,6 +46,6 @@ jobs:
           path: |
             daily_housing_report.json
             daily_housing_report.md
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 14
 

@@ -8,7 +8,7 @@ import re
 from decimal import Decimal
 from pathlib import Path
 
-TARGET_DISTRICTS = {"Pankow", "Reinickendorf", "Mitte", "Wedding"}
+from berlin_location import property_location
 RENT_LIMIT = Decimal("550.00")
 
 def extract(item):
@@ -18,16 +18,15 @@ def extract(item):
     room_text = " ".join(evidence.get("room_mentions", []) + evidence.get("district_mentions", []))
     wbs_text = " ".join(evidence.get("wbs_mentions", []))
     rent_match = re.search(r"Gesamtmiete\s+([\d.]+,\d{2})\s*(?:Euro|€)", rent_text, re.I)
-    district_match = re.search(r"Bezirk/Ortsteil\s+(Pankow|Reinickendorf|Mitte|Wedding)\s*/", district_text, re.I)
     room_match = re.search(r"Anzahl Zimmer\s+(\d+(?:[,.]\d+)?)", room_text, re.I)
     if not room_match:
         room_match = re.search(r"\b(\d+(?:[,.]\d+)?)\s*Zimmer(?:wohnung|\b)", room_text, re.I)
     rent = Decimal(rent_match.group(1).replace(".", "").replace(",", ".")) if rent_match else None
     rooms = Decimal(room_match.group(1).replace(",", ".")) if room_match else None
-    district = district_match.group(1).capitalize() if district_match else None
+    district = property_location(district_text)
     wbs_mentioned = bool(re.search(r"Für die Anmietung.{0,90}\bWBS\b", wbs_text, re.I))
     special_wbs = bool(re.search(r"WBS für drei Räumen|Wohnberechtigungsschein für Rollstuhlfahrer", wbs_text, re.I))
-    matches_basic = rent is not None and rooms is not None and district is not None and rent <= RENT_LIMIT and rooms == 1 and district in TARGET_DISTRICTS
+    matches_basic = rent is not None and rooms is not None and district is not None and rent <= RENT_LIMIT and rooms in (1, 2)
     return {
         "url": item.get("url"),
         "total_rent_eur": str(rent) if rent is not None else None,

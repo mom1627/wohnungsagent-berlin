@@ -15,7 +15,7 @@ class ProfileTests(unittest.TestCase):
                                      "APPLICANT_PHONE":"012345"}, clear=True):
             result = load_profile()
         self.assertTrue(result["ready"])
-        self.assertIn("Studium", result["note"])
+        self.assertIn("Besichtigung", result["note"])
 
 if __name__ == "__main__":
     unittest.main()

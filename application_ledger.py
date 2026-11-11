@@ -32,6 +32,7 @@ class Ledger:
         self.path = Path(path)
         self.sha = None
         self.entries = {}
+        self.aliases = {}
         self.read()
 
     def api(self, method, payload=None, *, state_path=STATE_PATH):
@@ -39,7 +40,7 @@ class Ledger:
         token = os.environ.get("GH_STATE_TOKEN","")
         if not token or repo != "mom1627/wohnungsagent-berlin":
             raise RuntimeError("durable_ledger_credentials_missing")
-        if state_path not in {STATE_PATH,".agent-state/candidate-watchlist.json"}:
+        if state_path not in {STATE_PATH,".agent-state/candidate-watchlist.json",".agent-state/verified-offers.json"}:
             raise ValueError("unapproved_state_path")
         url = "https://api.github.com/repos/"+repo+"/contents/"+quote(state_path,safe="/")
         data = json.dumps(payload).encode() if payload is not None else None
@@ -84,8 +85,16 @@ class Ledger:
                 temp = f.name
             os.replace(temp,self.path)
 
+    def register_aliases(self, url, aliases):
+        self.aliases.setdefault(canonical(url), set()).update(canonical(alias) for alias in aliases)
+
     def contains(self,url):
-        return key_for(url) in self.entries or canonical(url) in self.entries
+        canonical_urls = {canonical(url), *self.aliases.get(canonical(url), ())}
+        hashes = {key_for(alias) for alias in canonical_urls}
+        if (canonical_urls | hashes) & self.entries.keys():
+            return True
+        return any(isinstance(entry, dict) and hashes.intersection(entry.get("alias_keys", []))
+                   for entry in self.entries.values())
 
     def confirmed_on(self, day):
         count = 0
@@ -112,6 +121,9 @@ class Ledger:
         self.read()
         if self.contains(url): return False
         self.entries[key_for(url)] = {"status":"submission_pending","at_utc":datetime.now(timezone.utc).isoformat()}
+        aliases = self.aliases.get(canonical(url), set()) - {canonical(url)}
+        if aliases:
+            self.entries[key_for(url)]["alias_keys"] = sorted(key_for(alias) for alias in aliases)
         if adapter_version:
             self.entries[key_for(url)]["adapter_version"] = adapter_version
         self.save()  # Failure must abort before any network submission.

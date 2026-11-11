@@ -1,5 +1,6 @@
 """Follow real public pagination, including Livewire-rendered offer cards."""
 import asyncio
+from browser_runtime import launch_chromium
 import re
 import hashlib
 from urllib.parse import urlsplit, parse_qs
@@ -25,7 +26,7 @@ async def collect_async(max_pages=200):
               "stop_reason":None,"expected_total":None,"unknown_provider_links":[],"listings":results,
               "linked_offer_cards_seen":0,"duplicate_offer_links":0}
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True)
+        browser = await launch_chromium(p)
         context = await browser.new_context(locale="de-DE",user_agent=UA)
         page = await context.new_page()
         try:

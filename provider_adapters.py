@@ -8,6 +8,7 @@ from gewobag_adapter import visible_challenge
 from urllib.parse import urlsplit
 from provider_registry import provider_for, canonical_offer
 from public_access import check_robots
+from berlin_location import district_name
 from standard_form_adapters import open_howoge_form
 
 CHALLENGE = "iframe[src*='recaptcha'],iframe[src*='hcaptcha'],[class*='g-recaptcha'],[class*='h-captcha'],textarea[id^='g-recaptcha-response'],script[src*='recaptcha'],[name='cf-turnstile-response']"
@@ -27,14 +28,14 @@ def wbm_heading_district(title):
     WBM redirects ID links to readable slugs; the current list card can already
     have the slug, so URL equality alone must not discard this district proof.
     """
-    match = re.fullmatch(r"\d+(?:[.,]\d+)?[- ]Zimmer[- ]Wohnung in (Mitte|Wedding|Pankow|Reinickendorf)",
+    match = re.fullmatch(r"\d+(?:[.,]\d+)?[- ]Zimmer[- ]Wohnung in (.+)",
                          " ".join(title.split()),re.I)
-    return match.group(1).capitalize() if match else None
+    return match.group(1) if match and district_name(match.group(1)) else None
 
 async def inspect_provider(page, url, robots_cache):
     provider = provider_for(url)
     result = {"url":url,"provider":provider,"detail_verified":False,"form_present":False,
-              "can_submit":False,"reason":"provider_adapter_not_validated"}
+              "can_submit":False,"application_open":False,"reason":"provider_adapter_not_validated"}
     if not provider:
         result["reason"] = "unapproved_provider"
         return result
@@ -52,15 +53,16 @@ async def inspect_provider(page, url, robots_cache):
                     url:e.href,district:e.closest('.immo-col')?.previousElementSibling?.querySelector('.area')?.innerText?.trim()
                 }))""")
                 matches = [c for c in cards if canonical_offer(c["url"])==canonical_offer(url)]
-                if len(matches)==1 and matches[0].get("district") in {"Mitte","Wedding","Reinickendorf","Pankow"}:
+                if len(matches)==1 and district_name(matches[0].get("district") or ""):
                     wbm_district = matches[0]["district"]
         response = await page.goto(url,wait_until="domcontentloaded",timeout=40000)
         if not response or response.status != 200:
-            result["reason"] = "provider_http_error"
+            result["reason"] = "provider_offer_closed" if response and response.status in (404,410) else "provider_http_error"
             return result
         if provider_for(page.url) != provider:
             result["reason"] = "unexpected_provider_redirect"
             return result
+        result["offer_url"] = page.url
         main = page.locator("main,#content,.site-content").first
         if not await main.count(): main = page.locator("body")
         # Visible detail text, not script/style strings or JSON-LD navigation.
@@ -69,7 +71,7 @@ async def inspect_provider(page, url, robots_cache):
             headings = page.get_by_role("heading",level=1)
             if await headings.count()==1:
                 heading_district = wbm_heading_district(await headings.inner_text())
-                if wbm_district and heading_district and wbm_district.lower()!=heading_district.lower():
+                if wbm_district and heading_district and district_name(wbm_district)!=district_name(heading_district):
                     result["reason"] = "wbm_district_evidence_conflict"
                     return result
                 if heading_district and not wbm_district:
@@ -79,10 +81,13 @@ async def inspect_provider(page, url, robots_cache):
             text += "\nBezirk/Ortsteil: "+wbm_district+" / aktueller Anbieterbeleg"
             result.setdefault("provider_district_evidence","matching_wbm_list_card")
         result["text"] = text
-        result["detail_verified"] = True
+        address = re.search(r"(?im)^([^\n]{3,120}\b\d+[a-z]?)\s*,?\s+(1\d{4})\s+Berlin\b", text)
+        if address:
+            result["address"] = f"{address[1].rstrip(',')}, {address[2]} Berlin"
         if re.search(r"verify you are human|checking your browser|automated traffic",text,re.I):
             result["reason"] = "manual_security_check"
             return result
+        result["detail_verified"] = True
         if provider == "gewobag":
             # Dismiss only the ordinary cookie choice, then reveal the request tab.
             save = page.get_by_role("button",name="Speichern wie ausgewählt",exact=True)
@@ -103,6 +108,7 @@ async def inspect_provider(page, url, robots_cache):
             frame = await frame.content_frame()
             await frame.locator("#firstName").wait_for(state="visible",timeout=20000)
             result["form_present"] = True
+            result["application_open"] = True
             result["fields"] = await frame.locator("input,textarea,select").evaluate_all(FIELD_JS)
             if await visible_challenge(page):
                 result["reason"] = "visible_captcha_requires_manual_action"
@@ -126,6 +132,7 @@ async def inspect_provider(page, url, robots_cache):
             await page.goto(href,wait_until="domcontentloaded",timeout=35000)
             ready,why = await open_howoge_form(page)
             result["form_present"] = ready
+            result["application_open"] = ready
             result["reason"] = why
             if ready:
                 form = page.locator("form").filter(has=page.locator("#immo-form-firstname"))
@@ -140,6 +147,7 @@ async def inspect_provider(page, url, robots_cache):
                 result["reason"] = "wbm_application_form_missing_or_ambiguous"
                 return result
             result["form_present"] = True
+            result["application_open"] = True
             result["fields"] = await form.locator("input,textarea,select").evaluate_all(FIELD_JS)
             result["reason"] = "form_profile_mapping_required"
             result["_frame"] = page.main_frame
@@ -162,6 +170,7 @@ async def inspect_provider(page, url, robots_cache):
                 result["reason"] = "unexpected_application_redirect"
                 return result
             result["form_present"] = True
+            result["application_open"] = True
             result["fields"] = await frame.locator("input,textarea,select").evaluate_all(FIELD_JS)
             if await visible_challenge(page):
                 result["reason"] = "visible_captcha_requires_manual_action"
@@ -184,6 +193,7 @@ async def inspect_provider(page, url, robots_cache):
                     # No automated CAPTCHA interaction or credential entry.
                     await page.get_by_role("button",name="Jetzt bewerben",exact=True).wait_for(state="visible",timeout=15000)
                     result["form_present"] = True
+                    result["application_open"] = True
                     if await visible_challenge(page):
                         result["reason"] = "immomio_visible_captcha_requires_manual_action"
             else:

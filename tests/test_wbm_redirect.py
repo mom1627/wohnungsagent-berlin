@@ -14,8 +14,9 @@ class WbmRedirectDistrict(unittest.TestCase):
         # Correct location must not silently assert possession of another WBS.
         self.assertIn("wbs_category_unverified",current["reasons"])
 
-    def test_general_marketing_or_other_district_is_not_property_evidence(self):
-        for title in ("WBM in Mitte","Unsere Wohnungen in Mitte","1-Zimmer-Wohnung in Spandau",
+    def test_general_marketing_is_not_property_evidence(self):
+        self.assertEqual(wbm_heading_district("1-Zimmer-Wohnung in Spandau"),"Spandau")
+        for title in ("WBM in Mitte","Unsere Wohnungen in Mitte",
                       "1-Zimmer-Wohnung in Mitte oder Pankow","Wohnungen und Gewerbe"):
             self.assertIsNone(wbm_heading_district(title))
 

@@ -24,7 +24,7 @@ class EligibilityTests(unittest.TestCase):
     def test_boundaries(self):
         self.assertFalse(screen(OFFER.replace("499,00","550,01"),provider_verified=True)["eligible"])
         self.assertFalse(screen(OFFER.replace("1,0","1,5"),provider_verified=True)["eligible"])
-        self.assertFalse(screen(OFFER.replace("Wedding","Lichtenberg"),provider_verified=True)["eligible"])
+        self.assertFalse(screen(OFFER.replace("13347, Wedding","14467, Potsdam"),provider_verified=True)["eligible"])
     def test_unknown_availability_and_closed(self):
         self.assertFalse(screen(OFFER.split("Bezugsfertig")[0],provider_verified=True)["eligible"])
         self.assertFalse(screen(OFFER+" Angebot beendet",provider_verified=True)["eligible"])

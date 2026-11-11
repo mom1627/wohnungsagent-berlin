@@ -28,9 +28,9 @@ def load_watchlist(path=STATE_PATH):
     return result
 
 def merge_candidates(discovered,cached):
-    result=list(discovered)
-    seen={canonical_offer(x["url"]) for x in result}
-    for item in cached:
+    result=[]
+    seen=set()
+    for item in [*discovered, *cached]:
         key=canonical_offer(item["url"])
         if key not in seen:
             result.append(item)

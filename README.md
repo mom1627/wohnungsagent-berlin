@@ -1,8 +1,8 @@
 # Wohnungsagent Berlin
 
-Der Agent durchsucht inBerlinWohnen automatisch dreimal täglich und prüft neue
-Basis-Treffer erneut auf der Anbieterseite. Der vollständige Suchlauf wurde über
-alle 52 Ergebnisseiten und alle sieben Gesellschaften erfolgreich geprüft.
+Der Agent durchsucht inBerlinWohnen sowie die Originalseiten von degewo,
+GESOBAU, WBM und berlinovo dreimal täglich. Er prüft mögliche Treffer erneut
+beim Anbieter und meldet die Ergebnisse und Ausfälle pro Quelle.
 
 ## Automatische Anfragen
 
@@ -23,7 +23,7 @@ reCAPTCHA-Einbindung wird nicht mit einer sichtbaren Sicherheitsaufgabe
 verwechselt. Tatsächliche Challenges, unbekannte Pflichtfelder, zusätzliche
 Verpflichtungen oder fehlende Bescheinigungen erfordern manuelle Klärung.
 
-Gewobag, HOWOGE und WBM besitzen eigene implementierte Formularadapter.
+Gewobag, HOWOGE, WBM und STADT UND LAND besitzen implementierte Formularadapter.
 Implementiert bedeutet noch nicht durch tatsächlichen Versand bestätigt. Für WBM
 ist vor Nutzung eine gesonderte Freigabe der beobachteten Datenspeicherung nötig
 (APPLICANT_WBM_DATA_CONSENT=1 als verschlüsseltes Secret). GESOBAU wird bis zum
@@ -33,7 +33,8 @@ Details: ADAPTER_STATUS.md.
 
 ## Kriterien
 
-Ein oder zwei Zimmer, maximal 550 Euro Warmmiete, Reinickendorf/Wedding/Mitte/Pankow.
+Alle zwölf Berliner Bezirke, bevorzugt ein Zimmer, auch zwei Zimmer,
+maximal 550 Euro nachgewiesene Warmmiete.
 WBS-Kategorie, erlaubte Fläche, Gültigkeit und besondere Bedingungen werden mit
 dem geschützten Profil abgeglichen. Die Zahl der Bewohner wird nicht mit einer
 ungeprüften Zimmerzahl gleichgesetzt. Fehlende Immatrikulation oder eine
@@ -56,11 +57,13 @@ solange ein Sendevorgang ungeklärt ist.
 06:17, 11:17 und 16:17 UTC, aktuell im Winter 07:17, 12:17 und 17:17 Uhr Berlin.
 GitHub kann Startzeiten verzögern. Laufberichte stehen als Actions-Zusammenfassung
 und JSON-/Markdown-Artefakt bereit; Artefakte bleiben 14 Tage verfügbar.
-Die Historie wird unabhängig davon dauerhaft gespeichert.
+Die Bewerbungshistorie und die erstmals beim Anbieter bestätigten Angebote
+werden dauerhaft in getrennten Zustandsdateien gespeichert.
 
 ## Prüfung
 
-Python 3.11: python -m unittest discover -s tests -v
+Python 3.11: `python -m pip install lxml==6.1.1`, dann
+`python -m unittest discover -s tests -v`.
 
 Der Suchlauf verwendet Playwright 1.56.0 mit Chromium. Sicherheitsregressionen
 prüfen unter anderem WBS-Gültigkeit, Flächenbegrenzung, dynamische Pflichtfelder,

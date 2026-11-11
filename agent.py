@@ -8,7 +8,7 @@ import sqlite3
 from pathlib import Path
 from urllib.parse import urlsplit, urlunsplit
 
-AREAS = ("reinickendorf", "wedding", "mitte", "pankow")
+from berlin_location import district_name
 MAX_WARM = 550.0
 
 def canonical_url(url):
@@ -30,8 +30,8 @@ def eligible(item):
         cap = float(item.get("max_cooperative_entry_eur", 500))
     except (KeyError, ValueError, TypeError):
         return False
-    return (0 < rent <= MAX_WARM and rooms == 1 and
-            any(a in area for a in AREAS) and wbs and available and
+    return (0 < rent <= MAX_WARM and rooms in (1, 2) and
+            (area == "berlin" or district_name(area) is not None) and wbs and available and
             upfront <= cap and bool(url))
 
 def run(listings, db_path):

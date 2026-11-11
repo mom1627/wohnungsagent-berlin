@@ -11,6 +11,7 @@ from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
 from urllib.robotparser import RobotFileParser
 from pathlib import Path
+from berlin_location import LOCALITY_PATTERN
 
 UA = "WohnungsAgentBerlin/0.1"
 ALLOWED = {"www.gewobag.de", "www.howoge.de"}
@@ -74,7 +75,7 @@ def inspect_url(url, robots_cache):
             "rent_mentions": r".{0,55}(?:Warmmiete|Gesamtmiete|Bruttowarmmiete).{0,100}",
             "room_mentions": r".{0,40}(?:Zimmer|Räume).{0,70}",
             "wbs_mentions": r".{0,55}(?:WBS|Wohnberechtigungsschein).{0,110}",
-            "district_mentions": r".{0,40}(?:Reinickendorf|Wedding|Mitte|Pankow).{0,70}",
+            "district_mentions": r".{0,40}(?:"+LOCALITY_PATTERN+r").{0,70}",
             "application_mentions": r".{0,45}(?:bewerben|Bewerbung|Interessenten).{0,80}",
         }
         result["evidence"] = {
