@@ -1,13 +1,13 @@
 # Bewerbungsadapter
 
-Stand: 4. November 2026, mit erweiterten Suchregeln (1 oder 2 Zimmer, bis 550 EUR warm). Fünf Anbieter werden ausdrücklich ausgewiesen; vier vollständig aktive und durch echte Bestätigungen validierte Sender sind **nicht erreicht**.
+Stand: 11. November 2026, mit erweiterten Suchregeln (1 oder 2 Zimmer, bis 550 EUR warm). Fünf Anbieter werden ausdrücklich ausgewiesen; vier vollständig aktive und durch echte Bestätigungen validierte Sender sind **nicht erreicht**.
 
 | Anbieter | Implementierung | Tatsächlich bestätigt | Offene Voraussetzung |
 | --- | --- | --- | --- |
 | Gewobag | Geschütztes Profil, Wohnungshelden-Formular, dauerhafte Reservierung | Nein; zwei verschiedene Wohnungen einmal versucht und unbestätigt | Status klären; keine Wiederholung dieser Angebote |
 | HOWOGE | Exakt geprüfte Kenntnisnahme-Hinweise, Kontaktformular Vorname/Nachname/E-Mail | Nein | Erste Kontaktanfrage freigegeben; Einkommensnachweise/Jobcenter-Mietübernahme bleiben Voraussetzung der späteren Vertragsprüfung |
 | WBM | Eigenes Formular; optionale unbekannte Adresse leer, Honeypot unberührt | Ja: tatsächliche Anbieterantwort bestätigt Eingang; keine Auswahl zur Besichtigung | Kein erneutes Anfragen derselben Wohnung; weitere neue passende Angebote bleiben freigegeben |
-| STADT UND LAND | Beobachtetes Material-Formular über Wohnungshelden; gemeinsamer dauerhafter Reservierungs- und Bestätigungsweg | Nein; noch kein realer Versandtest | Einzugs-Secret eingerichtet, Datumssperre aufgehoben; aktuelle Bedingungen, Bezirk und Formular müssen am Anbieterangebot eindeutig passen |
+| STADT UND LAND | Beobachtetes Material-Formular über Wohnungshelden; gemeinsamer dauerhafter Reservierungs- und Bestätigungsweg | Ja; authentifizierte Formularbestätigung per E-Mail | Das Angebot bleibt gegen weitere Anfragen gesperrt |
 | GESOBAU | Öffentliche Immomio-Weiterleitung und CAPTCHA-Sperren geprüft | Nein; Versandadapter nicht fertig | Sichtbares Friendly-Captcha, danach Kontozugang/Profil prüfen |
 
 ## Geschützte Angaben eingerichtet
@@ -21,7 +21,7 @@ Eine erforderliche Ja-/Nein-Frage verlangt keine unwahre Ja-Antwort. Fehlende §
 
 Unklare Ergebnisse sperren dieselbe Wohnung dauerhaft. Andere Wohnungen bleiben möglich; nach einem neuen unklaren Versuch pausiert dieser Anbieter für den Rest des Laufs. Keine automatische Wiederholung reservierter Angebote.
 
-Nur reguläre Formularbuttons; keine CAPTCHA-Lösung, keine direkten Absende-Endpunkte, kein Umgehen von Login. Nur neue ausdrückliche Bestätigung auf freigegebener Anbieter-/Wohnungshelden-Seite zählt. Bereits bestehende Erfolgsnachrichten zählen nicht. Ergebnisdiagnostik speichert ausschließlich feste Wahrheitswerte, keine ungeprüften Servertexte oder Formulardaten.
+Nur reguläre Formularbuttons; keine CAPTCHA-Lösung, keine direkten Absende-Endpunkte, kein Umgehen von Login. Als Nachweis gelten neue ausdrückliche Bestätigungen auf der Anbieterseite oder eindeutig zugeordnete authentifizierte Anbieter-E-Mails. Ergebnisdiagnostik speichert ausschließlich feste Wahrheitswerte, keine ungeprüften Servertexte oder Formulardaten.
 
 ## Phasengerechte Prüfung
 
@@ -29,9 +29,9 @@ Die frühere automatische Sperre der ersten HOWOGE-Anfrage wegen einer Vertrags-
 
 ## STADT UND LAND und Übertragungsdiagnostik
 
-`APPLICANT_EARLIEST_MOVE_IN` ist noch nicht eingerichtet: akzeptiert werden ausschließlich ein vom Nutzer bestätigtes `ASAP` oder ein ISO-Datum. Ohne diesen Wert werden keine Formulardaten eingegeben. Die 35-Prozent-Einkommensfrage wird aus geschütztem Einkommen und konkreter Warmmiete mit Ja oder Nein beantwortet. Eine Jobcenter-Kostenübernahme wird nicht behauptet. Neue bedingte Fragen stoppen vor weiteren Angaben; unbekannte Felder oder geänderte Datenschutzhinweise sind gesperrt. Die tatsächlichen öffentlichen Herkunftsoptionen wurden geprüft, darunter `Inberlinwohnen.de`.
+`APPLICANT_EARLIEST_MOVE_IN` ist eingerichtet. Akzeptiert werden ausschließlich ein vom Nutzer bestätigtes `ASAP` oder ein ISO-Datum. Ohne diesen Wert werden keine Formulardaten eingegeben. Die 35-Prozent-Einkommensfrage wird aus geschütztem Einkommen und konkreter Warmmiete mit Ja oder Nein beantwortet. Eine Jobcenter-Kostenübernahme wird nicht behauptet. Neue bedingte Fragen stoppen vor weiteren Angaben; unbekannte Felder oder geänderte Datenschutzhinweise sind gesperrt. Die tatsächlichen öffentlichen Herkunftsoptionen wurden geprüft, darunter `Inberlinwohnen.de`.
 
-Die passive Diagnose zählt ausschließlich POSTs aus dem vertrauenswürdigen Formular an den Anbieter/Formulardienst, HTTP-Statuszahlen und ein Fehlermerkmal. Request-/Response-Inhalte, URLs und Header werden nie aufgezeichnet. Auch HTTP 200 zählt ohne sichtbare Anbieterbestätigung nicht als versendete Bewerbung. Damit lassen sich künftig Fehler vor und nach der Übertragung unterscheiden, ohne Erfolg zu erfinden.
+Die passive Diagnose zählt ausschließlich POSTs aus dem vertrauenswürdigen Formular an den Anbieter/Formulardienst, HTTP-Statuszahlen und ein Fehlermerkmal. Request-/Response-Inhalte, URLs und Header werden nie aufgezeichnet. HTTP 200 allein ist kein Versandnachweis. Damit lassen sich künftig Fehler vor und nach der Übertragung unterscheiden, ohne Erfolg zu erfinden.
 
 ## Erste reale Anbieterantwort
 
@@ -39,4 +39,6 @@ Am 4. November 2026 wurde die Anfrage aus dem erfolgreichen Lauf 41879180233 anh
 
 ## Geschützte Einzugsangabe verfügbar
 
-Der Nutzer hat den frühesten Einzug und die Berücksichtigung der tatsächlichen Verfügbarkeit ausdrücklich festgelegt. Das dafür vorgesehene Repository-Secret wurde eingerichtet; sein Wert wird nicht ins Repository oder in Logs übernommen. Die Datumssperre von STADT UND LAND entfällt. Dies ist eine Konfigurationsfreigabe für normale passende Anfrageversuche und kein behaupteter erfolgreicher Versandtest dieses Anbieters.
+Der Nutzer hat den frühesten Einzug und die Berücksichtigung der tatsächlichen Verfügbarkeit ausdrücklich festgelegt. Das dafür vorgesehene Repository-Secret wurde eingerichtet; sein Wert wird nicht ins Repository oder in Logs übernommen. Die Datumssperre von STADT UND LAND entfällt. 
+
+Am 11. November 2026 bestätigte STADT UND LAND über Wohnungshelden den Eingang der Anfrage zur Objektnummer `1001/5180/00184`. Der authentifizierte E-Mail-Eingang wurde dem Versandversuch zugeordnet und als `provider_receipt_email_verified` erfasst. Der Laufbericht enthält den ursprünglichen Browserstatus.

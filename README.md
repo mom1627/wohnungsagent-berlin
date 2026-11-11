@@ -14,9 +14,9 @@ gesendet. Einrichtung: HOUSING_PROFILE_SETUP.md.
 
 Die erste tatsächlich passende Anfrage dient als echter Erfolgstest. Erst eine
 neue ausdrückliche Bestätigung des Anbieters gilt als Versandnachweis und
-validiert den Adapter für künftige Läufe. Der konkrete Versandstatus steht im
-Laufbericht und in der dauerhaften Historie. Ein erfolgreicher Suchlauf allein
-belegt keinen Versand.
+validiert den Adapter für künftige Läufe. Der Laufbericht erfasst die direkte Rückmeldung des Formulars. Eine separate
+stündliche Postfachprüfung gleicht spätere Anbieterbestätigungen mit der
+Bewerbungshistorie ab. In GitHub stehen nur Belegtyp und Zeitstempel.
 
 Der Agent nutzt ausschließlich den regulären Formularbutton. Eine unsichtbare
 reCAPTCHA-Einbindung wird nicht mit einer sichtbaren Sicherheitsaufgabe
@@ -24,7 +24,7 @@ verwechselt. Tatsächliche Challenges, unbekannte Pflichtfelder, zusätzliche
 Verpflichtungen oder fehlende Bescheinigungen erfordern manuelle Klärung.
 
 Gewobag, HOWOGE, WBM und STADT UND LAND besitzen implementierte Formularadapter.
-Implementiert bedeutet noch nicht durch tatsächlichen Versand bestätigt. Für WBM
+Für WBM und STADT UND LAND liegen nachweisliche Anbieterantworten vor. Für WBM
 ist vor Nutzung eine gesonderte Freigabe der beobachteten Datenspeicherung nötig
 (APPLICANT_WBM_DATA_CONSENT=1 als verschlüsseltes Secret). GESOBAU wird bis zum
 Immomio-Bewerbungsweg geprüft und meldet CAPTCHA/Login als manuelle Voraussetzung.
