@@ -212,6 +212,8 @@ async def inspect_provider(page, url, robots_cache):
             if await iframe.count()!=1:
                 result["reason"] = "stadtundland_application_frame_missing_or_ambiguous"
                 return result
+            # This iframe receives its URL after the public form comes into view.
+            await iframe.scroll_into_view_if_needed(timeout=8000)
             observed = page.locator("iframe#contactForm[src^='https://app.wohnungshelden.de/public/listings/']")
             await observed.wait_for(state="attached",timeout=8000)
             src = urlsplit(await observed.get_attribute("src") or "")
