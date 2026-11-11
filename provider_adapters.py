@@ -3,6 +3,7 @@
 No CAPTCHA solving, unknown consents, account creation, field guesses or PII
 logging. Probes never fill applicant fields or click a submission button.
 """
+import asyncio
 import re
 from gewobag_adapter import visible_challenge
 from urllib.parse import urlsplit, urlunsplit, unquote
@@ -10,6 +11,7 @@ from provider_registry import provider_for, canonical_offer
 from public_access import check_robots
 from berlin_location import district_name
 from standard_form_adapters import open_howoge_form
+from stadtundland_adapter import WBS_LABEL
 
 CHALLENGE = "iframe[src*='recaptcha'],iframe[src*='hcaptcha'],[class*='g-recaptcha'],[class*='h-captcha'],textarea[id^='g-recaptcha-response'],script[src*='recaptcha'],[name='cf-turnstile-response']"
 FIELD_JS = """els=>els.filter(e=>e.getClientRects().length).map(e=>({
@@ -31,6 +33,10 @@ def wbm_heading_district(title):
     match = re.fullmatch(r"\d+(?:[.,]\d+)?[- ]Zimmer[- ]Wohnung in (.+)",
                          " ".join(title.split()),re.I)
     return match.group(1) if match and district_name(match.group(1)) else None
+
+async def check_robots_async(url, cache):
+    await asyncio.to_thread(check_robots, url, cache)
+
 
 async def inspect_provider(page, url, robots_cache):
     provider = provider_for(url)
@@ -172,7 +178,11 @@ async def inspect_provider(page, url, robots_cache):
             if provider_for(href) != provider:
                 result["reason"] = "unapproved_application_host"
                 return result
-            check_robots(href,robots_cache)
+            try:
+                await check_robots_async(href,robots_cache)
+            except PermissionError as exc:
+                result["reason"] = "howoge_"+str(exc)+"_application_url"
+                return result
             await page.goto(href,wait_until="domcontentloaded",timeout=35000)
             ready,why = await open_howoge_form(page)
             result["form_present"] = ready
@@ -202,11 +212,15 @@ async def inspect_provider(page, url, robots_cache):
             if await iframe.count()!=1:
                 result["reason"] = "stadtundland_application_frame_missing_or_ambiguous"
                 return result
-            src = urlsplit(await iframe.get_attribute("src") or "")
-            if src.scheme!="https" or src.hostname!="app.wohnungshelden.de" or not src.path.startswith("/public/listings/"):
+            observed = page.locator("iframe#contactForm[src^='https://app.wohnungshelden.de/public/listings/']")
+            await observed.wait_for(state="attached",timeout=8000)
+            src = urlsplit(await observed.get_attribute("src") or "")
+            unit = unquote(urlsplit(page.url).path).rstrip("/").removeprefix("/wohnungssuche/")
+            if (src.scheme != "https" or src.netloc != "app.wohnungshelden.de" or
+                    unquote(src.path).rstrip("/") != f"/public/listings/{unit}/application"):
                 result["reason"] = "unapproved_application_host"
                 return result
-            handle = await iframe.element_handle()
+            handle = await observed.element_handle()
             frame = await handle.content_frame()
             await frame.get_by_label("Vorname",exact=True).wait_for(state="visible",timeout=25000)
             # Only the provider's embedded application URL is followed.
@@ -216,6 +230,8 @@ async def inspect_provider(page, url, robots_cache):
             result["form_present"] = True
             result["application_open"] = True
             result["fields"] = await frame.locator("input,textarea,select").evaluate_all(FIELD_JS)
+            if await frame.get_by_role("radiogroup",name=WBS_LABEL,exact=True).count() == 1:
+                result["text"] += "\nWBS 100 laut Bewerbungsformular zulässig."
             if await visible_challenge(page):
                 result["reason"] = "visible_captcha_requires_manual_action"
             else:

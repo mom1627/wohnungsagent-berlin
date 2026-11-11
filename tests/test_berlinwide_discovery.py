@@ -7,6 +7,9 @@ from berlin_location import DISTRICTS
 from daily_housing_agent import compatible_source, discovery_candidate
 from direct_sources import SOURCES, card_record, public_url
 from eligibility import screen
+from protego import Protego
+from public_access import check_robots
+from stadtundland_adapter import WBS_LABEL, known_control
 
 
 class BerlinwideDiscoveryTests(unittest.TestCase):
@@ -40,6 +43,26 @@ class BerlinwideDiscoveryTests(unittest.TestCase):
         self.assertEqual(screen(card["source_text"])["total_rent_eur"], "549.00")
         self.assertFalse(public_url(source, url.replace("degewo.de", "degewo.de.example"), detail=True))
         self.assertFalse(public_url(source, "https://www.degewo.de/immosuche", detail=True))
+
+    def test_howoge_robots_wildcard_blocks_application_queries(self):
+        rules = Protego.parse("User-agent: *\nAllow: /\nDisallow: /*cHash")
+        cache = {"www.howoge.de": rules}
+        base = "https://www.howoge.de/immobiliensuche/wohnungssuche/"
+        check_robots(base, cache)
+        with self.assertRaisesRegex(PermissionError, "robots_disallowed"):
+            check_robots(base + "bewerbungsprozess.html?controller=Immoobject&cHash=123", cache)
+
+    def test_exact_stadtundland_wbs_100_prompt(self):
+        field = {"tag": "input", "type": "radio", "label": "Ja", "group": WBS_LABEL,
+                 "id": "formly_21_radio_$$_wbs_available_$$_0_0-input"}
+        self.assertTrue(known_control(field))
+        self.assertFalse(known_control({**field, "group": "Haben Sie einen WBS 160?"}))
+
+    def test_age_and_move_in_wording_observed_at_stadtundland(self):
+        match = screen("Seniorenwohnung, ab 63 Jahren. Einzug ab sofort möglich. Warmmiete 403,8 €")
+        self.assertEqual(match["total_rent_eur"], "403.8")
+        self.assertEqual(match["available_from"], "ab sofort")
+        self.assertIn("age_restriction_requires_review", match["reasons"])
 
     def test_old_reservation_is_found_via_current_redirect(self):
         old = "https://www.wbm.de/wohnungen-berlin/angebote/details/?id=42"

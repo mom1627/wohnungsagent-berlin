@@ -14,7 +14,7 @@ geprüft.
 | degewo | Öffentliche Angebotsliste mit Seitenlinks | Anbieterformular mit Friendly Captcha, manuelle Bearbeitung |
 | WBM | Öffentliche Angebotsliste | Vorhandener Formularadapter mit zusätzlicher hinterlegter Einwilligung |
 | berlinovo | Öffentliche Angebotsliste mit Seitenlinks und HTTPS-Exposé | Öffentlich verlinkter Wohnungshelden-Weg wird auf Verfügbarkeit geprüft |
-| HOWOGE | Angebotskarten über inBerlinWohnen | Vorhandener Kontaktadapter. Die direkte HOWOGE-Ergebnisliste lädt über einen in robots.txt ausgeschlossenen JSON-Endpunkt. |
+| HOWOGE | Angebotskarten über inBerlinWohnen | Die direkte Ergebnisliste lädt über einen in robots.txt ausgeschlossenen JSON-Endpunkt. Die aktuellen Bewerbungslinks mit cHash sind ebenfalls von der automatisierten Abfrage ausgeschlossen und bleiben manuell. |
 
 ## Weitere geprüfte Quellen
 

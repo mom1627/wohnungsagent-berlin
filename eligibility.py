@@ -16,7 +16,7 @@ def money(value):
 
 def screen(text, *, provider_verified=False):
     text = " ".join(text.split())
-    amount = re.search(r"\b(?:Bruttowarmmiete|Warmmiete|Gesamtmiete)\s*:?\s*([\d.]+(?:,\d{2})?)\s*(?:€|Euro|EUR)",text,re.I)
+    amount = re.search(r"\b(?:Bruttowarmmiete|Warmmiete|Gesamtmiete)\s*:?\s*([\d.]+(?:,\d{1,2})?)\s*(?:€|Euro|EUR)",text,re.I)
     # Prefer explicit labels; '1 Zimmer 34,08 m²' must never become 34 rooms.
     rooms = None
     for pattern in (r"(?:Zimmeranzahl|Anzahl (?:der )?Zimmer)\s*:?\s*(\d+(?:[,.]\d+)?)(?![\d.,])",
@@ -59,7 +59,7 @@ def screen(text, *, provider_verified=False):
     wbs = next(iter(categories)) if len(categories)==1 else "unknown" if categories else "required_unspecified" if required_wbs else "not_required" if no_wbs else "unknown" if generic else "not_stated"
     if wbs not in {"not_required","100"}: reasons.append("wbs_category_unverified")
     if SPECIAL.search(text): reasons.append("special_eligibility_requires_review")
-    if re.search(r"Seniorenresidenz|Wohnen.{0,25}(?:für Senioren|\d{2}\s*(?:plus|\+))|(?:Menschen|Personen)\s+ab\s+\d{2}|ab\s*(?:50|55|60|65|67)\s*Jahr",text,re.I):
+    if re.search(r"Senioren(?:residenz|wohnung|wohnhaus)|Seniorengerecht\s*:?\s*Ja|Wohnen.{0,25}(?:für Senioren|\d{2}\s*(?:plus|\+))|(?:Menschen|Personen)\s+ab\s+\d{2}|ab\s*\d{2}\b\s*(?:Jahr|\+)",text,re.I):
         reasons.append("age_restriction_requires_review")
     if re.search(r"Studentenapartment|Wohnplatz für Studis|(?:nur|für|ausschließlich).{0,25}(?:Studierende|Auszubildende)|Immatrikulations",text,re.I):
         reasons.append("student_status_requires_review")
@@ -71,7 +71,7 @@ def screen(text, *, provider_verified=False):
         reasons.append("cooperative_cost_requires_review")
     if re.search(r"nicht mehr verfügbar|bereits vermietet|Angebot.{0,20}beendet|keine.{0,15}Anfragen",text,re.I):
         reasons.append("offer_closed")
-    availability = re.search(r"(?:Frei ab|Bezugsfrei(?: ab)?|Bezugsfertig ab|Verfügbar ab|Verfügbarkeit|Bezugsdatum|Bezug)\s*:?\s*(ab sofort|sofort|nächstmöglich|nach Vereinbarung|\d{2}\.\d{2}\.\d{4})",text,re.I)
+    availability = re.search(r"(?:Frei ab|Bezugsfrei(?: ab)?|Bezugsfertig ab|Verfügbar ab|Verfügbarkeit|Bezugsdatum|Bezug|Einzug)\s*:?\s*(ab sofort|sofort|nächstmöglich|nach Vereinbarung|\d{2}\.\d{2}\.\d{4})",text,re.I)
     if not availability: reasons.append("availability_unverified")
     deadline = re.search(r"(?:Bewerbungsfrist(?: bis)?|Bewerbungen bis)\s*:?\s*(\d{2})\.(\d{2})\.(\d{4})",text,re.I)
     if deadline:

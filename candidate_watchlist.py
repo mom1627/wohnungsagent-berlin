@@ -24,7 +24,7 @@ def load_watchlist(path=STATE_PATH):
         if provider!=item.get("provider") or provider is None: continue
         if not screen(text)["basic_criteria_match"]: continue
         result.append({"url":url,"provider":provider,"source_text":text,"source_page":0,
-            "candidate_origin":"watchlist","source_snapshot_utc":item.get("source_snapshot_utc",data.get("updated_at_utc"))})
+            "candidate_origin":"watchlist","source":item.get("source"),"source_snapshot_utc":item.get("source_snapshot_utc",data.get("updated_at_utc"))})
     return result
 
 def merge_candidates(discovered,cached):
@@ -42,7 +42,7 @@ def save_watchlist(candidates,ledger):
     # Allowlist fields, never applicant values or form/server responses.
     now=datetime.now(timezone.utc).isoformat()
     items=[{**{k:x[k] for k in ("url","provider","source_text")},
-        "source_snapshot_utc":x.get("source_snapshot_utc",now)} for x in candidates[:100]]
+        "source":x.get("source"), "source_snapshot_utc":x.get("source_snapshot_utc",now)} for x in candidates[:100]]
     try:
         current=ledger.api("GET",state_path=STATE_PATH)
     except HTTPError as exc:

@@ -13,6 +13,7 @@ from gewobag_adapter import norm, visible_challenge
 
 VERSION = "stadtundland_browser_v1"
 INCOME_LABEL = "Beträgt die monatliche Warmmiete höchstens 35 % Ihres monatlichen Netto-Haushaltseinkommens?"
+WBS_LABEL = "Haben Sie einen Wohnberechtigungsschein (WBS) 140 oder 100?"
 REFERRAL_LABEL = "Wie sind Sie auf uns aufmerksam geworden?"
 DATE_LABEL = "Ab wann können Sie die Wohnung anmieten?"
 PRIVACY = ("Ihre Angaben werden verschlüsselt übertragen und wir garantieren die Einhaltung der Datenschutzbestimmungen. "
@@ -65,8 +66,12 @@ def known_control(field):
     if re.fullmatch(r"mat-input-\d+",identity):
         return label in CONTACT_LABELS and kind in {"text","textarea"}
     if kind == "radio":
-        return (label in {"Ja","Nein"} and field["group"] == INCOME_LABEL and
-                "stadt_und_land_monatliche_warmmiete_hoechstens_35%_monatliches_netto_haushaltseinkommen" in identity)
+        radio_fields = {
+            INCOME_LABEL: "stadt_und_land_monatliche_warmmiete_hoechstens_35%_monatliches_netto_haushaltseinkommen",
+            WBS_LABEL: "$$_wbs_available_$$",
+        }
+        token = radio_fields.get(field["group"])
+        return label in {"Ja","Nein"} and token is not None and token in identity
     if kind == "checkbox":
         return "stadt_und_land_bestaetigung_datenschutzhinweis" in identity and label == PRIVACY
     mapping = {"stadt_und_land_anzahl_einziehende_personen":("number","Anzahl der einziehenden Personen"),
@@ -87,10 +92,12 @@ async def select_material(frame,label,value):
     if norm(await control.inner_text()) != value:
         raise ValueError("material_selection_not_verified")
 
-async def prepare_stadtundland(page,frame,contact,housing,decision):
+async def prepare_stadtundland(page,frame,contact,housing,decision,*,referral="Inberlinwohnen.de"):
     # Check protected missing inputs before any profile values enter a form.
     blocker = readiness_blocker()
     if blocker: return False,blocker
+    if referral not in {"Homepage","Inberlinwohnen.de"}:
+        return False,"stadtundland_referral_unverified"
     if await visible_challenge(page): return False,"visible_captcha_requires_manual_action"
     current = await inspect_controls(frame)
     if not current or any(not known_control(f) for f in current):
@@ -106,10 +113,17 @@ async def prepare_stadtundland(page,frame,contact,housing,decision):
     current = await inspect_controls(frame)
     if any(not known_control(f) for f in current):
         return False,"stadtundland_new_conditional_question_requires_review"
+    wbs = frame.get_by_role("radiogroup",name=WBS_LABEL,exact=True)
+    if await wbs.count():
+        if await wbs.count() != 1 or housing.get("wbs_type") != "100":
+            return False,"stadtundland_wbs_confirmation_unverified"
+        await wbs.get_by_role("radio",name="Ja",exact=True).check(timeout=8000)
+        if any(not known_control(f) for f in await inspect_controls(frame)):
+            return False,"stadtundland_new_conditional_question_requires_review"
     names = contact["name"].strip().split(None,1)
     if len(names) != 2: return False,"structured_applicant_name_required"
     await select_material(frame,"Anrede",housing["salutation"])
-    await select_material(frame,REFERRAL_LABEL,"Inberlinwohnen.de")
+    await select_material(frame,REFERRAL_LABEL,referral)
     move_in = requested_date()
     available = decision.get("available_from") or ""
     if re.fullmatch(r"\d{2}\.\d{2}\.\d{4}",available):

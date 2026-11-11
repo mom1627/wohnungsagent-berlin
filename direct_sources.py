@@ -3,9 +3,10 @@ import asyncio
 import json
 import re
 from dataclasses import dataclass
+from http.cookiejar import CookieJar
 from urllib.error import HTTPError, URLError
 from urllib.parse import urldefrag, urljoin, urlsplit, urlunsplit
-from urllib.request import HTTPRedirectHandler, Request, build_opener
+from urllib.request import HTTPCookieProcessor, HTTPRedirectHandler, Request, build_opener
 
 from lxml import html
 
@@ -99,11 +100,11 @@ class SourceRedirect(HTTPRedirectHandler):
         return super().redirect_request(req, fp, code, msg, headers, newurl)
 
 
-def fetch_page(source, url, robots):
+def fetch_page(source, url, robots, opener):
     if not public_url(source, url):
         raise SourceFailure("unexpected_search_link")
     check_robots(url, robots)
-    with build_opener(SourceRedirect(source, robots)).open(
+    with opener.open(
             Request(url, headers={"User-Agent": UA}), timeout=12) as response:
         body = response.read(2_000_001)
         if len(body) > 2_000_000:
@@ -111,10 +112,10 @@ def fetch_page(source, url, robots):
         return html.fromstring(body, base_url=response.geturl())
 
 
-async def public_page(source, url, robots):
+async def public_page(source, url, robots, opener):
     for attempt in range(2):
         try:
-            return await asyncio.to_thread(fetch_page, source, url, robots)
+            return await asyncio.to_thread(fetch_page, source, url, robots, opener)
         except HTTPError as exc:
             # Rate limits and access denials are reported without another request.
             if exc.code not in {500, 502, 503, 504} or attempt:
@@ -145,11 +146,12 @@ async def collect_source(source, *, max_pages=30):
               "pages_checked": 0, "count": 0, "listings": []}
     try:
         url, visited, seen, robots = source.url, set(), set(), {}
+        opener = build_opener(SourceRedirect(source, robots), HTTPCookieProcessor(CookieJar()))
         for number in range(1, max_pages + 1):
             if url in visited:
                 raise SourceFailure("pagination_cycle")
             visited.add(url)
-            document = await public_page(source, url, robots)
+            document = await public_page(source, url, robots, opener)
             cards = list(read_cards(source, document))
             records = [record for card in cards if (record := card_record(source, card, number))]
             if not records:
@@ -252,11 +254,16 @@ async def collect_stadtundland():
                         report["complete"] = len(seen) == advertised
                         report["stop_reason"] = "last_page" if report["complete"] else "published_count_mismatch"
                         break
-                    await more.click()
-                    await page.wait_for_function(
-                        "state => document.querySelectorAll(state.selector).length > state.before",
-                        arg={"selector": STADT.cards, "before": len(raw)}, timeout=15000)
-                    await asyncio.sleep(0.5)
+                    for attempt in range(2):
+                        if await cards.count() <= len(raw) and await more.is_visible():
+                            await more.click()
+                        try:
+                            await cards.nth(len(raw)).wait_for(state="visible",timeout=8000)
+                            break
+                        except Exception as exc:
+                            if type(exc).__name__ != "TimeoutError" or attempt:
+                                raise
+                    await asyncio.sleep(1.5)
             finally:
                 await browser.close()
     except (SourceFailure, PermissionError) as exc:

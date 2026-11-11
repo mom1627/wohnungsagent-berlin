@@ -62,7 +62,7 @@ werden dauerhaft in getrennten Zustandsdateien gespeichert.
 
 ## Prüfung
 
-Python 3.11: `python -m pip install lxml==6.1.1`, dann
+Python 3.11: `python -m pip install lxml==6.1.1 Protego==0.7.0`, dann
 `python -m unittest discover -s tests -v`.
 
 Der Suchlauf verwendet Playwright 1.56.0 mit Chromium. Sicherheitsregressionen

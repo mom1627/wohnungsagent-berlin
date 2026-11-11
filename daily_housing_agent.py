@@ -11,7 +11,8 @@ from datetime import datetime, timezone
 from decimal import Decimal
 from pathlib import Path
 from collect_all_pages import collect_async
-from direct_sources import collect_direct, collect_stadtundland
+from collect_inberlinwohnen import FINDER
+from direct_sources import STADT, collect_direct, collect_stadtundland
 from provider_registry import canonical_offer, provider_for
 from eligibility import money, screen
 from application_ledger import Ledger
@@ -203,7 +204,13 @@ async def run():
                                 if item["provider"] == "gewobag":
                                     ready,why = await prepare(page,frame,profile,housing)
                                 elif item["provider"] == "stadtundland":
-                                    ready,why = await prepare_stadtundland(page,frame,profile,housing,detail)
+                                    origin = item.get("source")
+                                    referral = None
+                                    if origin == STADT.url:
+                                        referral = "Homepage"
+                                    elif origin == FINDER or origin is None and "Alle Details Adresse:" in item["source_text"]:
+                                        referral = "Inberlinwohnen.de"
+                                    ready,why = await prepare_stadtundland(page,frame,profile,housing,detail,referral=referral)
                                 else:
                                     ready,why = await prepare_native(item["provider"],page,profile,housing)
                                 if not ready:
