@@ -26,6 +26,9 @@ geprüft.
 | immowelt | Die dokumentierte API setzt einen aktiven Anbietervertrag voraus und liefert eigene Inserate. [API-Bedingungen](https://www.immowelt.de/meineimmowelt/apinutzungsbedingungen.aspx) |
 | Waitly | Die Plattform arbeitet mit Interessen- und Wartelisten. Für diesen Agenten wurde kein freigegebener Such- oder Bewerbungszugang verifiziert. [Waitly](https://waitly.eu/de) |
 | EverReal | Für diesen Agenten wurde kein öffentlicher Berlin-Feed verifiziert. Einzelne Bewerbungswege sind erst am konkreten Inserat prüfbar. [EverReal](https://de.everreal.co/) |
+| Deutsche Wohnen und Vonovia | Öffentliche Berlin-Suchen vorhanden. Die geprüften Einstiegseiten liefern die Angebotsliste per JavaScript nach. Eine vollständige unabhängige Prüfung der Angebots- und Bewerbungswege steht aus. [Deutsche Wohnen](https://www.deutsche-wohnen.com/mieten/zuhause-mieten) · [Vonovia](https://www.vonovia.de/meine-stadt/wohnungen-in-berlin) |
+| Covivio | Öffentliche Immobiliensuche mit clientseitiger Angebotsanzeige. In der geprüften Serverantwort war keine Liste konkreter Inserate enthalten. [Covivio](https://www.covivio.immo/wohnen/immobilie-finden/) |
+| Neubauangebote von STADT UND LAND | Projektübersicht mit Registrierungs- und Vermietungsphasen. Konkrete Wohnungen laufen durch die reguläre Suche, sobald sie dort erscheinen. [Neubauangebote](https://stadtundland.de/mieten/angebote-neubau) |
 | Märkische Scholle und Märkische Baugenossenschaft | Beide Angebotsseiten meldeten bei der Prüfung keine Angebote. Ein etwaiger späterer Beitritt setzt überprüfbare Eintrittskosten voraus. [Märkische Scholle](https://maerkische-scholle.de/wohnungsangebote.html) · [Märkische Baugenossenschaft](https://mb-eg.de/wohnungssuche) |
 
 Die Suche umfasst alle zwölf Bezirke. Sie priorisiert Einzimmerwohnungen und
