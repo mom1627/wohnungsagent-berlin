@@ -20,7 +20,7 @@ def screen(text, *, provider_verified=False):
     # Prefer explicit labels; '1 Zimmer 34,08 m²' must never become 34 rooms.
     rooms = None
     for pattern in (r"(?:Zimmeranzahl|Anzahl (?:der )?Zimmer)\s*:?\s*(\d+(?:[,.]\d+)?)(?![\d.,])",
-                    r"\bZimmer\s*:?\s*(\d{1,2}(?:[,.]\d+)?)(?![\d.,])",
+                    r"\bZimmer\s*:?\s*(\d{1,2}(?:[,.]\d+)?)(?![\d.,]|\s*(?:m²|Quadratmeter))",
                     r"\b(\d+(?:[,.]\d+)?)\s*-?\s*Zimmer(?:wohnung|\b)"):
         rooms = re.search(pattern,text,re.I)
         if rooms: break

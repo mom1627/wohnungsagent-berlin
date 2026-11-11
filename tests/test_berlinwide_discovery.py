@@ -64,6 +64,13 @@ class BerlinwideDiscoveryTests(unittest.TestCase):
         self.assertEqual(match["available_from"], "ab sofort")
         self.assertIn("age_restriction_requires_review", match["reasons"])
 
+    def test_area_after_stadtundland_room_count_is_never_room_count(self):
+        text = ("Elsa-Ledetsch-Weg 1, 12683 Berlin 1 Zimmer 45,36 m² Quadratmeter "
+                "– Singlewohnung mit WBS sucht Nachmieter! Gesamtmiete 478,98 €")
+        self.assertEqual(screen(text)["rooms"], "1")
+        self.assertTrue(screen(text)["basic_criteria_match"])
+        self.assertEqual(screen("Adresse: Luzinstr. 8, 12619 Berlin Zimmer 1,0 Etage 1")["rooms"], "1.0")
+
     def test_old_reservation_is_found_via_current_redirect(self):
         old = "https://www.wbm.de/wohnungen-berlin/angebote/details/?id=42"
         new = "https://www.wbm.de/wohnungen-berlin/angebote/details/wohnungsname/"
