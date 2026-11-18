@@ -1,19 +1,467 @@
 {
-  "updated_at_utc": "2026-11-18T18:44:00.737359+00:00",
+  "updated_at_utc": "2026-11-18T23:02:37.927946+00:00",
   "offers": [
     {
       "url": "https://www.gewobag.de/fuer-mietinteressentinnen/mietangebote/1000-00187-0101-0011",
       "provider": "gewobag",
       "source_text": "WBS 100 oder 140 erforderlich… Alle Details Adresse: Einsteinstraße 16A, 10409, Pankow Zimmeranzahl: 1,0 Wohnfläche: 29,40 m² Kaltmiete: 283,29 € Nebenkosten: 69,00 € Gesamtmiete: 405,29 € Bezugsfertig ab: 01.11.2026 Eingestellt am: 18.11.2026 WBS: erforderlich Etage: 2 von (insg. 10) Badezimmer: 1 Baujahr: 1977 Heizung: Fernwärme Hauptenergieträger: unbekannt Energieverbrauchskennwert: 86,80 kWh/(a m²) Energieausweis: Verbrauchsausweis Aufzug Keller Eine Wohnung der",
       "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
     },
     {
       "url": "https://www.degewo.de/de/properties/W1400-40381-0480-0405.html",
       "provider": "degewo",
       "source_text": "Altersgerechtes Wohnen ab 55 Jahren Alle Details Adresse: Wittenberger Straße 21, 12689, Marzahn-Hellersdorf Zimmeranzahl: 1,0 Wohnfläche: 36,03 m² Kaltmiete: 318,25 € Nebenkosten: 92,23 € Gesamtmiete: 489,38 € Bezugsfertig ab: 18.11.2026 Eingestellt am: 18.11.2026 WBS: nicht erforderlich Etage: 4 von (insg. 6) Badezimmer: 1 Baujahr: 1985 Heizung: Fernwärme Hauptenergieträger: unbekannt Energieverbrauchskennwert: 109,00 kWh/(a m²) Energieausweis: Verbrauchsausweis Balkon / Loggia / Terrasse Badewanne Aufzug Eine Wohnung der",
       "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.degewo.de/de/properties/W1140-11904-0007-0203.html",
+      "provider": "degewo",
+      "source_text": "Nachmieter kurzfristig gesucht, nur mit WBS! Alle Details Adresse: Beyrodtstraße 52, 12277, Tempelhof-Schöneberg Zimmeranzahl: 1,0 Wohnfläche: 44,06 m² Kaltmiete: 308,42 € Nebenkosten: 91,64 € Gesamtmiete: 508,00 € Bezugsfertig ab: 01.01.2027 Eingestellt am: 18.11.2026 WBS: erforderlich Etage: 2 von (insg. 4) Badezimmer: 1 Baujahr: 2024 Heizung: Fernwärme Hauptenergieträger: unbekannt Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Barrierefrei Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.gesobau.de/?immo_ref=10-00920-00001-1605-a05d1369-f056-49f8-9ac2-e899d7cd00b4",
+      "provider": "gesobau",
+      "source_text": "Exklusives Wohnen - Komfort für Menschen ab 60 Jahren Alle Details Adresse: Wilhelmsruher Damm 148, 13439, Reinickendorf Zimmeranzahl: 1,0 Wohnfläche: 34,08 m² Kaltmiete: 408,96 € Nebenkosten: 85,19 € Gesamtmiete: 527,51 € Bezugsfertig ab: 16.01.2027 Eingestellt am: 17.11.2026 WBS: nicht erforderlich Etage: 6 von (insg. 8) Badezimmer: 1 Baujahr: 1974 Heizung: Fernwärme Hauptenergieträger: Fernwärme Energieverbrauchskennwert: 69,70 kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Barrierefrei Keller Seniorenwohnung Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.gesobau.de/?immo_ref=10-00983-00008-1110-ed26b0eb-8cd5-4f2b-bbde-1f92a4cee0ac",
+      "provider": "gesobau",
+      "source_text": "Exklusiv für Studis/Azubis - schönes WG-Zimmer in 3-Zimmer-Wohnung Alle Details Adresse: Roedernallee 118F, 13437, Reinickendorf Zimmeranzahl: 1,0 Wohnfläche: 30,82 m² Kaltmiete: 380,00 € Nebenkosten: unbekannt € Gesamtmiete: 447,81 € Bezugsfertig ab: 16.12.2026 Eingestellt am: 17.11.2026 WBS: erforderlich Etage: 2 von (insg. 4) Badezimmer: 2 Baujahr: 2026 Heizung: ZentralheizungGasheizung Hauptenergieträger: Gas Energieverbrauchskennwert: 25,40 kWh/(a m²) Energieausweis: Bedarfsausweis Dusche Badewanne Aufzug Barrierefrei Keller Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.degewo.de/de/properties/W1300-63818-0021-0404.html",
+      "provider": "degewo",
+      "source_text": "Single-Wohnung Alle Details Adresse: Müggelschlößchenweg 36, 12559, Treptow-Köpenick Zimmeranzahl: 1,0 Wohnfläche: 29,40 m² Kaltmiete: 261,31 € Nebenkosten: 64,38 € Gesamtmiete: 366,55 € Bezugsfertig ab: 18.11.2026 Eingestellt am: 17.11.2026 WBS: nicht erforderlich Etage: 4 von (insg. 21) Badezimmer: 1 Baujahr: 1982 Heizung: Fernwärme Hauptenergieträger: unbekannt Energieverbrauchskennwert: 75,00 kWh/(a m²) Energieausweis: Verbrauchsausweis Badewanne Aufzug Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.degewo.de/de/properties/W1500-00807-0091-0703.html",
+      "provider": "degewo",
+      "source_text": "Singles hergeschaut Alle Details Adresse: Dannenwalder Weg 142, 13439, Reinickendorf Zimmeranzahl: 1,0 Wohnfläche: 36,88 m² Kaltmiete: 394,72 € Nebenkosten: 77,44 € Gesamtmiete: 514,57 € Bezugsfertig ab: 18.11.2026 Eingestellt am: 17.11.2026 WBS: nicht erforderlich Etage: 7 von (insg. 8) Badezimmer: 1 Baujahr: 1967 Heizung: Fernwärme Hauptenergieträger: unbekannt Energieverbrauchskennwert: 76,00 kWh/(a m²) Energieausweis: Verbrauchsausweis Balkon / Loggia / Terrasse Badewanne Aufzug Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.gesobau.de/?immo_ref=10-00983-00010-1161-f0c2e3d3-cbe4-4d6e-b9ac-b33784877490",
+      "provider": "gesobau",
+      "source_text": "Exklusiv für Studis/Azubis - helles Zimmer in einer 3er-WG Alle Details Adresse: Roedernallee 118H, 13437, Reinickendorf Zimmeranzahl: 1,0 Wohnfläche: 27,83 m² Kaltmiete: 380,00 € Nebenkosten: unbekannt € Gesamtmiete: 440,03 € Bezugsfertig ab: 16.12.2026 Eingestellt am: 17.11.2026 WBS: erforderlich Etage: 2 von (insg. 4) Badezimmer: 1 Baujahr: 2026 Heizung: ZentralheizungGasheizung Hauptenergieträger: Gas Energieverbrauchskennwert: 25,40 kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Barrierefrei Keller Gäste WC Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1771-12414-106.html?t=ibw",
+      "provider": "howoge",
+      "source_text": "Kleine räumliche Wohnung für Singles und Studenten Alle Details Adresse: Wustrower Straße 47, 13051, Lichtenberg Zimmeranzahl: 1,0 Wohnfläche: 32,60 m² Kaltmiete: 305,53 € Nebenkosten: 65,19 € Gesamtmiete: 422,89 € Bezugsfertig ab: 13.11.2026 Eingestellt am: 13.11.2026 WBS: erforderlich Etage: 5 von (insg. 11) Badezimmer: 1 Baujahr: 1986 Heizung: Zentralheizung Hauptenergieträger: Fernwärme Energieverbrauchskennwert: 85,42 kWh/(a m²) Energieausweis: Verbrauchsausweis Aufzug Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1770-27668-9989.html?t=ibw",
+      "provider": "howoge",
+      "source_text": "2-Zimmer-Wohnung mit WBS bis 140 Alle Details Adresse: Mahlower Straße 44, 12557, Treptow-Köpenick Zimmeranzahl: 2,0 Wohnfläche: 50,00 m² Kaltmiete: 350,00 € Nebenkosten: 100,00 € Gesamtmiete: 525,00 € Bezugsfertig ab: 16.01.2027 Eingestellt am: 12.11.2026 WBS: erforderlich Etage: 2 von (insg. 7) Badezimmer: 1 Baujahr: 2026 Heizung: Fußbodenheizung Hauptenergieträger: Fernwärme Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Barrierefrei Keller Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1770-27668-9982.html?t=ibw",
+      "provider": "howoge",
+      "source_text": "1-Zimmer-Wohnung mit WBS bis 140 mit besonderem Wohnbedarf Alle Details Adresse: Mahlower Straße 44, 12557, Treptow-Köpenick Zimmeranzahl: 1,0 Wohnfläche: 35,00 m² Kaltmiete: 245,00 € Nebenkosten: 70,00 € Gesamtmiete: 367,50 € Bezugsfertig ab: 16.01.2027 Eingestellt am: 12.11.2026 WBS: erforderlich Etage: 1 von (insg. 7) Badezimmer: 1 Baujahr: 2026 Heizung: Fußbodenheizung Hauptenergieträger: Fernwärme Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Keller Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1770-27668-9981.html?t=ibw",
+      "provider": "howoge",
+      "source_text": "2-Zimmer-Wohnung mit WBS bis 140 mit besonderem Wohnbedarf Alle Details Adresse: Mahlower Straße 44, 12557, Treptow-Köpenick Zimmeranzahl: 2,0 Wohnfläche: 50,00 m² Kaltmiete: 350,00 € Nebenkosten: 100,00 € Gesamtmiete: 525,00 € Bezugsfertig ab: 16.01.2027 Eingestellt am: 12.11.2026 WBS: erforderlich Etage: 2 von (insg. 7) Badezimmer: 1 Baujahr: 2026 Heizung: Fußbodenheizung Hauptenergieträger: Fernwärme Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Barrierefrei Keller Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1771-14538-9999.html?t=ibw",
+      "provider": "howoge",
+      "source_text": "1- Zimmer- Wohnung (140 WBS) Alle Details Adresse: Rosenfelder Ring 88, 10315, Lichtenberg Zimmeranzahl: 1,0 Wohnfläche: 41,00 m² Kaltmiete: 287,00 € Nebenkosten: 82,00 € Gesamtmiete: 430,50 € Bezugsfertig ab: 16.02.2027 Eingestellt am: 11.11.2026 WBS: erforderlich Etage: 1 von (insg. 8) Badezimmer: 1 Baujahr: 2026 Heizung: Fußbodenheizung Hauptenergieträger: Wärmepumpe Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Barrierefrei Keller Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1771-14538-9995.html?t=ibw",
+      "provider": "howoge",
+      "source_text": "2- Zimmer- Wohnung (140 WBS) Alle Details Adresse: Rosenfelder Ring 88, 10315, Lichtenberg Zimmeranzahl: 2,0 Wohnfläche: 49,00 m² Kaltmiete: 343,00 € Nebenkosten: 98,00 € Gesamtmiete: 514,50 € Bezugsfertig ab: 16.02.2027 Eingestellt am: 11.11.2026 WBS: erforderlich Etage: 2 von (insg. 8) Badezimmer: 1 Baujahr: 2026 Heizung: Fußbodenheizung Hauptenergieträger: Wärmepumpe Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Barrierefrei Keller Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1771-14538-89.html?t=ibw",
+      "provider": "howoge",
+      "source_text": "1-Zimmer-Wohnung (180 WBS) Alle Details Adresse: Rosenfelder Ring 86, 10315, Lichtenberg Zimmeranzahl: 1,0 Wohnfläche: 31,00 m² Kaltmiete: 294,50 € Nebenkosten: 62,00 € Gesamtmiete: 403,00 € Bezugsfertig ab: 16.02.2027 Eingestellt am: 11.11.2026 WBS: erforderlich Etage: 1 von (insg. 8) Badezimmer: 1 Baujahr: 2026 Heizung: Fußbodenheizung Hauptenergieträger: Wärmepumpe Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Keller Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1771-14538-156.html?t=ibw",
+      "provider": "howoge",
+      "source_text": "1-Zimmer-Wohnung (180 WBS) Alle Details Adresse: Rosenfelder Ring 86, 10315, Lichtenberg Zimmeranzahl: 1,0 Wohnfläche: 32,00 m² Kaltmiete: 304,00 € Nebenkosten: 64,00 € Gesamtmiete: 416,00 € Bezugsfertig ab: 16.02.2027 Eingestellt am: 11.11.2026 WBS: erforderlich Etage: 7 von (insg. 8) Badezimmer: 1 Baujahr: 2026 Heizung: Fußbodenheizung Hauptenergieträger: Wärmepumpe Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Keller Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1771-14538-112.html?t=ibw",
+      "provider": "howoge",
+      "source_text": "1-Zimmer-Wohnung (220 WBS) Alle Details Adresse: Rosenfelder Ring 86, 10315, Lichtenberg Zimmeranzahl: 1,0 Wohnfläche: 32,00 m² Kaltmiete: 368,00 € Nebenkosten: 64,00 € Gesamtmiete: 480,00 € Bezugsfertig ab: 16.02.2027 Eingestellt am: 11.11.2026 WBS: erforderlich Etage: 3 von (insg. 8) Badezimmer: 1 Baujahr: 2026 Heizung: Fußbodenheizung Hauptenergieträger: Wärmepumpe Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Keller Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.berlinovo.de/de/wohnung-id/1814-2601-531",
+      "provider": "berlinovo",
+      "source_text": "Erste Wohnung? Wunderbare 1 Zimmerwohnung am Stadtrand. Alle Details Adresse: Alte Hellersdorfer Straße 129, 12629, Marzahn-Hellersdorf Zimmeranzahl: 1,0 Wohnfläche: 32,60 m² Kaltmiete: 304,58 € Nebenkosten: 97,00 € Gesamtmiete: 476,58 € Bezugsfertig ab: 01.12.2026 Eingestellt am: 09.11.2026 WBS: nicht erforderlich Etage: 7 von (insg. 11) Badezimmer: 1 Baujahr: 1989 Heizung: ZentralheizungFernwärme Hauptenergieträger: unbekannt Energieverbrauchskennwert: 105,00 kWh/(a m²) Energieausweis: Verbrauchsausweis Badewanne Aufzug Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1771-10506-162.html?t=ibw",
+      "provider": "howoge",
+      "source_text": "Neue Wohnung mit WBS 100-140 mit besonderen Wohnbedarf! Alle Details Adresse: Genslerstraße 40, 13055, Lichtenberg Zimmeranzahl: 1,0 Wohnfläche: 36,00 m² Kaltmiete: 241,20 € Nebenkosten: 72,00 € Gesamtmiete: 367,20 € Bezugsfertig ab: 06.11.2026 Eingestellt am: 06.11.2026 WBS: erforderlich Etage: 4 von (insg. 3) Badezimmer: 1 Baujahr: 1940 Heizung: Zentralheizung Hauptenergieträger: Fernwärme Energieverbrauchskennwert: 111,70 kWh/(a m²) Energieausweis: Verbrauchsausweis Balkon / Loggia / Terrasse Dusche Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://stadtundland.de/wohnungssuche/1001%2F5101%2F00109",
+      "provider": "stadtundland",
+      "source_text": "Ab sofort Alle Details Adresse: Neuköllner Straße 306, 12357, Neukölln Zimmeranzahl: 1,0 Wohnfläche: 42,43 m² Kaltmiete: 333,01 € Nebenkosten: 99,00 € Gesamtmiete: 489,01 € Bezugsfertig ab: 18.11.2026 Eingestellt am: 06.11.2026 WBS: nicht erforderlich Etage: 2 von (insg. 4) Badezimmer: unbekannt Baujahr: 1975 Heizung: ZentralheizungGasheizung Hauptenergieträger: unbekannt Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Badewanne Aufzug Keller Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.gewobag.de/fuer-mietinteressentinnen/mietangebote/7100-70806-0101-0090",
+      "provider": "gewobag",
+      "source_text": "WohnAktiv! ab 60 Jahren Alle Details Adresse: Eiserfelder Ring 9, 13583, Spandau Zimmeranzahl: 1,0 Wohnfläche: 25,90 m² Kaltmiete: 362,60 € Nebenkosten: 66,00 € Gesamtmiete: 485,60 € Bezugsfertig ab: 01.11.2026 Eingestellt am: 06.11.2026 WBS: nicht erforderlich Etage: 3 von (insg. 5) Badezimmer: 1 Baujahr: 1966 Heizung: Fernwärme Hauptenergieträger: unbekannt Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Aufzug Keller Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://stadtundland.de/wohnungssuche/1001%2F5145%2F00033",
+      "provider": "stadtundland",
+      "source_text": "1 Zimmer, ab sofort! Alle Details Adresse: Kaiser-Wilhelm-Straße 113D, 12247, Steglitz-Zehlendorf Zimmeranzahl: 1,0 Wohnfläche: 28,93 m² Kaltmiete: 297,86 € Nebenkosten: 71,00 € Gesamtmiete: 403,86 € Bezugsfertig ab: 18.11.2026 Eingestellt am: 04.11.2026 WBS: nicht erforderlich Etage: 2 von (insg. 3) Badezimmer: unbekannt Baujahr: 1955 Heizung: ZentralheizungÖlheizungGasheizung Hauptenergieträger: unbekannt Energieverbrauchskennwert: 216,30 kWh/(a m²) Energieausweis: Verbrauchsausweis Balkon / Loggia / Terrasse Dusche Keller Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1771-10506-195.html?t=ibw",
+      "provider": "howoge",
+      "source_text": "Wohnung in Berlin Alle Details Adresse: Heiligenstadter Straße 8, 13055, Lichtenberg Zimmeranzahl: 2,0 Wohnfläche: 55,00 m² Kaltmiete: 357,50 € Nebenkosten: 110,00 € Gesamtmiete: 550,00 € Bezugsfertig ab: 03.11.2026 Eingestellt am: 03.11.2026 WBS: erforderlich Etage: 4 von (insg. 3) Badezimmer: 1 Baujahr: 1940 Heizung: Zentralheizung Hauptenergieträger: Fernwärme Energieverbrauchskennwert: 85,44 kWh/(a m²) Energieausweis: Verbrauchsausweis Balkon / Loggia / Terrasse Dusche Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1771-10506-193.html?t=ibw",
+      "provider": "howoge",
+      "source_text": "Wohnung in Berlin Alle Details Adresse: Heiligenstadter Straße 6, 13055, Lichtenberg Zimmeranzahl: 2,0 Wohnfläche: 55,00 m² Kaltmiete: 357,50 € Nebenkosten: 110,00 € Gesamtmiete: 550,00 € Bezugsfertig ab: 03.11.2026 Eingestellt am: 03.11.2026 WBS: erforderlich Etage: 4 von (insg. 3) Badezimmer: 1 Baujahr: 1940 Heizung: Zentralheizung Hauptenergieträger: Fernwärme Energieverbrauchskennwert: 85,44 kWh/(a m²) Energieausweis: Verbrauchsausweis Balkon / Loggia / Terrasse Dusche Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1771-10506-192.html?t=ibw",
+      "provider": "howoge",
+      "source_text": "Wohnung in Berlin Alle Details Adresse: Heiligenstadter Straße 6, 13055, Lichtenberg Zimmeranzahl: 2,0 Wohnfläche: 55,00 m² Kaltmiete: 357,50 € Nebenkosten: 110,00 € Gesamtmiete: 550,00 € Bezugsfertig ab: 03.11.2026 Eingestellt am: 03.11.2026 WBS: erforderlich Etage: 4 von (insg. 3) Badezimmer: 1 Baujahr: 1940 Heizung: Zentralheizung Hauptenergieträger: Fernwärme Energieverbrauchskennwert: 85,44 kWh/(a m²) Energieausweis: Verbrauchsausweis Balkon / Loggia / Terrasse Dusche Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1771-14559-465.html?t=ibw",
+      "provider": "howoge",
+      "source_text": "*** WBS 100 mit bes. Wohnbedarf erfolgreich - 2 Zimmer mit Balkon und Keller sucht Sie *** Alle Details Adresse: Mohnweg 13, 12524, Treptow-Köpenick Zimmeranzahl: 2,0 Wohnfläche: 51,00 m² Kaltmiete: 366,90 € Nebenkosten: 102,00 € Gesamtmiete: 545,40 € Bezugsfertig ab: 03.11.2026 Eingestellt am: 03.11.2026 WBS: erforderlich Etage: 3 von (insg. 4) Badezimmer: 1 Baujahr: 2025 Heizung: FußbodenheizungZentralheizung Hauptenergieträger: Fernwärme Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.degewo.de/de/properties/W1300-41906-0012-0120.html",
+      "provider": "degewo",
+      "source_text": "Am Bahndamm 31 – Modern wohnen für Studierende und Auszubildende mit WBS Alle Details Adresse: Am Bahndamm 31, 12555, Treptow-Köpenick Zimmeranzahl: 1,0 Wohnfläche: 36,38 m² Kaltmiete: 254,66 € Nebenkosten: 80,40 € Gesamtmiete: 400,18 € Bezugsfertig ab: 15.12.2026 Eingestellt am: 02.11.2026 WBS: erforderlich Etage: 1 von (insg. 5) Badezimmer: 1 Baujahr: 2026 Heizung: Fernwärme Hauptenergieträger: unbekannt Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Barrierefrei Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1771-14576-647.html?t=ibw",
+      "provider": "howoge",
+      "source_text": "Möbliertes Apartment für Studenten, Azubis oder Berufseinsteiger! Alle Details Adresse: Karl-Ziegler-Straße 7, 12489, Treptow-Köpenick Zimmeranzahl: 1,0 Wohnfläche: 24,00 m² Kaltmiete: 370,00 € Nebenkosten: 150,00 € Gesamtmiete: 520,00 € Bezugsfertig ab: 01.11.2026 Eingestellt am: 29.10.2026 WBS: nicht erforderlich Etage: 3 von (insg. 5) Badezimmer: 1 Baujahr: 2022 Heizung: FußbodenheizungZentralheizung Hauptenergieträger: Fernwärme Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Dusche Aufzug Keller Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1771-14576-507.html?t=ibw",
+      "provider": "howoge",
+      "source_text": "Möbliertes Apartment für Studenten, Azubis oder Berufseinsteiger! Alle Details Adresse: Karl-Ziegler-Straße 5, 12489, Treptow-Köpenick Zimmeranzahl: 1,0 Wohnfläche: 24,00 m² Kaltmiete: 370,00 € Nebenkosten: 150,00 € Gesamtmiete: 520,00 € Bezugsfertig ab: 01.11.2026 Eingestellt am: 29.10.2026 WBS: nicht erforderlich Etage: 1 von (insg. 5) Badezimmer: 1 Baujahr: 2022 Heizung: FußbodenheizungZentralheizung Hauptenergieträger: Fernwärme Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Dusche Aufzug Keller Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1771-14576-457.html?t=ibw",
+      "provider": "howoge",
+      "source_text": "Möbliertes Apartment für Studenten, Azubis oder Berufseinsteiger! Alle Details Adresse: Karl-Ziegler-Straße 3, 12489, Treptow-Köpenick Zimmeranzahl: 1,0 Wohnfläche: 24,00 m² Kaltmiete: 370,00 € Nebenkosten: 150,00 € Gesamtmiete: 520,00 € Bezugsfertig ab: 01.11.2026 Eingestellt am: 29.10.2026 WBS: nicht erforderlich Etage: 3 von (insg. 5) Badezimmer: 1 Baujahr: 2022 Heizung: FußbodenheizungZentralheizung Hauptenergieträger: Fernwärme Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Dusche Aufzug Keller Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1770-20551-48.html?t=ibw",
+      "provider": "howoge",
+      "source_text": "1-Zimmer-Wohnung mit Balkon in Friedrichsfelde Alle Details Adresse: Sewanstraße 256B, 10319, Lichtenberg Zimmeranzahl: 1,0 Wohnfläche: 35,00 m² Kaltmiete: 245,00 € Nebenkosten: 70,00 € Gesamtmiete: 367,50 € Bezugsfertig ab: 27.10.2026 Eingestellt am: 27.10.2026 WBS: erforderlich Etage: 1 von (insg. 6) Badezimmer: 1 Baujahr: 2026 Heizung: FußbodenheizungZentralheizung Hauptenergieträger: Photovoltaik Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Keller Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.degewo.de/de/properties/W1300-41906-0023-0210.html",
+      "provider": "degewo",
+      "source_text": "Neues Wohnglück für Studierende/Auszubildende - Neubau mit WBS mit besonderem Wohnbedarf Alle Details Adresse: Am Bahndamm 31, 12555, Treptow-Köpenick Zimmeranzahl: 1,0 Wohnfläche: 35,58 m² Kaltmiete: 249,06 € Nebenkosten: 78,63 € Gesamtmiete: 391,38 € Bezugsfertig ab: 15.12.2026 Eingestellt am: 14.10.2026 WBS: erforderlich Etage: 2 von (insg. 5) Badezimmer: 1 Baujahr: 2026 Heizung: Fernwärme Hauptenergieträger: unbekannt Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Barrierefrei Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1770-27697-9999.html?t=ibw",
+      "provider": "howoge",
+      "source_text": "1-Zimmer-Wohnung in Berlin Alle Details Adresse: Schkeuditzer Straße 3C, 12627, Marzahn-Hellersdorf Zimmeranzahl: 1,0 Wohnfläche: 29,00 m² Kaltmiete: 397,30 € Nebenkosten: 58,00 € Gesamtmiete: 498,80 € Bezugsfertig ab: 16.11.2026 Eingestellt am: 06.10.2026 WBS: nicht erforderlich Etage: 1 von (insg. 7) Badezimmer: 1 Baujahr: 2026 Heizung: Fußbodenheizung Hauptenergieträger: Wärmepumpe Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1770-27697-9994.html?t=ibw",
+      "provider": "howoge",
+      "source_text": "1-Zimmer-Wohnung mit WBS 180-220 Alle Details Adresse: Schkeuditzer Straße 3C, 12627, Marzahn-Hellersdorf Zimmeranzahl: 1,0 Wohnfläche: 29,00 m² Kaltmiete: 333,50 € Nebenkosten: 58,00 € Gesamtmiete: 435,00 € Bezugsfertig ab: 10.11.2026 Eingestellt am: 06.10.2026 WBS: erforderlich Etage: 1 von (insg. 7) Badezimmer: 1 Baujahr: 2026 Heizung: Fußbodenheizung Hauptenergieträger: Wärmepumpe Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Garten Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1770-27697-9993.html?t=ibw",
+      "provider": "howoge",
+      "source_text": "1-Zimmer-Wohnung mit WBS bis 140 mit besonderem Wohnbedarf Alle Details Adresse: Schkeuditzer Straße 3A, 12627, Marzahn-Hellersdorf Zimmeranzahl: 1,0 Wohnfläche: 22,00 m² Kaltmiete: 154,00 € Nebenkosten: 44,00 € Gesamtmiete: 231,00 € Bezugsfertig ab: 16.11.2026 Eingestellt am: 06.10.2026 WBS: erforderlich Etage: 1 von (insg. 7) Badezimmer: 1 Baujahr: 2026 Heizung: Fußbodenheizung Hauptenergieträger: Wärmepumpe Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Dusche Aufzug Barrierefrei Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1770-27697-9992.html?t=ibw",
+      "provider": "howoge",
+      "source_text": "2-Zimmer-Wohnung mit WBS bis 140 mit besonderem Wohnbedarf Alle Details Adresse: Schkeuditzer Straße 3, 12627, Marzahn-Hellersdorf Zimmeranzahl: 2,0 Wohnfläche: 46,00 m² Kaltmiete: 322,00 € Nebenkosten: 92,00 € Gesamtmiete: 483,00 € Bezugsfertig ab: 16.11.2026 Eingestellt am: 06.10.2026 WBS: erforderlich Etage: 2 von (insg. 7) Badezimmer: 1 Baujahr: 2026 Heizung: Fußbodenheizung Hauptenergieträger: Wärmepumpe Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Garten Barrierefrei Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1770-20551-43.html?t=ibw",
+      "provider": "howoge",
+      "source_text": "1-Zimmer-Wohnung Alle Details Adresse: Sewanstraße 256A, 10319, Lichtenberg Zimmeranzahl: 1,0 Wohnfläche: 35,00 m² Kaltmiete: 245,00 € Nebenkosten: 70,00 € Gesamtmiete: 367,50 € Bezugsfertig ab: 17.09.2026 Eingestellt am: 17.09.2026 WBS: erforderlich Etage: 8 von (insg. 8) Badezimmer: 1 Baujahr: 2026 Heizung: FußbodenheizungZentralheizung Hauptenergieträger: Photovoltaik Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Keller Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1770-26484-9995.html?t=ibw",
+      "provider": "howoge",
+      "source_text": "Ihr neues zu Hause mit WBS (100 bis 140) Alle Details Adresse: Köpenicker Allee 131, 10318, Lichtenberg Zimmeranzahl: 2,0 Wohnfläche: 41,00 m² Kaltmiete: 287,00 € Nebenkosten: 82,00 € Gesamtmiete: 430,50 € Bezugsfertig ab: 16.10.2026 Eingestellt am: 06.08.2026 WBS: erforderlich Etage: 2 von (insg. 5) Badezimmer: 1 Baujahr: 2026 Heizung: FußbodenheizungZentralheizung Hauptenergieträger: Fernwärme Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Dusche Aufzug Barrierefrei Keller Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1770-26484-9994.html?t=ibw",
+      "provider": "howoge",
+      "source_text": "Ihr neues zu Hause mit WBS (100 bis 140) Alle Details Adresse: Köpenicker Allee 131, 10318, Lichtenberg Zimmeranzahl: 2,0 Wohnfläche: 41,00 m² Kaltmiete: 287,00 € Nebenkosten: 82,00 € Gesamtmiete: 430,50 € Bezugsfertig ab: 16.10.2026 Eingestellt am: 06.08.2026 WBS: erforderlich Etage: 2 von (insg. 5) Badezimmer: 1 Baujahr: 2026 Heizung: FußbodenheizungZentralheizung Hauptenergieträger: Fernwärme Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Dusche Aufzug Barrierefrei Keller Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.gewobag.de/fuer-mietinteressentinnen/mietangebote/0100-01036-1401-0557",
+      "provider": "gewobag",
+      "source_text": "Wohn Aktiv! Gemütliche Seniorenwohnung ab 55 Jahren an der Waterkant / WBS erforderlich Alle Details Adresse: Daumstraße 52A, 13599, Spandau Zimmeranzahl: 1,0 Wohnfläche: 27,65 m² Kaltmiete: 362,98 € Nebenkosten: 81,57 € Gesamtmiete: 501,23 € Bezugsfertig ab: 01.11.2026 Eingestellt am: 04.08.2026 WBS: erforderlich Etage: 1 von (insg. 5) Badezimmer: 1 Baujahr: 2026 Heizung: Zentralheizung Hauptenergieträger: unbekannt Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Aufzug Barrierefrei Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1771-14539-174.html?t=ibw",
+      "provider": "howoge",
+      "source_text": "Wohnung in Berlin Alle Details Adresse: Marius-Carpentier-Straße 16, 13587, Spandau Zimmeranzahl: 2,0 Wohnfläche: 50,00 m² Kaltmiete: 350,00 € Nebenkosten: 100,00 € Gesamtmiete: 550,00 € Bezugsfertig ab: 10.07.2026 Eingestellt am: 10.07.2026 WBS: erforderlich Etage: 6 von (insg. 6) Badezimmer: 1 Baujahr: 2026 Heizung: FußbodenheizungZentralheizung Hauptenergieträger: Wärmepumpe Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Dusche Aufzug Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1770-20575-9998.html?t=ibw",
+      "provider": "howoge",
+      "source_text": "Wohnung in Lichtenberg, mit besonderem Wohnbedarf bis WBS 140 Alle Details Adresse: Huronseestraße 28, 10319, Lichtenberg Zimmeranzahl: 1,0 Wohnfläche: 40,00 m² Kaltmiete: 280,00 € Nebenkosten: 80,00 € Gesamtmiete: 420,00 € Bezugsfertig ab: 16.09.2026 Eingestellt am: 18.05.2026 WBS: erforderlich Etage: von (insg. 6) Badezimmer: 1 Baujahr: 2026 Heizung: Fußbodenheizung Hauptenergieträger: Photovoltaik Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1771-14539-29.html?t=ibw",
+      "provider": "howoge",
+      "source_text": "2-Zimmer-Wohnung (WBS 100-140 mit und ohne besonderem Wohnbedarf) Alle Details Adresse: Marius-Carpentier-Straße 14, 13587, Spandau Zimmeranzahl: 2,0 Wohnfläche: 50,00 m² Kaltmiete: 350,00 € Nebenkosten: 100,00 € Gesamtmiete: 550,00 € Bezugsfertig ab: 25.09.2026 Eingestellt am: 17.03.2026 WBS: erforderlich Etage: 2 von (insg. 6) Badezimmer: 1 Baujahr: 2026 Heizung: FußbodenheizungZentralheizung Hauptenergieträger: Wärmepumpe Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Dusche Aufzug Barrierefrei Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1771-14539-150.html?t=ibw",
+      "provider": "howoge",
+      "source_text": "2-Zimmer-Wohnung mit WBS bis 140 Alle Details Adresse: Marius-Carpentier-Straße 16, 13587, Spandau Zimmeranzahl: 2,0 Wohnfläche: 42,00 m² Kaltmiete: 294,00 € Nebenkosten: 84,00 € Gesamtmiete: 378,00 € Bezugsfertig ab: 02.03.2026 Eingestellt am: 02.03.2026 WBS: erforderlich Etage: 4 von (insg. 6) Badezimmer: 1 Baujahr: 2026 Heizung: FußbodenheizungZentralheizung Hauptenergieträger: Wärmepumpe Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Dusche Aufzug Barrierefrei Eine Wohnung der",
+      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.gewobag.de/fuer-mietinteressentinnen/mietangebote/1000-00281-0101-0015/",
+      "provider": "gewobag",
+      "source_text": "Geförderte Wohnung auch für mittlere Einkommen – jetzt checken! Bezirk Prenzlauer Berg Adresse Einsteinstr. 4A, 10409 Berlin/Pankow Einkommensgrenzen beachten Fläche 1 Zimmer | 32,85 m² Frei ab 01.12.2026 Gesamtmiete ab 431,55€ besondere Eigenschaften Dusche Elektroherd Breitbandkabelanschluss Fliesenboden barrierearme Wohnung Fernheizung/Zentralheizung Fern-/Zentralwarmwasserversorgung Kunststoff-Bodenbelag Mietangebot ansehen",
+      "source": "https://www.gewobag.de/fuer-mietinteressentinnen/suche/wohnung/?gesamtmiete_von&gesamtmiete_bis&gesamtflaeche_von&gesamtflaeche_bis&zimmer_von&zimmer_bis&sort-by",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.gewobag.de/fuer-mietinteressentinnen/mietangebote/0100-02520-0502-0272/",
+      "provider": "gewobag",
+      "source_text": "Geförderte Wohnung auch für mittlere Einkommen – jetzt checken! Bezirk Alt-Hohenschönhausen Adresse Große-Leege-Str. 68A, 13055 Berlin/Lichtenberg Renovierungsbedürftiges Singleappartement mit Balkon in Alt-Hohenschönhausen neu zu vermieten Fläche 1 Zimmer | 36,53 m² Frei ab 01.09.2026 Gesamtmiete ab 548,74€ besondere Eigenschaften Badewanne Elektroherd Rückkanalfähiger Breitbandkabelanschluss kein barrierearmer Zugang bis zum Mietobjekt (ab 4 Stufen) Fernheizung/Zentralheizung Fern-/Zentralwarmwasserversorgung Balkon/Terasse Keller Mietangebot ansehen",
+      "source": "https://www.gewobag.de/fuer-mietinteressentinnen/suche/wohnung/?gesamtmiete_von&gesamtmiete_bis&gesamtflaeche_von&gesamtflaeche_bis&zimmer_von&zimmer_bis&sort-by",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.gewobag.de/fuer-mietinteressentinnen/mietangebote/6011-31047-0104-0073/",
+      "provider": "gewobag",
+      "source_text": "Bekomme ich einen WBS? WBS erforderlich Bezirk Siemensstadt Adresse Rotfederstraße 60, 13599 Berlin/Spandau Single-Wohnung im Erstbezug / WBS mit besonderem Wohnbedarf Fläche 1 Zimmer | 34,83 m² Frei ab 01.08.2026 Gesamtmiete ab 376,17€ besondere Eigenschaften Fernheizung/Zentralheizung Fern-/Zentralwarmwasserversorgung Handtuchheizkörper Fußbodenheizung Barrierearme Wohnungsgestaltung Balkon/Terasse Fahrstuhl Haustiere erlaubt Mietangebot ansehen",
+      "source": "https://www.gewobag.de/fuer-mietinteressentinnen/suche/wohnung/?gesamtmiete_von&gesamtmiete_bis&gesamtflaeche_von&gesamtflaeche_bis&zimmer_von&zimmer_bis&sort-by",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.gewobag.de/fuer-mietinteressentinnen/mietangebote/0100-01008-0202-0042/",
+      "provider": "gewobag",
+      "source_text": "Geförderte Wohnung auch für mittlere Einkommen – jetzt checken! Bezirk Haselhorst Adresse Burscheider Weg 58A, 13599 Berlin/Spandau Helle 1-Zimmer-Wohnung mit Balkon und Tageslichtbad für Selbstrenovierer – provisionsfrei Fläche 1 Zimmer | 34,17 m² Frei ab 01.06.2026 Gesamtmiete ab 526,97€ besondere Eigenschaften Handtuchheizkörper Rückkanalfähiger Breitbandkabelanschluss kein barrierearmer Zugang bis zum Mietobjekt (ab 4 Stufen) Fernheizung/Zentralheizung Fern-/Zentralwarmwasserversorgung Balkon/Terasse Keller Haustiere erlaubt Mietangebot ansehen",
+      "source": "https://www.gewobag.de/fuer-mietinteressentinnen/suche/wohnung/?gesamtmiete_von&gesamtmiete_bis&gesamtflaeche_von&gesamtflaeche_bis&zimmer_von&zimmer_bis&sort-by",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.gewobag.de/fuer-mietinteressentinnen/mietangebote/0100-01230-0102-0094/",
+      "provider": "gewobag",
+      "source_text": "Bekomme ich einen WBS? für Senioren WBS erforderlich Bezirk Wittenau Adresse Spießweg 38, 13437 Berlin/Reinickendorf Seniorenwohnung 60+ mit Notwendigkeit eines Wohnberechtigungsscheins Fläche 1 Zimmer | 35,78 m² Frei ab 01.05.2026 Gesamtmiete ab 527,52€ besondere Eigenschaften Breitbandkabelanschluss Fliesenboden barrierearme Wohnung Barrierearmer Zugang bis zum Mietobjekt Fernheizung/Zentralheizung Warmwasserversorgung dezentral - Durchlauferhitzer Barrierearme Objektgestaltung Spüle Mietangebot ansehen",
+      "source": "https://www.gewobag.de/fuer-mietinteressentinnen/suche/wohnung/?gesamtmiete_von&gesamtmiete_bis&gesamtflaeche_von&gesamtflaeche_bis&zimmer_von&zimmer_bis&sort-by",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.degewo.de/immosuche/details/singles-hergeschaut",
+      "provider": "degewo",
+      "source_text": "Singles hergeschaut Dannenwalder Weg 142 | Märkisches Viertel Aufzug Badewanne Warmmiete 514,57 € 1 Zimmer 36,88 m² sofort frei ab",
+      "source": "https://www.degewo.de/immosuche",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.gesobau.de/mieten/wohnungssuche/detailseite/hellersdorfer-strasse-10-03209-00002-1027-9620d72c-00c0-440f-b9ab-4c3bb29c2951/",
+      "provider": "gesobau",
+      "source_text": "WBS 220 WBS Mehr Platz für das Leben zu zweit mit WBS 220 Hellersdorf Hellersdorfer Straße 91B, 12619 Berlin 801,08 € 2 Zimmer 51,73 m²",
+      "source": "https://www.gesobau.de/mieten/wohnungssuche/",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.gesobau.de/mieten/wohnungssuche/detailseite/johann-georg-strasse-10-00207-00001-1013-157c7d87-038b-42a6-a766-6975142951b4/",
+      "provider": "gesobau",
+      "source_text": "Smart wohnen -- kompakt, zentral, dein Stil Wilmersdorf Johann-Georg-Straße 9 A, 10709 Berlin 1.338,42 € 1 Zimmer 60,25 m²",
+      "source": "https://www.gesobau.de/mieten/wohnungssuche/",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.gesobau.de/mieten/wohnungssuche/detailseite/wilhelmsruher-damm-10-00920-00001-1414-c038a95f-d8c5-4310-94a5-052db5b1e43d/",
+      "provider": "gesobau",
+      "source_text": "Wohnen in Gemeinschaft Sicher und seniorengerecht – Wohnen mit Komfort Märkisches Viertel Wilhelmsruher Damm 148, 13439 Berlin 496,93 € 1 Zimmer 33,78 m²",
+      "source": "https://www.gesobau.de/mieten/wohnungssuche/",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.gesobau.de/mieten/wohnungssuche/detailseite/wilhelmsruher-damm-10-00920-00001-1003-a43cf154-556a-4207-be7e-76a03ef2f875/",
+      "provider": "gesobau",
+      "source_text": "Wohnen in Gemeinschaft Seniorengerechtes Wohnen mit WBS-berechtigtem Einkommen Märkisches Viertel Wilhelmsruher Damm 148, 13439 Berlin 496,93 € 1 Zimmer 33,78 m²",
+      "source": "https://www.gesobau.de/mieten/wohnungssuche/",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.gesobau.de/mieten/wohnungssuche/detailseite/roedernallee-10-00983-00005-1216-e63ff96f-34fc-453a-b3eb-fd84f0bca705/",
+      "provider": "gesobau",
+      "source_text": "Für Studierende WBS Exklusiv für Studis/Azubis - helles Zimmer in einer 4er-WG Wittenau Roedernallee 118C, 13437 Berlin 452,76 € 1 Zimmer 21,40 m²",
+      "source": "https://www.gesobau.de/mieten/wohnungssuche/",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.gesobau.de/mieten/wohnungssuche/detailseite/dietzgenstrasse-10-01598-00003-1057-07b25e8a-e57f-4580-bc95-3df0675ba528/",
+      "provider": "gesobau",
+      "source_text": "Platz für dich & dein Leben -- willkommen im neuen Zuhause Niederschönhausen Dietzgenstraße 80, 13156 Berlin 971,58 € 1 Zimmer 42,91 m²",
+      "source": "https://www.gesobau.de/mieten/wohnungssuche/",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.gesobau.de/mieten/wohnungssuche/detailseite/dietzgenstrasse-10-01598-00005-1100-5ad2843a-dc30-415e-946b-eb267079db5d/",
+      "provider": "gesobau",
+      "source_text": "Modernes Single-Apartment zum Wohlfühlen Niederschönhausen Dietzgenstraße 76, 13156 Berlin 927,45 € 1 Zimmer 38,66 m²",
+      "source": "https://www.gesobau.de/mieten/wohnungssuche/",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.gesobau.de/mieten/wohnungssuche/detailseite/harzburger-strasse-10-03052-00018-1320-214d1669-fcb8-4bc1-8065-086902787695/",
+      "provider": "gesobau",
+      "source_text": "Zweisamkeit in Top-Lage – jetzt einziehen & wohlfühlen Pankow Harzburger Straße 1, 13187 Berlin 1.288,75 € 2 Zimmer 55,38 m²",
+      "source": "https://www.gesobau.de/mieten/wohnungssuche/",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.gesobau.de/mieten/wohnungssuche/detailseite/gruentaler-strasse-10-00173-00002-1029-bbaa472c-9a43-4746-9a39-6801f88defff/",
+      "provider": "gesobau",
+      "source_text": "Geräumige 2 Zimmer im freifinanzierten Neubau in Berlin-Wedding Gesundbrunnen Grüntaler Straße 50B, 13359 Berlin 1.478,09 € 2 Zimmer 57,98 m²",
+      "source": "https://www.gesobau.de/mieten/wohnungssuche/",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.berlinovo.de/de/wohnung-id/1814-2601-503",
+      "provider": "berlinovo",
+      "source_text": "{\"type\":\"Point\",\"coordinates\":[13.590745,52.546539]} Erdgeschoss 0 Wunderbare Erdgeschoßwohnung, nahe Kaufpark Eiche. Alte Hellersdorfer Str. 129 12629 Berlin Deutschland Verfügbar ab 01.01.2027 Warmmiete 423,38 € Zimmer 1,0 Etage 0",
+      "source": "https://www.berlinovo.de/de/wohnungen/suche",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.berlinovo.de/de/wohnung-id/3038-2013-140",
+      "provider": "berlinovo",
+      "source_text": "{\"type\":\"Point\",\"coordinates\":[13.5862288,52.5264894]} Etagenwohnung 0 Singlewohnung in Kaulsdorf Nord! Ehm-Welk-Str. 52 12619 Berlin Deutschland Verfügbar ab 01.01.2027 Warmmiete 311,40 € Zimmer 1,0 Etage 4",
+      "source": "https://www.berlinovo.de/de/wohnungen/suche",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.berlinovo.de/de/wohnung-id/3038-2014-428",
+      "provider": "berlinovo",
+      "source_text": "{\"type\":\"Point\",\"coordinates\":[13.5849214,52.525545]} Etagenwohnung 0 Kummerower Ring 14, 4.OG, LI Kummerower Ring 14 12619 Berlin Deutschland Verfügbar ab 01.07.2026 Warmmiete 426,00 € Zimmer 2,0 Etage 4",
+      "source": "https://www.berlinovo.de/de/wohnungen/suche",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.berlinovo.de/de/wohnung-id/1814-2601-105",
+      "provider": "berlinovo",
+      "source_text": "{\"type\":\"Point\",\"coordinates\":[13.59151,52.54793]} Etagenwohnung 0 1 Zimmer Wohnung sucht neuen Mieter Ludwigsfelder Str. 20 12629 Berlin Deutschland Warmmiete 437,36 € Zimmer 1,0 Etage 1",
+      "source": "https://www.berlinovo.de/de/wohnungen/suche",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://www.berlinovo.de/de/wohnung-id/3038-2013-196",
+      "provider": "berlinovo",
+      "source_text": "{\"type\":\"Point\",\"coordinates\":[13.5876677,52.527087]} Etagenwohnung 0 Erste eigene Wohnung? 1 Zimmerwohnung in Kaulsdorf Nord. Luzinstr. 8 12619 Berlin Deutschland Warmmiete 311,40 € Zimmer 1,0 Etage 1",
+      "source": "https://www.berlinovo.de/de/wohnungen/suche",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://stadtundland.de/wohnungssuche/1050%2F8129%2F00035",
+      "provider": "stadtundland",
+      "source_text": "Jenaer Straße 54, 12627 Berlin 1 Zimmer 36,37 m² Quadratmeter – Seniorenwohnung mit Duschbad und schickem Einbauschrank im Flur! . Element 11 von 20 Kaltmiete 340,79 € Nebenkosten 79 € Heizkosten 48 € Gesamtmiete 467,79 € Weitere Informationen zur Immobilie: 1 Zimmer 36,37 m² – Seniorenwohnung mit Duschbad und schickem Einbauschrank im Flur!",
+      "source": "https://stadtundland.de/wohnungssuche",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
+    },
+    {
+      "url": "https://stadtundland.de/wohnungssuche/1001%2F5180%2F00184",
+      "provider": "stadtundland",
+      "source_text": "Elsa-Ledetsch-Weg 1, 12683 Berlin 1 Zimmer 45,36 m² Quadratmeter – Singlewohnung mit WBS sucht Nachmieter! . Element 27 von 30 Kaltmiete 312,98 € Nebenkosten 103 € Heizkosten 63 € Gesamtmiete 478,98 € Weitere Informationen zur Immobilie: 1 Zimmer 45,36 m² – Singlewohnung mit WBS sucht Nachmieter!",
+      "source": "https://stadtundland.de/wohnungssuche",
+      "source_snapshot_utc": "2026-11-18T23:02:37.678295+00:00"
     },
     {
       "url": "https://www.degewo.de/de/properties/W1150-21705-0053-0605.html",
@@ -23,457 +471,9 @@
       "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
     },
     {
-      "url": "https://www.degewo.de/de/properties/W1140-11904-0007-0203.html",
-      "provider": "degewo",
-      "source_text": "Nachmieter kurzfristig gesucht, nur mit WBS! Alle Details Adresse: Beyrodtstraße 52, 12277, Tempelhof-Schöneberg Zimmeranzahl: 1,0 Wohnfläche: 44,06 m² Kaltmiete: 308,42 € Nebenkosten: 91,64 € Gesamtmiete: 508,00 € Bezugsfertig ab: 01.01.2027 Eingestellt am: 18.11.2026 WBS: erforderlich Etage: 2 von (insg. 4) Badezimmer: 1 Baujahr: 2024 Heizung: Fernwärme Hauptenergieträger: unbekannt Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Barrierefrei Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.gesobau.de/?immo_ref=10-00920-00001-1605-a05d1369-f056-49f8-9ac2-e899d7cd00b4",
-      "provider": "gesobau",
-      "source_text": "Exklusives Wohnen - Komfort für Menschen ab 60 Jahren Alle Details Adresse: Wilhelmsruher Damm 148, 13439, Reinickendorf Zimmeranzahl: 1,0 Wohnfläche: 34,08 m² Kaltmiete: 408,96 € Nebenkosten: 85,19 € Gesamtmiete: 527,51 € Bezugsfertig ab: 16.01.2027 Eingestellt am: 17.11.2026 WBS: nicht erforderlich Etage: 6 von (insg. 8) Badezimmer: 1 Baujahr: 1974 Heizung: Fernwärme Hauptenergieträger: Fernwärme Energieverbrauchskennwert: 69,70 kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Barrierefrei Keller Seniorenwohnung Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.gesobau.de/?immo_ref=10-00983-00008-1110-ed26b0eb-8cd5-4f2b-bbde-1f92a4cee0ac",
-      "provider": "gesobau",
-      "source_text": "Exklusiv für Studis/Azubis - schönes WG-Zimmer in 3-Zimmer-Wohnung Alle Details Adresse: Roedernallee 118F, 13437, Reinickendorf Zimmeranzahl: 1,0 Wohnfläche: 30,82 m² Kaltmiete: 380,00 € Nebenkosten: unbekannt € Gesamtmiete: 447,81 € Bezugsfertig ab: 16.12.2026 Eingestellt am: 17.11.2026 WBS: erforderlich Etage: 2 von (insg. 4) Badezimmer: 2 Baujahr: 2026 Heizung: ZentralheizungGasheizung Hauptenergieträger: Gas Energieverbrauchskennwert: 25,40 kWh/(a m²) Energieausweis: Bedarfsausweis Dusche Badewanne Aufzug Barrierefrei Keller Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.degewo.de/de/properties/W1300-63818-0021-0404.html",
-      "provider": "degewo",
-      "source_text": "Single-Wohnung Alle Details Adresse: Müggelschlößchenweg 36, 12559, Treptow-Köpenick Zimmeranzahl: 1,0 Wohnfläche: 29,40 m² Kaltmiete: 261,31 € Nebenkosten: 64,38 € Gesamtmiete: 366,55 € Bezugsfertig ab: 18.11.2026 Eingestellt am: 17.11.2026 WBS: nicht erforderlich Etage: 4 von (insg. 21) Badezimmer: 1 Baujahr: 1982 Heizung: Fernwärme Hauptenergieträger: unbekannt Energieverbrauchskennwert: 75,00 kWh/(a m²) Energieausweis: Verbrauchsausweis Badewanne Aufzug Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.degewo.de/de/properties/W1500-00807-0091-0703.html",
-      "provider": "degewo",
-      "source_text": "Singles hergeschaut Alle Details Adresse: Dannenwalder Weg 142, 13439, Reinickendorf Zimmeranzahl: 1,0 Wohnfläche: 36,88 m² Kaltmiete: 394,72 € Nebenkosten: 77,44 € Gesamtmiete: 514,57 € Bezugsfertig ab: 18.11.2026 Eingestellt am: 17.11.2026 WBS: nicht erforderlich Etage: 7 von (insg. 8) Badezimmer: 1 Baujahr: 1967 Heizung: Fernwärme Hauptenergieträger: unbekannt Energieverbrauchskennwert: 76,00 kWh/(a m²) Energieausweis: Verbrauchsausweis Balkon / Loggia / Terrasse Badewanne Aufzug Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.gesobau.de/?immo_ref=10-00983-00010-1161-f0c2e3d3-cbe4-4d6e-b9ac-b33784877490",
-      "provider": "gesobau",
-      "source_text": "Exklusiv für Studis/Azubis - helles Zimmer in einer 3er-WG Alle Details Adresse: Roedernallee 118H, 13437, Reinickendorf Zimmeranzahl: 1,0 Wohnfläche: 27,83 m² Kaltmiete: 380,00 € Nebenkosten: unbekannt € Gesamtmiete: 440,03 € Bezugsfertig ab: 16.12.2026 Eingestellt am: 17.11.2026 WBS: erforderlich Etage: 2 von (insg. 4) Badezimmer: 1 Baujahr: 2026 Heizung: ZentralheizungGasheizung Hauptenergieträger: Gas Energieverbrauchskennwert: 25,40 kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Barrierefrei Keller Gäste WC Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1771-12414-106.html?t=ibw",
-      "provider": "howoge",
-      "source_text": "Kleine räumliche Wohnung für Singles und Studenten Alle Details Adresse: Wustrower Straße 47, 13051, Lichtenberg Zimmeranzahl: 1,0 Wohnfläche: 32,60 m² Kaltmiete: 305,53 € Nebenkosten: 65,19 € Gesamtmiete: 422,89 € Bezugsfertig ab: 13.11.2026 Eingestellt am: 13.11.2026 WBS: erforderlich Etage: 5 von (insg. 11) Badezimmer: 1 Baujahr: 1986 Heizung: Zentralheizung Hauptenergieträger: Fernwärme Energieverbrauchskennwert: 85,42 kWh/(a m²) Energieausweis: Verbrauchsausweis Aufzug Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1770-27668-9989.html?t=ibw",
-      "provider": "howoge",
-      "source_text": "2-Zimmer-Wohnung mit WBS bis 140 Alle Details Adresse: Mahlower Straße 44, 12557, Treptow-Köpenick Zimmeranzahl: 2,0 Wohnfläche: 50,00 m² Kaltmiete: 350,00 € Nebenkosten: 100,00 € Gesamtmiete: 525,00 € Bezugsfertig ab: 16.01.2027 Eingestellt am: 12.11.2026 WBS: erforderlich Etage: 2 von (insg. 7) Badezimmer: 1 Baujahr: 2026 Heizung: Fußbodenheizung Hauptenergieträger: Fernwärme Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Barrierefrei Keller Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1770-27668-9982.html?t=ibw",
-      "provider": "howoge",
-      "source_text": "1-Zimmer-Wohnung mit WBS bis 140 mit besonderem Wohnbedarf Alle Details Adresse: Mahlower Straße 44, 12557, Treptow-Köpenick Zimmeranzahl: 1,0 Wohnfläche: 35,00 m² Kaltmiete: 245,00 € Nebenkosten: 70,00 € Gesamtmiete: 367,50 € Bezugsfertig ab: 16.01.2027 Eingestellt am: 12.11.2026 WBS: erforderlich Etage: 1 von (insg. 7) Badezimmer: 1 Baujahr: 2026 Heizung: Fußbodenheizung Hauptenergieträger: Fernwärme Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Keller Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1770-27668-9981.html?t=ibw",
-      "provider": "howoge",
-      "source_text": "2-Zimmer-Wohnung mit WBS bis 140 mit besonderem Wohnbedarf Alle Details Adresse: Mahlower Straße 44, 12557, Treptow-Köpenick Zimmeranzahl: 2,0 Wohnfläche: 50,00 m² Kaltmiete: 350,00 € Nebenkosten: 100,00 € Gesamtmiete: 525,00 € Bezugsfertig ab: 16.01.2027 Eingestellt am: 12.11.2026 WBS: erforderlich Etage: 2 von (insg. 7) Badezimmer: 1 Baujahr: 2026 Heizung: Fußbodenheizung Hauptenergieträger: Fernwärme Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Barrierefrei Keller Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1771-14538-9999.html?t=ibw",
-      "provider": "howoge",
-      "source_text": "1- Zimmer- Wohnung (140 WBS) Alle Details Adresse: Rosenfelder Ring 88, 10315, Lichtenberg Zimmeranzahl: 1,0 Wohnfläche: 41,00 m² Kaltmiete: 287,00 € Nebenkosten: 82,00 € Gesamtmiete: 430,50 € Bezugsfertig ab: 16.02.2027 Eingestellt am: 11.11.2026 WBS: erforderlich Etage: 1 von (insg. 8) Badezimmer: 1 Baujahr: 2026 Heizung: Fußbodenheizung Hauptenergieträger: Wärmepumpe Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Barrierefrei Keller Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1771-14538-9995.html?t=ibw",
-      "provider": "howoge",
-      "source_text": "2- Zimmer- Wohnung (140 WBS) Alle Details Adresse: Rosenfelder Ring 88, 10315, Lichtenberg Zimmeranzahl: 2,0 Wohnfläche: 49,00 m² Kaltmiete: 343,00 € Nebenkosten: 98,00 € Gesamtmiete: 514,50 € Bezugsfertig ab: 16.02.2027 Eingestellt am: 11.11.2026 WBS: erforderlich Etage: 2 von (insg. 8) Badezimmer: 1 Baujahr: 2026 Heizung: Fußbodenheizung Hauptenergieträger: Wärmepumpe Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Barrierefrei Keller Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1771-14538-89.html?t=ibw",
-      "provider": "howoge",
-      "source_text": "1-Zimmer-Wohnung (180 WBS) Alle Details Adresse: Rosenfelder Ring 86, 10315, Lichtenberg Zimmeranzahl: 1,0 Wohnfläche: 31,00 m² Kaltmiete: 294,50 € Nebenkosten: 62,00 € Gesamtmiete: 403,00 € Bezugsfertig ab: 16.02.2027 Eingestellt am: 11.11.2026 WBS: erforderlich Etage: 1 von (insg. 8) Badezimmer: 1 Baujahr: 2026 Heizung: Fußbodenheizung Hauptenergieträger: Wärmepumpe Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Keller Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1771-14538-156.html?t=ibw",
-      "provider": "howoge",
-      "source_text": "1-Zimmer-Wohnung (180 WBS) Alle Details Adresse: Rosenfelder Ring 86, 10315, Lichtenberg Zimmeranzahl: 1,0 Wohnfläche: 32,00 m² Kaltmiete: 304,00 € Nebenkosten: 64,00 € Gesamtmiete: 416,00 € Bezugsfertig ab: 16.02.2027 Eingestellt am: 11.11.2026 WBS: erforderlich Etage: 7 von (insg. 8) Badezimmer: 1 Baujahr: 2026 Heizung: Fußbodenheizung Hauptenergieträger: Wärmepumpe Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Keller Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1771-14538-112.html?t=ibw",
-      "provider": "howoge",
-      "source_text": "1-Zimmer-Wohnung (220 WBS) Alle Details Adresse: Rosenfelder Ring 86, 10315, Lichtenberg Zimmeranzahl: 1,0 Wohnfläche: 32,00 m² Kaltmiete: 368,00 € Nebenkosten: 64,00 € Gesamtmiete: 480,00 € Bezugsfertig ab: 16.02.2027 Eingestellt am: 11.11.2026 WBS: erforderlich Etage: 3 von (insg. 8) Badezimmer: 1 Baujahr: 2026 Heizung: Fußbodenheizung Hauptenergieträger: Wärmepumpe Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Keller Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.berlinovo.de/de/wohnung-id/1814-2601-531",
-      "provider": "berlinovo",
-      "source_text": "Erste Wohnung? Wunderbare 1 Zimmerwohnung am Stadtrand. Alle Details Adresse: Alte Hellersdorfer Straße 129, 12629, Marzahn-Hellersdorf Zimmeranzahl: 1,0 Wohnfläche: 32,60 m² Kaltmiete: 304,58 € Nebenkosten: 97,00 € Gesamtmiete: 476,58 € Bezugsfertig ab: 01.12.2026 Eingestellt am: 09.11.2026 WBS: nicht erforderlich Etage: 7 von (insg. 11) Badezimmer: 1 Baujahr: 1989 Heizung: ZentralheizungFernwärme Hauptenergieträger: unbekannt Energieverbrauchskennwert: 105,00 kWh/(a m²) Energieausweis: Verbrauchsausweis Badewanne Aufzug Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1771-10506-162.html?t=ibw",
-      "provider": "howoge",
-      "source_text": "Neue Wohnung mit WBS 100-140 mit besonderen Wohnbedarf! Alle Details Adresse: Genslerstraße 40, 13055, Lichtenberg Zimmeranzahl: 1,0 Wohnfläche: 36,00 m² Kaltmiete: 241,20 € Nebenkosten: 72,00 € Gesamtmiete: 367,20 € Bezugsfertig ab: 06.11.2026 Eingestellt am: 06.11.2026 WBS: erforderlich Etage: 4 von (insg. 3) Badezimmer: 1 Baujahr: 1940 Heizung: Zentralheizung Hauptenergieträger: Fernwärme Energieverbrauchskennwert: 111,70 kWh/(a m²) Energieausweis: Verbrauchsausweis Balkon / Loggia / Terrasse Dusche Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://stadtundland.de/wohnungssuche/1001%2F5101%2F00109",
-      "provider": "stadtundland",
-      "source_text": "Ab sofort Alle Details Adresse: Neuköllner Straße 306, 12357, Neukölln Zimmeranzahl: 1,0 Wohnfläche: 42,43 m² Kaltmiete: 333,01 € Nebenkosten: 99,00 € Gesamtmiete: 489,01 € Bezugsfertig ab: 18.11.2026 Eingestellt am: 06.11.2026 WBS: nicht erforderlich Etage: 2 von (insg. 4) Badezimmer: unbekannt Baujahr: 1975 Heizung: ZentralheizungGasheizung Hauptenergieträger: unbekannt Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Badewanne Aufzug Keller Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.gewobag.de/fuer-mietinteressentinnen/mietangebote/7100-70806-0101-0090",
-      "provider": "gewobag",
-      "source_text": "WohnAktiv! ab 60 Jahren Alle Details Adresse: Eiserfelder Ring 9, 13583, Spandau Zimmeranzahl: 1,0 Wohnfläche: 25,90 m² Kaltmiete: 362,60 € Nebenkosten: 66,00 € Gesamtmiete: 485,60 € Bezugsfertig ab: 01.11.2026 Eingestellt am: 06.11.2026 WBS: nicht erforderlich Etage: 3 von (insg. 5) Badezimmer: 1 Baujahr: 1966 Heizung: Fernwärme Hauptenergieträger: unbekannt Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Aufzug Keller Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://stadtundland.de/wohnungssuche/1001%2F5145%2F00033",
-      "provider": "stadtundland",
-      "source_text": "1 Zimmer, ab sofort! Alle Details Adresse: Kaiser-Wilhelm-Straße 113D, 12247, Steglitz-Zehlendorf Zimmeranzahl: 1,0 Wohnfläche: 28,93 m² Kaltmiete: 297,86 € Nebenkosten: 71,00 € Gesamtmiete: 403,86 € Bezugsfertig ab: 18.11.2026 Eingestellt am: 04.11.2026 WBS: nicht erforderlich Etage: 2 von (insg. 3) Badezimmer: unbekannt Baujahr: 1955 Heizung: ZentralheizungÖlheizungGasheizung Hauptenergieträger: unbekannt Energieverbrauchskennwert: 216,30 kWh/(a m²) Energieausweis: Verbrauchsausweis Balkon / Loggia / Terrasse Dusche Keller Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1771-10506-195.html?t=ibw",
-      "provider": "howoge",
-      "source_text": "Wohnung in Berlin Alle Details Adresse: Heiligenstadter Straße 8, 13055, Lichtenberg Zimmeranzahl: 2,0 Wohnfläche: 55,00 m² Kaltmiete: 357,50 € Nebenkosten: 110,00 € Gesamtmiete: 550,00 € Bezugsfertig ab: 03.11.2026 Eingestellt am: 03.11.2026 WBS: erforderlich Etage: 4 von (insg. 3) Badezimmer: 1 Baujahr: 1940 Heizung: Zentralheizung Hauptenergieträger: Fernwärme Energieverbrauchskennwert: 85,44 kWh/(a m²) Energieausweis: Verbrauchsausweis Balkon / Loggia / Terrasse Dusche Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1771-10506-193.html?t=ibw",
-      "provider": "howoge",
-      "source_text": "Wohnung in Berlin Alle Details Adresse: Heiligenstadter Straße 6, 13055, Lichtenberg Zimmeranzahl: 2,0 Wohnfläche: 55,00 m² Kaltmiete: 357,50 € Nebenkosten: 110,00 € Gesamtmiete: 550,00 € Bezugsfertig ab: 03.11.2026 Eingestellt am: 03.11.2026 WBS: erforderlich Etage: 4 von (insg. 3) Badezimmer: 1 Baujahr: 1940 Heizung: Zentralheizung Hauptenergieträger: Fernwärme Energieverbrauchskennwert: 85,44 kWh/(a m²) Energieausweis: Verbrauchsausweis Balkon / Loggia / Terrasse Dusche Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1771-10506-192.html?t=ibw",
-      "provider": "howoge",
-      "source_text": "Wohnung in Berlin Alle Details Adresse: Heiligenstadter Straße 6, 13055, Lichtenberg Zimmeranzahl: 2,0 Wohnfläche: 55,00 m² Kaltmiete: 357,50 € Nebenkosten: 110,00 € Gesamtmiete: 550,00 € Bezugsfertig ab: 03.11.2026 Eingestellt am: 03.11.2026 WBS: erforderlich Etage: 4 von (insg. 3) Badezimmer: 1 Baujahr: 1940 Heizung: Zentralheizung Hauptenergieträger: Fernwärme Energieverbrauchskennwert: 85,44 kWh/(a m²) Energieausweis: Verbrauchsausweis Balkon / Loggia / Terrasse Dusche Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1771-14559-465.html?t=ibw",
-      "provider": "howoge",
-      "source_text": "*** WBS 100 mit bes. Wohnbedarf erfolgreich - 2 Zimmer mit Balkon und Keller sucht Sie *** Alle Details Adresse: Mohnweg 13, 12524, Treptow-Köpenick Zimmeranzahl: 2,0 Wohnfläche: 51,00 m² Kaltmiete: 366,90 € Nebenkosten: 102,00 € Gesamtmiete: 545,40 € Bezugsfertig ab: 03.11.2026 Eingestellt am: 03.11.2026 WBS: erforderlich Etage: 3 von (insg. 4) Badezimmer: 1 Baujahr: 2025 Heizung: FußbodenheizungZentralheizung Hauptenergieträger: Fernwärme Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.degewo.de/de/properties/W1300-41906-0012-0120.html",
-      "provider": "degewo",
-      "source_text": "Am Bahndamm 31 – Modern wohnen für Studierende und Auszubildende mit WBS Alle Details Adresse: Am Bahndamm 31, 12555, Treptow-Köpenick Zimmeranzahl: 1,0 Wohnfläche: 36,38 m² Kaltmiete: 254,66 € Nebenkosten: 80,40 € Gesamtmiete: 400,18 € Bezugsfertig ab: 15.12.2026 Eingestellt am: 02.11.2026 WBS: erforderlich Etage: 1 von (insg. 5) Badezimmer: 1 Baujahr: 2026 Heizung: Fernwärme Hauptenergieträger: unbekannt Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Barrierefrei Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1771-14576-647.html?t=ibw",
-      "provider": "howoge",
-      "source_text": "Möbliertes Apartment für Studenten, Azubis oder Berufseinsteiger! Alle Details Adresse: Karl-Ziegler-Straße 7, 12489, Treptow-Köpenick Zimmeranzahl: 1,0 Wohnfläche: 24,00 m² Kaltmiete: 370,00 € Nebenkosten: 150,00 € Gesamtmiete: 520,00 € Bezugsfertig ab: 01.11.2026 Eingestellt am: 29.10.2026 WBS: nicht erforderlich Etage: 3 von (insg. 5) Badezimmer: 1 Baujahr: 2022 Heizung: FußbodenheizungZentralheizung Hauptenergieträger: Fernwärme Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Dusche Aufzug Keller Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1771-14576-507.html?t=ibw",
-      "provider": "howoge",
-      "source_text": "Möbliertes Apartment für Studenten, Azubis oder Berufseinsteiger! Alle Details Adresse: Karl-Ziegler-Straße 5, 12489, Treptow-Köpenick Zimmeranzahl: 1,0 Wohnfläche: 24,00 m² Kaltmiete: 370,00 € Nebenkosten: 150,00 € Gesamtmiete: 520,00 € Bezugsfertig ab: 01.11.2026 Eingestellt am: 29.10.2026 WBS: nicht erforderlich Etage: 1 von (insg. 5) Badezimmer: 1 Baujahr: 2022 Heizung: FußbodenheizungZentralheizung Hauptenergieträger: Fernwärme Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Dusche Aufzug Keller Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1771-14576-457.html?t=ibw",
-      "provider": "howoge",
-      "source_text": "Möbliertes Apartment für Studenten, Azubis oder Berufseinsteiger! Alle Details Adresse: Karl-Ziegler-Straße 3, 12489, Treptow-Köpenick Zimmeranzahl: 1,0 Wohnfläche: 24,00 m² Kaltmiete: 370,00 € Nebenkosten: 150,00 € Gesamtmiete: 520,00 € Bezugsfertig ab: 01.11.2026 Eingestellt am: 29.10.2026 WBS: nicht erforderlich Etage: 3 von (insg. 5) Badezimmer: 1 Baujahr: 2022 Heizung: FußbodenheizungZentralheizung Hauptenergieträger: Fernwärme Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Dusche Aufzug Keller Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1770-20551-48.html?t=ibw",
-      "provider": "howoge",
-      "source_text": "1-Zimmer-Wohnung mit Balkon in Friedrichsfelde Alle Details Adresse: Sewanstraße 256B, 10319, Lichtenberg Zimmeranzahl: 1,0 Wohnfläche: 35,00 m² Kaltmiete: 245,00 € Nebenkosten: 70,00 € Gesamtmiete: 367,50 € Bezugsfertig ab: 27.10.2026 Eingestellt am: 27.10.2026 WBS: erforderlich Etage: 1 von (insg. 6) Badezimmer: 1 Baujahr: 2026 Heizung: FußbodenheizungZentralheizung Hauptenergieträger: Photovoltaik Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Keller Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.degewo.de/de/properties/W1300-41906-0023-0210.html",
-      "provider": "degewo",
-      "source_text": "Neues Wohnglück für Studierende/Auszubildende - Neubau mit WBS mit besonderem Wohnbedarf Alle Details Adresse: Am Bahndamm 31, 12555, Treptow-Köpenick Zimmeranzahl: 1,0 Wohnfläche: 35,58 m² Kaltmiete: 249,06 € Nebenkosten: 78,63 € Gesamtmiete: 391,38 € Bezugsfertig ab: 15.12.2026 Eingestellt am: 14.10.2026 WBS: erforderlich Etage: 2 von (insg. 5) Badezimmer: 1 Baujahr: 2026 Heizung: Fernwärme Hauptenergieträger: unbekannt Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Barrierefrei Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1770-27697-9999.html?t=ibw",
-      "provider": "howoge",
-      "source_text": "1-Zimmer-Wohnung in Berlin Alle Details Adresse: Schkeuditzer Straße 3C, 12627, Marzahn-Hellersdorf Zimmeranzahl: 1,0 Wohnfläche: 29,00 m² Kaltmiete: 397,30 € Nebenkosten: 58,00 € Gesamtmiete: 498,80 € Bezugsfertig ab: 16.11.2026 Eingestellt am: 06.10.2026 WBS: nicht erforderlich Etage: 1 von (insg. 7) Badezimmer: 1 Baujahr: 2026 Heizung: Fußbodenheizung Hauptenergieträger: Wärmepumpe Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1770-27697-9994.html?t=ibw",
-      "provider": "howoge",
-      "source_text": "1-Zimmer-Wohnung mit WBS 180-220 Alle Details Adresse: Schkeuditzer Straße 3C, 12627, Marzahn-Hellersdorf Zimmeranzahl: 1,0 Wohnfläche: 29,00 m² Kaltmiete: 333,50 € Nebenkosten: 58,00 € Gesamtmiete: 435,00 € Bezugsfertig ab: 10.11.2026 Eingestellt am: 06.10.2026 WBS: erforderlich Etage: 1 von (insg. 7) Badezimmer: 1 Baujahr: 2026 Heizung: Fußbodenheizung Hauptenergieträger: Wärmepumpe Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Garten Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1770-27697-9993.html?t=ibw",
-      "provider": "howoge",
-      "source_text": "1-Zimmer-Wohnung mit WBS bis 140 mit besonderem Wohnbedarf Alle Details Adresse: Schkeuditzer Straße 3A, 12627, Marzahn-Hellersdorf Zimmeranzahl: 1,0 Wohnfläche: 22,00 m² Kaltmiete: 154,00 € Nebenkosten: 44,00 € Gesamtmiete: 231,00 € Bezugsfertig ab: 16.11.2026 Eingestellt am: 06.10.2026 WBS: erforderlich Etage: 1 von (insg. 7) Badezimmer: 1 Baujahr: 2026 Heizung: Fußbodenheizung Hauptenergieträger: Wärmepumpe Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Dusche Aufzug Barrierefrei Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1770-27697-9992.html?t=ibw",
-      "provider": "howoge",
-      "source_text": "2-Zimmer-Wohnung mit WBS bis 140 mit besonderem Wohnbedarf Alle Details Adresse: Schkeuditzer Straße 3, 12627, Marzahn-Hellersdorf Zimmeranzahl: 2,0 Wohnfläche: 46,00 m² Kaltmiete: 322,00 € Nebenkosten: 92,00 € Gesamtmiete: 483,00 € Bezugsfertig ab: 16.11.2026 Eingestellt am: 06.10.2026 WBS: erforderlich Etage: 2 von (insg. 7) Badezimmer: 1 Baujahr: 2026 Heizung: Fußbodenheizung Hauptenergieträger: Wärmepumpe Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Garten Barrierefrei Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1770-20551-43.html?t=ibw",
-      "provider": "howoge",
-      "source_text": "1-Zimmer-Wohnung Alle Details Adresse: Sewanstraße 256A, 10319, Lichtenberg Zimmeranzahl: 1,0 Wohnfläche: 35,00 m² Kaltmiete: 245,00 € Nebenkosten: 70,00 € Gesamtmiete: 367,50 € Bezugsfertig ab: 17.09.2026 Eingestellt am: 17.09.2026 WBS: erforderlich Etage: 8 von (insg. 8) Badezimmer: 1 Baujahr: 2026 Heizung: FußbodenheizungZentralheizung Hauptenergieträger: Photovoltaik Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Keller Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1770-26484-9994.html?t=ibw",
-      "provider": "howoge",
-      "source_text": "Ihr neues zu Hause mit WBS (100 bis 140) Alle Details Adresse: Köpenicker Allee 131, 10318, Lichtenberg Zimmeranzahl: 2,0 Wohnfläche: 41,00 m² Kaltmiete: 287,00 € Nebenkosten: 82,00 € Gesamtmiete: 430,50 € Bezugsfertig ab: 16.10.2026 Eingestellt am: 06.08.2026 WBS: erforderlich Etage: 2 von (insg. 5) Badezimmer: 1 Baujahr: 2026 Heizung: FußbodenheizungZentralheizung Hauptenergieträger: Fernwärme Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Dusche Aufzug Barrierefrei Keller Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.gewobag.de/fuer-mietinteressentinnen/mietangebote/0100-01036-1401-0557",
-      "provider": "gewobag",
-      "source_text": "Wohn Aktiv! Gemütliche Seniorenwohnung ab 55 Jahren an der Waterkant / WBS erforderlich Alle Details Adresse: Daumstraße 52A, 13599, Spandau Zimmeranzahl: 1,0 Wohnfläche: 27,65 m² Kaltmiete: 362,98 € Nebenkosten: 81,57 € Gesamtmiete: 501,23 € Bezugsfertig ab: 01.11.2026 Eingestellt am: 04.08.2026 WBS: erforderlich Etage: 1 von (insg. 5) Badezimmer: 1 Baujahr: 2026 Heizung: Zentralheizung Hauptenergieträger: unbekannt Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Aufzug Barrierefrei Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1771-14539-174.html?t=ibw",
-      "provider": "howoge",
-      "source_text": "Wohnung in Berlin Alle Details Adresse: Marius-Carpentier-Straße 16, 13587, Spandau Zimmeranzahl: 2,0 Wohnfläche: 50,00 m² Kaltmiete: 350,00 € Nebenkosten: 100,00 € Gesamtmiete: 550,00 € Bezugsfertig ab: 10.07.2026 Eingestellt am: 10.07.2026 WBS: erforderlich Etage: 6 von (insg. 6) Badezimmer: 1 Baujahr: 2026 Heizung: FußbodenheizungZentralheizung Hauptenergieträger: Wärmepumpe Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Dusche Aufzug Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1770-20575-9998.html?t=ibw",
-      "provider": "howoge",
-      "source_text": "Wohnung in Lichtenberg, mit besonderem Wohnbedarf bis WBS 140 Alle Details Adresse: Huronseestraße 28, 10319, Lichtenberg Zimmeranzahl: 1,0 Wohnfläche: 40,00 m² Kaltmiete: 280,00 € Nebenkosten: 80,00 € Gesamtmiete: 420,00 € Bezugsfertig ab: 16.09.2026 Eingestellt am: 18.05.2026 WBS: erforderlich Etage: von (insg. 6) Badezimmer: 1 Baujahr: 2026 Heizung: Fußbodenheizung Hauptenergieträger: Photovoltaik Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Dusche Aufzug Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1771-14539-29.html?t=ibw",
-      "provider": "howoge",
-      "source_text": "2-Zimmer-Wohnung (WBS 100-140 mit und ohne besonderem Wohnbedarf) Alle Details Adresse: Marius-Carpentier-Straße 14, 13587, Spandau Zimmeranzahl: 2,0 Wohnfläche: 50,00 m² Kaltmiete: 350,00 € Nebenkosten: 100,00 € Gesamtmiete: 550,00 € Bezugsfertig ab: 25.09.2026 Eingestellt am: 17.03.2026 WBS: erforderlich Etage: 2 von (insg. 6) Badezimmer: 1 Baujahr: 2026 Heizung: FußbodenheizungZentralheizung Hauptenergieträger: Wärmepumpe Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Dusche Aufzug Barrierefrei Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1771-14539-150.html?t=ibw",
-      "provider": "howoge",
-      "source_text": "2-Zimmer-Wohnung mit WBS bis 140 Alle Details Adresse: Marius-Carpentier-Straße 16, 13587, Spandau Zimmeranzahl: 2,0 Wohnfläche: 42,00 m² Kaltmiete: 294,00 € Nebenkosten: 84,00 € Gesamtmiete: 378,00 € Bezugsfertig ab: 02.03.2026 Eingestellt am: 02.03.2026 WBS: erforderlich Etage: 4 von (insg. 6) Badezimmer: 1 Baujahr: 2026 Heizung: FußbodenheizungZentralheizung Hauptenergieträger: Wärmepumpe Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Dusche Aufzug Barrierefrei Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.gewobag.de/fuer-mietinteressentinnen/mietangebote/1000-00281-0101-0015/",
-      "provider": "gewobag",
-      "source_text": "Geförderte Wohnung auch für mittlere Einkommen – jetzt checken! Bezirk Prenzlauer Berg Adresse Einsteinstr. 4A, 10409 Berlin/Pankow Einkommensgrenzen beachten Fläche 1 Zimmer | 32,85 m² Frei ab 01.12.2026 Gesamtmiete ab 431,55€ besondere Eigenschaften Dusche Elektroherd Breitbandkabelanschluss Fliesenboden barrierearme Wohnung Fernheizung/Zentralheizung Fern-/Zentralwarmwasserversorgung Kunststoff-Bodenbelag Mietangebot ansehen",
-      "source": "https://www.gewobag.de/fuer-mietinteressentinnen/suche/wohnung/?gesamtmiete_von&gesamtmiete_bis&gesamtflaeche_von&gesamtflaeche_bis&zimmer_von&zimmer_bis&sort-by",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.gewobag.de/fuer-mietinteressentinnen/mietangebote/0100-02520-0502-0272/",
-      "provider": "gewobag",
-      "source_text": "Geförderte Wohnung auch für mittlere Einkommen – jetzt checken! Bezirk Alt-Hohenschönhausen Adresse Große-Leege-Str. 68A, 13055 Berlin/Lichtenberg Renovierungsbedürftiges Singleappartement mit Balkon in Alt-Hohenschönhausen neu zu vermieten Fläche 1 Zimmer | 36,53 m² Frei ab 01.09.2026 Gesamtmiete ab 548,74€ besondere Eigenschaften Badewanne Elektroherd Rückkanalfähiger Breitbandkabelanschluss kein barrierearmer Zugang bis zum Mietobjekt (ab 4 Stufen) Fernheizung/Zentralheizung Fern-/Zentralwarmwasserversorgung Balkon/Terasse Keller Mietangebot ansehen",
-      "source": "https://www.gewobag.de/fuer-mietinteressentinnen/suche/wohnung/?gesamtmiete_von&gesamtmiete_bis&gesamtflaeche_von&gesamtflaeche_bis&zimmer_von&zimmer_bis&sort-by",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.gewobag.de/fuer-mietinteressentinnen/mietangebote/6011-31047-0104-0073/",
-      "provider": "gewobag",
-      "source_text": "Bekomme ich einen WBS? WBS erforderlich Bezirk Siemensstadt Adresse Rotfederstraße 60, 13599 Berlin/Spandau Single-Wohnung im Erstbezug / WBS mit besonderem Wohnbedarf Fläche 1 Zimmer | 34,83 m² Frei ab 01.08.2026 Gesamtmiete ab 376,17€ besondere Eigenschaften Fernheizung/Zentralheizung Fern-/Zentralwarmwasserversorgung Handtuchheizkörper Fußbodenheizung Barrierearme Wohnungsgestaltung Balkon/Terasse Fahrstuhl Haustiere erlaubt Mietangebot ansehen",
-      "source": "https://www.gewobag.de/fuer-mietinteressentinnen/suche/wohnung/?gesamtmiete_von&gesamtmiete_bis&gesamtflaeche_von&gesamtflaeche_bis&zimmer_von&zimmer_bis&sort-by",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.gewobag.de/fuer-mietinteressentinnen/mietangebote/0100-01008-0202-0042/",
-      "provider": "gewobag",
-      "source_text": "Geförderte Wohnung auch für mittlere Einkommen – jetzt checken! Bezirk Haselhorst Adresse Burscheider Weg 58A, 13599 Berlin/Spandau Helle 1-Zimmer-Wohnung mit Balkon und Tageslichtbad für Selbstrenovierer – provisionsfrei Fläche 1 Zimmer | 34,17 m² Frei ab 01.06.2026 Gesamtmiete ab 526,97€ besondere Eigenschaften Handtuchheizkörper Rückkanalfähiger Breitbandkabelanschluss kein barrierearmer Zugang bis zum Mietobjekt (ab 4 Stufen) Fernheizung/Zentralheizung Fern-/Zentralwarmwasserversorgung Balkon/Terasse Keller Haustiere erlaubt Mietangebot ansehen",
-      "source": "https://www.gewobag.de/fuer-mietinteressentinnen/suche/wohnung/?gesamtmiete_von&gesamtmiete_bis&gesamtflaeche_von&gesamtflaeche_bis&zimmer_von&zimmer_bis&sort-by",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.gewobag.de/fuer-mietinteressentinnen/mietangebote/0100-01230-0102-0094/",
-      "provider": "gewobag",
-      "source_text": "Bekomme ich einen WBS? für Senioren WBS erforderlich Bezirk Wittenau Adresse Spießweg 38, 13437 Berlin/Reinickendorf Seniorenwohnung 60+ mit Notwendigkeit eines Wohnberechtigungsscheins Fläche 1 Zimmer | 35,78 m² Frei ab 01.05.2026 Gesamtmiete ab 527,52€ besondere Eigenschaften Breitbandkabelanschluss Fliesenboden barrierearme Wohnung Barrierearmer Zugang bis zum Mietobjekt Fernheizung/Zentralheizung Warmwasserversorgung dezentral - Durchlauferhitzer Barrierearme Objektgestaltung Spüle Mietangebot ansehen",
-      "source": "https://www.gewobag.de/fuer-mietinteressentinnen/suche/wohnung/?gesamtmiete_von&gesamtmiete_bis&gesamtflaeche_von&gesamtflaeche_bis&zimmer_von&zimmer_bis&sort-by",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.degewo.de/immosuche/details/singles-hergeschaut",
-      "provider": "degewo",
-      "source_text": "Singles hergeschaut Dannenwalder Weg 142 | Märkisches Viertel Aufzug Badewanne Warmmiete 514,57 € 1 Zimmer 36,88 m² sofort frei ab",
-      "source": "https://www.degewo.de/immosuche",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.gesobau.de/mieten/wohnungssuche/detailseite/hellersdorfer-strasse-10-03209-00002-1027-9620d72c-00c0-440f-b9ab-4c3bb29c2951/",
-      "provider": "gesobau",
-      "source_text": "WBS 220 WBS Mehr Platz für das Leben zu zweit mit WBS 220 Hellersdorf Hellersdorfer Straße 91B, 12619 Berlin 801,08 € 2 Zimmer 51,73 m²",
-      "source": "https://www.gesobau.de/mieten/wohnungssuche/",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.gesobau.de/mieten/wohnungssuche/detailseite/johann-georg-strasse-10-00207-00001-1013-157c7d87-038b-42a6-a766-6975142951b4/",
-      "provider": "gesobau",
-      "source_text": "Smart wohnen -- kompakt, zentral, dein Stil Wilmersdorf Johann-Georg-Straße 9 A, 10709 Berlin 1.338,42 € 1 Zimmer 60,25 m²",
-      "source": "https://www.gesobau.de/mieten/wohnungssuche/",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.gesobau.de/mieten/wohnungssuche/detailseite/wilhelmsruher-damm-10-00920-00001-1414-c038a95f-d8c5-4310-94a5-052db5b1e43d/",
-      "provider": "gesobau",
-      "source_text": "Wohnen in Gemeinschaft Sicher und seniorengerecht – Wohnen mit Komfort Märkisches Viertel Wilhelmsruher Damm 148, 13439 Berlin 496,93 € 1 Zimmer 33,78 m²",
-      "source": "https://www.gesobau.de/mieten/wohnungssuche/",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.gesobau.de/mieten/wohnungssuche/detailseite/wilhelmsruher-damm-10-00920-00001-1003-a43cf154-556a-4207-be7e-76a03ef2f875/",
-      "provider": "gesobau",
-      "source_text": "Wohnen in Gemeinschaft Seniorengerechtes Wohnen mit WBS-berechtigtem Einkommen Märkisches Viertel Wilhelmsruher Damm 148, 13439 Berlin 496,93 € 1 Zimmer 33,78 m²",
-      "source": "https://www.gesobau.de/mieten/wohnungssuche/",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.gesobau.de/mieten/wohnungssuche/detailseite/roedernallee-10-00983-00005-1216-e63ff96f-34fc-453a-b3eb-fd84f0bca705/",
-      "provider": "gesobau",
-      "source_text": "Für Studierende WBS Exklusiv für Studis/Azubis - helles Zimmer in einer 4er-WG Wittenau Roedernallee 118C, 13437 Berlin 452,76 € 1 Zimmer 21,40 m²",
-      "source": "https://www.gesobau.de/mieten/wohnungssuche/",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.gesobau.de/mieten/wohnungssuche/detailseite/dietzgenstrasse-10-01598-00003-1057-07b25e8a-e57f-4580-bc95-3df0675ba528/",
-      "provider": "gesobau",
-      "source_text": "Platz für dich & dein Leben -- willkommen im neuen Zuhause Niederschönhausen Dietzgenstraße 80, 13156 Berlin 971,58 € 1 Zimmer 42,91 m²",
-      "source": "https://www.gesobau.de/mieten/wohnungssuche/",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.gesobau.de/mieten/wohnungssuche/detailseite/dietzgenstrasse-10-01598-00005-1100-5ad2843a-dc30-415e-946b-eb267079db5d/",
-      "provider": "gesobau",
-      "source_text": "Modernes Single-Apartment zum Wohlfühlen Niederschönhausen Dietzgenstraße 76, 13156 Berlin 927,45 € 1 Zimmer 38,66 m²",
-      "source": "https://www.gesobau.de/mieten/wohnungssuche/",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.gesobau.de/mieten/wohnungssuche/detailseite/harzburger-strasse-10-03052-00018-1320-214d1669-fcb8-4bc1-8065-086902787695/",
-      "provider": "gesobau",
-      "source_text": "Zweisamkeit in Top-Lage – jetzt einziehen & wohlfühlen Pankow Harzburger Straße 1, 13187 Berlin 1.288,75 € 2 Zimmer 55,38 m²",
-      "source": "https://www.gesobau.de/mieten/wohnungssuche/",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.gesobau.de/mieten/wohnungssuche/detailseite/gruentaler-strasse-10-00173-00002-1029-bbaa472c-9a43-4746-9a39-6801f88defff/",
-      "provider": "gesobau",
-      "source_text": "Geräumige 2 Zimmer im freifinanzierten Neubau in Berlin-Wedding Gesundbrunnen Grüntaler Straße 50B, 13359 Berlin 1.478,09 € 2 Zimmer 57,98 m²",
-      "source": "https://www.gesobau.de/mieten/wohnungssuche/",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.berlinovo.de/de/wohnung-id/1814-2601-503",
-      "provider": "berlinovo",
-      "source_text": "{\"type\":\"Point\",\"coordinates\":[13.590745,52.546539]} Erdgeschoss 0 Wunderbare Erdgeschoßwohnung, nahe Kaufpark Eiche. Alte Hellersdorfer Str. 129 12629 Berlin Deutschland Verfügbar ab 01.01.2027 Warmmiete 423,38 € Zimmer 1,0 Etage 0",
-      "source": "https://www.berlinovo.de/de/wohnungen/suche",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.berlinovo.de/de/wohnung-id/3038-2013-140",
-      "provider": "berlinovo",
-      "source_text": "{\"type\":\"Point\",\"coordinates\":[13.5862288,52.5264894]} Etagenwohnung 0 Singlewohnung in Kaulsdorf Nord! Ehm-Welk-Str. 52 12619 Berlin Deutschland Verfügbar ab 01.01.2027 Warmmiete 311,40 € Zimmer 1,0 Etage 4",
-      "source": "https://www.berlinovo.de/de/wohnungen/suche",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.berlinovo.de/de/wohnung-id/3038-2014-428",
-      "provider": "berlinovo",
-      "source_text": "{\"type\":\"Point\",\"coordinates\":[13.5849214,52.525545]} Etagenwohnung 0 Kummerower Ring 14, 4.OG, LI Kummerower Ring 14 12619 Berlin Deutschland Verfügbar ab 01.07.2026 Warmmiete 426,00 € Zimmer 2,0 Etage 4",
-      "source": "https://www.berlinovo.de/de/wohnungen/suche",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.berlinovo.de/de/wohnung-id/1814-2601-105",
-      "provider": "berlinovo",
-      "source_text": "{\"type\":\"Point\",\"coordinates\":[13.59151,52.54793]} Etagenwohnung 0 1 Zimmer Wohnung sucht neuen Mieter Ludwigsfelder Str. 20 12629 Berlin Deutschland Warmmiete 437,36 € Zimmer 1,0 Etage 1",
-      "source": "https://www.berlinovo.de/de/wohnungen/suche",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://www.berlinovo.de/de/wohnung-id/3038-2013-196",
-      "provider": "berlinovo",
-      "source_text": "{\"type\":\"Point\",\"coordinates\":[13.5876677,52.527087]} Etagenwohnung 0 Erste eigene Wohnung? 1 Zimmerwohnung in Kaulsdorf Nord. Luzinstr. 8 12619 Berlin Deutschland Warmmiete 311,40 € Zimmer 1,0 Etage 1",
-      "source": "https://www.berlinovo.de/de/wohnungen/suche",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://stadtundland.de/wohnungssuche/1050%2F8129%2F00035",
-      "provider": "stadtundland",
-      "source_text": "Jenaer Straße 54, 12627 Berlin 1 Zimmer 36,37 m² Quadratmeter – Seniorenwohnung mit Duschbad und schickem Einbauschrank im Flur! . Element 15 von 20 Kaltmiete 340,79 € Nebenkosten 79 € Heizkosten 48 € Gesamtmiete 467,79 € Weitere Informationen zur Immobilie: 1 Zimmer 36,37 m² – Seniorenwohnung mit Duschbad und schickem Einbauschrank im Flur!",
-      "source": "https://stadtundland.de/wohnungssuche",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
-      "url": "https://stadtundland.de/wohnungssuche/1001%2F5180%2F00184",
-      "provider": "stadtundland",
-      "source_text": "Elsa-Ledetsch-Weg 1, 12683 Berlin 1 Zimmer 45,36 m² Quadratmeter – Singlewohnung mit WBS sucht Nachmieter! . Element 31 von 37 Kaltmiete 312,98 € Nebenkosten 103 € Heizkosten 63 € Gesamtmiete 478,98 € Weitere Informationen zur Immobilie: 1 Zimmer 45,36 m² – Singlewohnung mit WBS sucht Nachmieter!",
-      "source": "https://stadtundland.de/wohnungssuche",
-      "source_snapshot_utc": "2026-11-18T18:44:00.368779+00:00"
-    },
-    {
       "url": "https://www.gewobag.de/fuer-mietinteressentinnen/mietangebote/7100-74802-0101-0013",
       "provider": "gewobag",
       "source_text": "Singleapartment mit neuem Fußbodenbelag! Alle Details Adresse: Reclamweg 2, 13593, Spandau Zimmeranzahl: 1,0 Wohnfläche: 40,86 m² Kaltmiete: 353,44 € Nebenkosten: 117,00 € Gesamtmiete: 470,44 € Bezugsfertig ab: 01.11.2026 Eingestellt am: 18.11.2026 WBS: erforderlich Etage: 5 von (insg. 13) Badezimmer: 1 Baujahr: 1975 Heizung: unbekannt Hauptenergieträger: unbekannt Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Balkon / Loggia / Terrasse Aufzug Barrierefrei Keller Eine Wohnung der",
-      "source": "https://www.inberlinwohnen.de/wohnungsfinder",
-      "source_snapshot_utc": "2026-11-18T15:47:50.507962+00:00"
-    },
-    {
-      "url": "https://www.howoge.de/wohnungen-gewerbe/wohnungssuche/detail/1770-26484-9995.html?t=ibw",
-      "provider": "howoge",
-      "source_text": "Ihr neues zu Hause mit WBS (100 bis 140) Alle Details Adresse: Köpenicker Allee 131, 10318, Lichtenberg Zimmeranzahl: 2,0 Wohnfläche: 41,00 m² Kaltmiete: 287,00 € Nebenkosten: 82,00 € Gesamtmiete: 430,50 € Bezugsfertig ab: 16.10.2026 Eingestellt am: 06.08.2026 WBS: erforderlich Etage: 2 von (insg. 5) Badezimmer: 1 Baujahr: 2026 Heizung: FußbodenheizungZentralheizung Hauptenergieträger: Fernwärme Energieverbrauchskennwert: unbekannt kWh/(a m²) Energieausweis: Bedarfsausweis Dusche Aufzug Barrierefrei Keller Eine Wohnung der",
       "source": "https://www.inberlinwohnen.de/wohnungsfinder",
       "source_snapshot_utc": "2026-11-18T15:47:50.507962+00:00"
     },
