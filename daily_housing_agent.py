@@ -299,8 +299,17 @@ def main():
         "applications_submitted","submission_enabled","profile_ready","housing_profile_ready",
         "housing_profile_status","durable_ledger_ready","confirmed_today","errors")},
         "application_statuses":dict(Counter(x["status"] for x in report["applications"])),
-        "blocked_reasons":dict(Counter(x["reason"] for x in report["applications"] if not x.get("confirmed")))}),
+        "blocked_reasons":dict(Counter(x["reason"] for x in report["applications"] if not x.get("confirmed"))),
+        # Every blocker, not only the alphabetically first one per offer.
+        "all_blockers":dict(Counter(b for x in report["applications"] if not x.get("confirmed")
+                                    for b in x.get("blockers",[x["reason"]])))}),
         flush=True)
+    # One line per checked public offer (no applicant data) to explain why
+    # nothing was sent without needing to download the report artifact.
+    for x in report["applications"]:
+        print(json.dumps({"event":"offer_result","provider":x.get("provider"),"status":x["status"],
+            "address":x.get("address") or x.get("title"),"url":x["url"],
+            "blockers":x.get("blockers",[x["reason"]])},ensure_ascii=False),flush=True)
     return 1 if report["errors"] or report.get("sources_complete") != report.get("source_count") else 0
 
 if __name__ == "__main__":
