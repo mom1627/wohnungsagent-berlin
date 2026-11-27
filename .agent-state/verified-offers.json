@@ -9,6 +9,26 @@
     "url": "https://www.gewobag.de/fuer-mietinteressentinnen/mietangebote/1000-00187-0101-0011/",
     "warm_rent_eur": "405.29"
   },
+  "https://gewobag.de/fuer-mietinteressentinnen/mietangebote/6027-32595-0102-0094": {
+    "address": "Landsberger Allee 341, 13055 Berlin",
+    "available_from": "01.11.2026",
+    "first_verified_utc": "2026-11-27T12:44:58.447578+00:00",
+    "last_verified_utc": "2026-11-27T12:44:58.447578+00:00",
+    "provider": "gewobag",
+    "rooms": "1",
+    "url": "https://www.gewobag.de/fuer-mietinteressentinnen/mietangebote/6027-32595-0102-0094/",
+    "warm_rent_eur": "479.34"
+  },
+  "https://gewobag.de/fuer-mietinteressentinnen/mietangebote/6027-32595-0102-0196": {
+    "address": "Landsberger Allee 341, 13055 Berlin",
+    "available_from": "01.11.2026",
+    "first_verified_utc": "2026-11-27T12:42:03.906249+00:00",
+    "last_verified_utc": "2026-11-27T12:42:03.906249+00:00",
+    "provider": "gewobag",
+    "rooms": "1",
+    "url": "https://www.gewobag.de/fuer-mietinteressentinnen/mietangebote/6027-32595-0102-0196/",
+    "warm_rent_eur": "392.88"
+  },
   "https://stadtundland.de/wohnungssuche/1001%2F5180%2F00184": {
     "address": "Elsa-Ledetsch-Weg 1, 12683 Berlin",
     "available_from": "sofort",
